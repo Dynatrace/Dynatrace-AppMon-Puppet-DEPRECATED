@@ -1,0 +1,55 @@
+---
+provisioner:
+  name: puppet_apply
+  files_path: files
+  manifests_path: test/integration
+  puppet_debug: false
+  puppet_verbose: false
+
+driver:
+  name: vagrant
+  customize:
+    cpus: 2
+    memory: 3096
+    cpuexecutioncap: 50
+
+platforms:
+  # Opscode vagrant box names taken from http://www.vagrantbox.es/
+  - name: centos-6.5
+#  - name: centos-7.0
+  - name: debian-7.4
+  - name: ubuntu-12.04
+
+suites:
+  - name: apache_wsagent_debian
+    provisioner:
+      manifest: apache_wsagent_debian/init.pp
+    includes:
+      - debian-7.4
+      - ubuntu-12.04
+
+  - name: apache_wsagent_redhat
+    provisioner:
+      manifest: apache_wsagent_redhat/init.pp
+    includes:
+      - centos-6.5
+
+  - name: agents_package
+    provisioner:
+      manifest: agents_package/init.pp
+
+  - name: collector
+    provisioner:
+      manifest: collector/init.pp
+
+  - name: java_agent
+    provisioner:
+      manifest: java_agent/init.pp
+
+  - name: server
+    provisioner:
+      manifest: server/init.pp
+
+  - name: wsagent_package
+    provisioner:
+      manifest: wsagent_package/init.pp

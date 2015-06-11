@@ -1,0 +1,80 @@
+#!/bin/sh
+### Start/Stop dynaTrace WebServer Agent daemon
+#
+# Copyright 2004-2012 dynaTrace Software
+# All rights reserved.
+#
+# Copy this script to /etc/init.d and use chkconfig for enabling/disabling
+# the daemon.
+#
+### BEGIN INIT INFO
+# Provides: dynaTraceWebServeragent
+# Required-Start: $network
+# Required-Stop: $network
+# X-UnitedLinux-Should-Start:
+# Default-Start: <%= @linux_service_start_runlevels %>
+# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Description: Start/Stop dynaTrace WebServer Agent daemon
+### END INIT INFO
+
+# To use this file in your environment, adjusting the following variables:
+# - DT_HOME     installation directory of dynaTrace software
+# - DT_OPTARGS  optional arguments (server, ...)
+DT_HOME=<%= @installer_prefix_dir %>/dynatrace
+
+DT_PRODUCT="WebServer Agent"
+DT_BINARY=dtwsagent
+
+DT_BINARY_WITH_PATH=$DT_HOME/agent/lib64/$DT_BINARY
+DT_PIDFILE=$DT_HOME/$DT_BINARY.pid
+
+if [ ! -x "$DT_BINARY_WITH_PATH" ]; then
+  DT_BINARY_WITH_PATH=$DT_HOME/agent/lib/$DT_BINARY
+fi
+
+if [ ! -x "$DT_BINARY_WITH_PATH" ]; then
+  echo "File not found or not executable: $DT_BINARY_WITH_PATH"
+  exit
+fi
+
+if [ -f "$DT_PIDFILE" ]; then
+  TEST_PID=`cat $DT_PIDFILE`
+  ps -e | grep "^\s*${TEST_PID}\s" >/dev/null
+  if [ $? = 0 ]; then
+	  PROCESSPID=`cat $DT_PIDFILE`
+  else
+	  rm $DT_PIDFILE
+  fi
+fi
+
+if [ -z "$PROCESSPID" ]; then
+  GREPARG=`echo $DT_BINARY | cut -c1-8`
+  PROCESSPID=`ps -e | grep $GREPARG | awk '{{print $1}}'`
+fi
+
+case "$1" in
+'start')
+  su - dynatrace -c "nohup $DT_BINARY_WITH_PATH $DT_OPTARGS >/dev/null 2>&1 &"
+  echo $! >$DT_PIDFILE
+  ;;
+'stop')
+  if [ -n "$PROCESSPID" ]; then
+    echo "Terminating dynaTrace $DT_PRODUCT process $PROCESSPID"
+    kill -15 $PROCESSPID
+  rm $DT_PIDFILE
+  fi
+  ;;
+'status')
+  if [ -n "$PROCESSPID" ]; then
+    echo "dynaTrace $DT_PRODUCT daemon is running:"
+    ps -ef | grep $DT_BINARY | grep $PROCESSPID
+    exit 0
+  else
+    echo "dynaTrace $DT_PRODUCT daemon not running."
+    exit 1
+  fi
+  ;;
+*)
+  echo "usage: $0 {start|stop|status}"
+  ;;
+esac

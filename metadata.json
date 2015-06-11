@@ -1,0 +1,11 @@
+{
+  "name": "dynatrace-dynatrace",
+  "version": "0.1.0",
+  "author": "Martin Etmajer",
+  "summary": "Installs the Dynatrace Application Monitoring solution.",
+  "license": "MIT",
+  "source": "https://github.com/Dynatrace/Dynatrace-Puppet",
+  "project_page": "https://github.com/Dynatrace/Dynatrace-Puppet",
+  "issues_url": "https://github.com/Dynatrace/Dynatrace-Puppet/issues",
+  "dependencies": []
+}
