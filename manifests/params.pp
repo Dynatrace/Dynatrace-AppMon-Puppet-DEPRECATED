@@ -3,6 +3,9 @@
 # This class configures parameters for the dynatrace-dynatrace module.
 #
 # Parameters:
+#  $dynatrace_owner => The system user that owns a Dynatrace installation.
+#  $dynatrace_group => The system user's group that owns a Dynatrace installation.
+#
 #  $agents_package_installer_prefix_dir => The Dynatrace Agents package will be installed into the directory $agents_package_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $agents_package_installer_prefix_dir/dynatrace.
 #  $agents_package_installer_file_name  => The file name of the Dynatrace Agents installer in the module's files directory.
 #  $agents_package_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Agents installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
@@ -52,6 +55,9 @@ class dynatrace::params {
 
   case $::kernel {
     'Linux': {
+      $dynatrace_owner = 'dynatrace'
+      $dynatrace_group = 'dynatrace'
+
       $agents_package_installer_prefix_dir = '/opt'
       $agents_package_installer_file_name  = 'dynatrace-agents.jar'
       $agents_package_installer_file_url   = undef

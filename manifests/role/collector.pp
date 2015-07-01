@@ -6,7 +6,9 @@ class dynatrace::role::collector (
   $installer_file_url   = $dynatrace::params::collector_installer_file_url,
   $agent_port           = $dynatrace::params::collector_agent_port,
   $server_hostname      = $dynatrace::params::collector_server_hostname,
-  $server_port          = $dynatrace::params::collector_server_port
+  $server_port          = $dynatrace::params::collector_server_port,
+  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::params::dynatrace_group
 ) inherits dynatrace::params {
   
   validate_re($installer_bitsize, ['^32', '64'])
@@ -24,11 +26,15 @@ class dynatrace::role::collector (
   $installer_cache_dir = "${settings::vardir}/dynatrace"
 
 
-  require dynatrace::role::dynatrace_user
+  class { 'dynatrace::role::dynatrace_user':
+    dynatrace_owner => $dynatrace_owner,
+    dynatrace_group => $dynatrace_group
+  }
 
   file { "Create the installer cache directory":
-    path   => $installer_cache_dir,
-    ensure => directory
+    path    => $installer_cache_dir,
+    ensure  => directory,
+    require => Class['dynatrace::role::dynatrace_user']
   }
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
@@ -65,6 +71,8 @@ class dynatrace::role::collector (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'collector',
+    installer_owner       => $dynatrace_owner,
+    installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir,
     ensure                => installed
   }

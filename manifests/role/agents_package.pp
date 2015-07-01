@@ -2,7 +2,9 @@ class dynatrace::role::agents_package (
   $role_name            = 'Dynatrace Agents',
   $installer_prefix_dir = $dynatrace::params::agents_package_installer_prefix_dir,
   $installer_file_name  = $dynatrace::params::agents_package_installer_file_name,
-  $installer_file_url   = $dynatrace::params::agents_package_installer_file_url
+  $installer_file_url   = $dynatrace::params::agents_package_installer_file_url,
+  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::params::dynatrace_group
 ) inherits dynatrace::params {
 
   validate_string($installer_prefix_dir, $installer_file_name)
@@ -16,11 +18,15 @@ class dynatrace::role::agents_package (
   $installer_cache_dir = "${settings::vardir}/dynatrace"
 
 
-  require dynatrace::role::dynatrace_user
+  class { 'dynatrace::role::dynatrace_user':
+    dynatrace_owner => $dynatrace_owner,
+    dynatrace_group => $dynatrace_group
+  }
 
   file { "Create the installer cache directory":
-    path   => $installer_cache_dir,
-    ensure => directory
+    path    => $installer_cache_dir,
+    ensure  => directory,
+    require => Class['dynatrace::role::dynatrace_user']
   }
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
@@ -47,6 +53,8 @@ class dynatrace::role::agents_package (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'agent',
+    installer_owner       => $dynatrace_owner,
+    installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir,
     ensure                => installed
   }

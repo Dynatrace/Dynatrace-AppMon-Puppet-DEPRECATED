@@ -5,7 +5,9 @@ class dynatrace::role::wsagent_package (
   $installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
   $agent_name           = $dynatrace::params::wsagent_package_agent_name,
   $collector_hostname   = $dynatrace::params::wsagent_package_collector_hostname,
-  $collector_port       = $dynatrace::params::wsagent_package_collector_port
+  $collector_port       = $dynatrace::params::wsagent_package_collector_port,
+  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::params::dynatrace_group
 ) inherits dynatrace::params {
   
   validate_string($installer_prefix_dir, $installer_file_name)
@@ -22,11 +24,15 @@ class dynatrace::role::wsagent_package (
   $installer_cache_dir = "${settings::vardir}/dynatrace"
 
 
-  require dynatrace::role::dynatrace_user
+  class { 'dynatrace::role::dynatrace_user':
+    dynatrace_owner => $dynatrace_owner,
+    dynatrace_group => $dynatrace_group
+  }
 
   file { "Create the installer cache directory":
-    path   => $installer_cache_dir,
-    ensure => directory
+    path    => $installer_cache_dir,
+    ensure  => directory,
+    require => Class['dynatrace::role::dynatrace_user']
   }
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
@@ -63,14 +69,16 @@ class dynatrace::role::wsagent_package (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'agent',
+    installer_owner       => $dynatrace_owner,
+    installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir,
     ensure                => installed
   }
 
   file { "Configure and copy the ${role_name}'s 'dtwsagent.ini' file":
     path    => "${installer_prefix_dir}/dynatrace/agent/conf/dtwsagent.ini",
-    owner   => 'dynatrace',
-    group   => 'dynatrace',
+    owner   => $dynatrace_owner,
+    group   => $dynatrace_group,
     content => template('dynatrace/wsagent_package/dtwsagent.ini.erb'),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
