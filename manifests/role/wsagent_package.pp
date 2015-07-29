@@ -47,7 +47,7 @@ class dynatrace::role::wsagent_package (
     before  => Dynatrace_installation["Install the ${role_name}"]
   }
 
-  if $::wsagent_service_installed {
+  if $::dynatrace_wsagent_service_installed {
     service { "Stop and disable the ${role_name}'s service(s): '$service'":
       name      => $service,
       ensure    => stopped,
