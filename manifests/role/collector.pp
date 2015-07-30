@@ -55,7 +55,7 @@ class dynatrace::role::collector (
     before  => Dynatrace_installation["Install the ${role_name}"]
   }
 
-  if $::collector_service_installed {
+  if $::dynatrace_collector_service_installed {
     service { "Stop and disable the ${role_name}'s service(s): '$service'":
       name      => $service,
       ensure    => stopped,
