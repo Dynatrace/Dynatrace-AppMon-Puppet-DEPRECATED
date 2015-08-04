@@ -88,13 +88,6 @@ class dynatrace::role::server (
     enable => true
   }
 
-  dynatrace::resource::copy_or_download_file { "Copy or download the Dynatrace license file":
-    file_name => $license_file_name,
-    file_url  => $license_file_url,
-    path      => "${installer_prefix_dir}/dynatrace/server/conf/dtlicense.key",
-    require   => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
   wait_until_rest_endpoint_is_ready { 'http://localhost:8020/rest/management/pwhconnection/config':
     require => Service["Start and enable the ${role_name}'s service: '${service}'"],
     ensure  => present

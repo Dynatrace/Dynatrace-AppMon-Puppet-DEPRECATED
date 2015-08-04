@@ -33,7 +33,7 @@ EOH
            Errno::ENETUNREACH,
            Timeout::Error,
            OpenURI::HTTPError => e
-      return e.message !=~ /^403/
+      return e.message !=~ /^(401|403)/
     end
 
     return true

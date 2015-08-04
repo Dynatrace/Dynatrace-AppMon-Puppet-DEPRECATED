@@ -88,6 +88,18 @@ class { 'dynatrace::role::server':
 }
 ```
 
+### dynatrace::role::server_license
+
+*Installs the Dynatrace Server License.*
+
+Place the Dynatrace Server License as `dynatrace-license.key` in the module's `files` directory. Alternatively, you can make the license available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$license_file_url` parameter. Please refer to `manifests/role/server_license.pp` for a list of supported attributes, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+
+```
+class { 'dynatrace::role::server':
+  license_file_url => 'http://10.0.2.2/dynatrace/dynatrace-license.key'
+}
+```
+
 ### dynatrace::role::wsagent_package
 
 *Installs the Dynatrace WebServer Agent package.*
