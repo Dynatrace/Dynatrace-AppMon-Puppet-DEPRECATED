@@ -90,12 +90,12 @@ class dynatrace::params {
       $wsagent_package_installer_file_url   = undef
 
       $server_installer_prefix_dir = '/opt'
-      $server_installer_file_name = 'dynatrace.jar'
-      $server_installer_file_url = undef
-      $server_license_file_name = 'dynatrace-license.key'
-      $server_license_file_url = undef
-      $server_collector_port = '6698'
-      $server_do_pwh_connection = false
+      $server_installer_file_name  = 'dynatrace.jar'
+      $server_installer_file_url   = undef
+      $server_license_file_name    = 'dynatrace-license.key'
+      $server_license_file_url     = undef
+      $server_collector_port       = '6698'
+      $server_do_pwh_connection    = false
 
       $server_pwh_connection_hostname = 'localhost'
       $server_pwh_connection_port     = '5432'
