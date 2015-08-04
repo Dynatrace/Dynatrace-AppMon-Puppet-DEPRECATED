@@ -53,16 +53,6 @@ class dynatrace::role::wsagent_package (
     before  => Dynatrace_installation["Install the ${role_name}"]
   }
 
-  if $::wsagent_service_installed {
-    service { "Stop and disable the ${role_name}'s service(s): '$service'":
-      name      => $service,
-      ensure    => stopped,
-      enable    => false,
-      subscribe => Dynatrace_installer["Fetch the ${role_name} installer"],
-      before    => Dynatrace_installation["Install the ${role_name}"]
-    }
-  }
-
   dynatrace_installation { "Install the ${role_name}":
     installer_prefix_dir  => $installer_prefix_dir,
     installer_file_name   => $installer_file_name,
