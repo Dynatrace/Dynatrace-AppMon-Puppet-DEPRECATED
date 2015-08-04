@@ -34,16 +34,16 @@ fi
 
 if [ ! -x "$DT_BINARY_WITH_PATH" ]; then
   echo "File not found or not executable: $DT_BINARY_WITH_PATH"
-  exit
+  exit 1
 fi
 
 if [ -f "$DT_PIDFILE" ]; then
   TEST_PID=`cat $DT_PIDFILE`
   ps -e | grep "^\s*${TEST_PID}\s" >/dev/null
   if [ $? = 0 ]; then
-	  PROCESSPID=`cat $DT_PIDFILE`
+    PROCESSPID=`cat $DT_PIDFILE`
   else
-	  rm $DT_PIDFILE
+    rm $DT_PIDFILE
   fi
 fi
 
@@ -61,14 +61,13 @@ case "$1" in
   if [ -n "$PROCESSPID" ]; then
     echo "Terminating dynaTrace $DT_PRODUCT process $PROCESSPID"
     kill -15 $PROCESSPID
-  rm $DT_PIDFILE
+    rm $DT_PIDFILE
   fi
   ;;
 'status')
   if [ -n "$PROCESSPID" ]; then
     echo "dynaTrace $DT_PRODUCT daemon is running:"
     ps -ef | grep $DT_BINARY | grep $PROCESSPID
-    exit 0
   else
     echo "dynaTrace $DT_PRODUCT daemon not running."
     exit 1
@@ -78,3 +77,5 @@ case "$1" in
   echo "usage: $0 {start|stop|status}"
   ;;
 esac
+
+exit 0

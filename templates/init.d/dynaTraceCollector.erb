@@ -38,7 +38,7 @@ if [ -n "$DT_INSTANCE" ]; then
 fi
 if [ ! -x "$DT_HOME/$DT_BINARY" ]; then
   echo "File not found or not executable: $DT_HOME/$DT_BINARY"
-  exit
+  exit 1
 fi
 if [ -f "$DT_PIDFILE" ]; then
   PROCESSPID=$(cat $DT_PIDFILE)
@@ -80,7 +80,6 @@ case "$1" in
     echo "dynaTrace $DT_PRODUCT daemon is running:"
     ps -ef | grep $DT_BINARY | grep $PROCESSPID
       # | grep -v org.eclipse.equinox
-    exit 0
   else
     echo "dynaTrace $DT_PRODUCT daemon not running."
     exit 1
@@ -90,3 +89,5 @@ case "$1" in
   echo "usage: $0 {start|stop|status|version}"
   ;;
 esac
+
+exit 0
