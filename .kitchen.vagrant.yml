@@ -3,22 +3,22 @@ provisioner:
   name: puppet_apply
   files_path: files
   manifests_path: test/integration
+  puppet_debug: false
+  puppet_verbose: false
 
 driver:
-  name: docker
+  name: vagrant
+  customize:
+    cpus: 2
+    memory: 3096
+    cpuexecutioncap: 50
 
 platforms:
+  # Opscode vagrant box names taken from http://www.vagrantbox.es/
   - name: centos-6.5
-    driver_config:
-      image: dynatrace/centos:6
-
+#  - name: centos-7.0
   - name: debian-7.4
-    driver_config:
-      image: dynatrace/debian:7.4
-
   - name: ubuntu-12.04
-    driver_config:
-      image: dynatrace/ubuntu:12.04
 
 suites:
   - name: apache_wsagent_debian
