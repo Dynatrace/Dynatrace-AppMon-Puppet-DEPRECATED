@@ -70,7 +70,8 @@ class dynatrace::role::wsagent_package (
     owner   => $dynatrace_owner,
     group   => $dynatrace_group,
     content => template('dynatrace/wsagent_package/dtwsagent.ini.erb'),
-    require => Dynatrace_installation["Install the ${role_name}"]
+    require => Dynatrace_installation["Install the ${role_name}"],
+    notify  => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   if $::kernel == 'Linux' {
