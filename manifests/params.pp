@@ -34,6 +34,16 @@
 #  $java_agent_collector_port     => The port on the collector the Dynatrace Agent shall connect to.
 #  $java_agent_linux_agent_path   => The path to the Dynatrace Agent libary.
 #  
+#  $memory_analysis_server_installer_bitsize    => '32' or '64'.
+#  $memory_analysis_server_installer_prefix_dir => The Dynatrace Memory Analysis Server will be installed into the directory $memory_analysis_server_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $memory_analysis_server_installer_prefix_dir/dynatrace.
+#  $memory_analysis_server_installer_file_name  => The file name of the Dynatrace Memory Analysis Server installer in the module's files directory.
+#  $memory_analysis_server_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Memory Analysis Server installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
+#  $memory_analysis_server_server_port          => The port where the Dynatrace Memory Analysis Server shall listen for the Dynatrace Server.
+#  $memory_analysis_server_jvm_xms              => The Dynatrace Memory Analysis Server's JVM setting: -Xms.
+#  $memory_analysis_server_jvm_xmx              => The Dynatrace Memory Analysis Server's JVM setting: -Xmx.
+#  $memory_analysis_server_jvm_perm_size        => The Dynatrace Memory Analysis Server's JVM setting: -XX:PermSize.
+#  $memory_analysis_server_jvm_max_perm_size    => The Dynatrace Memory Analysis Server's JVM setting: -XX:MaxPermSize.
+#  
 #  $server_installer_prefix_dir    => The Dynatrace Server will be installed into the directory $server_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $server_installer_prefix_dir/dynatrace.
 #  $server_installer_file_name     => The file name of the Dynatrace installer in the cookbook's files directory.
 #  $server_installer_file_url      => A HTTP, HTTPS or FTP URL to the Dynatrace installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
@@ -90,12 +100,15 @@ class dynatrace::params {
       $java_agent_collector_port     = '9998'
       $java_agent_linux_agent_path   = '/opt/dynatrace/agent/lib64/libdtagent.so'
 
-      $wsagent_package_agent_name           = 'dtwsagent'
-      $wsagent_package_collector_hostname   = 'localhost'
-      $wsagent_package_collector_port       = '9998'
-      $wsagent_package_installer_prefix_dir = '/opt'
-      $wsagent_package_installer_file_name  = 'dynatrace-wsagent.tar'
-      $wsagent_package_installer_file_url   = undef
+      $memory_analysis_server_installer_bitsize    = '64'
+      $memory_analysis_server_installer_prefix_dir = '/opt'
+      $memory_analysis_server_installer_file_name  = 'dynatrace-analysisserver.jar'
+      $memory_analysis_server_installer_file_url   = undef
+      $memory_analysis_server_server_port          = '7788'
+      $memory_analysis_server_jvm_xms              = undef
+      $memory_analysis_server_jvm_xmx              = undef
+      $memory_analysis_server_jvm_perm_size        = undef
+      $memory_analysis_server_jvm_max_perm_size    = undef
 
       $server_installer_prefix_dir = '/opt'
       $server_installer_file_name  = 'dynatrace.jar'
@@ -111,6 +124,13 @@ class dynatrace::params {
       $server_pwh_connection_database = 'dynatrace-pwh'
       $server_pwh_connection_username = 'dynatrace'
       $server_pwh_connection_password = 'dynatrace'
+
+      $wsagent_package_agent_name           = 'dtwsagent'
+      $wsagent_package_collector_hostname   = 'localhost'
+      $wsagent_package_collector_port       = '9998'
+      $wsagent_package_installer_prefix_dir = '/opt'
+      $wsagent_package_installer_file_name  = 'dynatrace-wsagent.tar'
+      $wsagent_package_installer_file_url   = undef
     }
     default: {
       fail("The kernel '${::kernel}' is currently not supported.")

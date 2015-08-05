@@ -1,0 +1,70 @@
+#!/bin/sh
+### Start/Stop dynaTrace Analysis Server daemon
+#
+# Copyright 2004-2012 dynaTrace Software
+# All rights reserved.
+#
+# Copy this script to /etc/init.d and use chkconfig for enabling/disabling
+# the daemon. Depending on the target environment adjustments may be necessary.
+#
+### BEGIN INIT INFO
+# Provides: dynaTraceAnalysis
+# Required-Start: $network
+# Required-Stop: $network
+# X-UnitedLinux-Should-Start:
+# Default-Start: <%= @linux_service_start_runlevels %>
+# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Description: Start/Stop dynaTrace Analysis Server daemon
+### END INIT INFO
+
+# To use this file in your environment, adjusting the following variables:
+# - DT_HOME    installation directory of dynaTrace software
+# - DT_OPTARGS optional arguments (e.g. -vm, -instance, -server, etc.)
+DT_HOME=<%= @installer_prefix_dir %>/dynatrace
+DT_OPTARGS="-Dcom.dynatrace.diagnostics.listen=:<%= @server_port %><%= " -Xms#{@jvm_xms}" if @jvm_xms %><%= " -Xmx#{@jvm_xmx}" if @jvm_xmx %><%= " -XX:PermSize=#{@jvm_perm_size}" if @jvm_perm_size %><%= " -XX:MaxPermSize=#{@jvm_max_perm_size}" if @jvm_max_perm_size %>"
+
+DT_PRODUCT="Memory Analysis Server"
+DT_BINARY=dtanalysisserver
+
+DT_PIDFILE=/var/run/$DT_BINARY.pid
+if [ ! -x "$DT_HOME/$DT_BINARY" ]; then
+  echo "File not found or not executable: $DT_HOME/$DT_BINARY"
+  exit 1
+fi
+if [ -f "$DT_PIDFILE" ]; then
+  PROCESSPID=`cat $DT_PIDFILE`
+fi
+if [ -z "$PROCESSPID" ]; then
+  GREPARG=`echo $DT_BINARY | cut -c1-8`
+  PROCESSPID=`ps -e | grep $GREPARG | awk '{{print $1}}'`
+fi
+
+case "$1" in
+'start')
+    su - dynatrace -c "$DT_HOME/$DT_BINARY -bg $DT_OPTARGS"
+    ;;
+'stop')
+    if [ -n "$PROCESSPID" ]; then
+      echo "Terminating dynaTrace $DT_PRODUCT process $PROCESSPID"
+      kill -15 $PROCESSPID
+    fi
+    ;;
+'version')
+    $DT_HOME/$DT_BINARY -v
+    ;;
+'status')
+    if [ -n "$PROCESSPID" ]; then
+      echo "dynaTrace $DT_PRODUCT daemon is running:"
+      ps -ef | grep $DT_BINARY | grep $PROCESSPID
+        # | grep -v org.eclipse.equinox
+    else
+      echo "dynaTrace $DT_PRODUCT daemon not running."
+      exit 1
+    fi
+    ;;
+*)
+    echo "usage: $0 {start|stop|status|version}"
+    ;;
+esac
+
+exit 0

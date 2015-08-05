@@ -46,6 +46,10 @@ suites:
     provisioner:
       manifest: java_agent/init.pp
 
+  - name: memory_analysis_server
+    provisioner:
+      manifest: memory_analysis_server/init.pp
+
   - name: server
     provisioner:
       manifest: server/init.pp

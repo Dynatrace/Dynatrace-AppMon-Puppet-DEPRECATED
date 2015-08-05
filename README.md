@@ -78,6 +78,20 @@ class { 'dynatrace::role::java_agent':
 
 **Note:** this recipe makes the Java Agent available to a Java Virtual Machine by injecting an appropriate [-agentpath](https://community.compuwareapm.com/community/display/DOCDT60/Java+Agent+Configuration) option into an environment variable, e.g. `JAVA_OPTS`, inside a file (typically an executable script). It is assumed that this script either executes the Java process directly or is sourced by another script before the Java process gets executed. You will have to restart the application after placing the agent.
 
+### dynatrace::role::memory_analysis_server
+
+*Installs the Dynatrace Memory Analysis Server.*
+
+Download the Dynatrace Memory Analysis Server installer from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-analysisserver.jar` in the modules's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/memory_analysis_server.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+
+```
+class { 'dynatrace::role::memory_analysis_server':
+  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-analysisserver.jar'
+}
+```
+
+**Note:** make sure that attributes related to the Analysis Server's memory configuration are set in accordance to the [Memory Configuration](https://community.dynatrace.com/community/display/DOCDT62/Memory+Analysis+Server+Configuration#MemoryAnalysisServerConfiguration-MemoryConfiguration) section of the [Memory Analysis Server Configuration](https://community.dynatrace.com/community/display/DOCDT62/Memory+Analysis+Server+Configuration) documentation.
+
 ### dynatrace::role::server
 
 *Installs the Dynatrace Server.*
