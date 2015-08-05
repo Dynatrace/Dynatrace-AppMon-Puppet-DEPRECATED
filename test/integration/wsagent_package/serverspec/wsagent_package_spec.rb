@@ -40,6 +40,11 @@ describe file ('/etc/init.d/dynaTraceWebServerAgent') do
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 
+describe process('dtwsagent') do
+  it { should be_running }
+  its(:user) { should eq 'dynatrace' }
+end
+
 describe service('dynaTraceWebServerAgent') do
   it { should be_enabled }
   it { should be_running }

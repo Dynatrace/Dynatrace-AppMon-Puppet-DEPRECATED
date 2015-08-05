@@ -44,6 +44,13 @@ describe file ('/etc/init.d/dynaTraceServer') do
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 
+describe process('java') do
+  it { should be_running }
+  its(:user) { should eq 'dynatrace' }
+  its(:args) { should match /-name dtserver/ }
+  its(:args) { should match /-Dcom.dynatrace.diagnostics.listen=:6698/ }
+end
+
 describe service('dynaTraceServer') do
   it { should be_enabled }
   it { should be_running }
