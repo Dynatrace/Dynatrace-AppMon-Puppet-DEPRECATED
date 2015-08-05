@@ -1,4 +1,4 @@
-define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $role_name = nil) {
+define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $role_name = nil, $owner = nil, $group = nil) {
   case $::kernel {
     'Linux': {
       case $::osfamily {
@@ -16,8 +16,8 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
 
   file { "Configure and copy the ${role_name}'s '${name}' init script":
     path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
-    owner   => 'dynatrace',
-    group   => 'dynatrace',
+    owner   => $owner,
+    group   => $group,
     mode    => '0744',
     content => template("dynatrace/init.d/${name}.erb"),
     require => Dynatrace_installation["Install the ${role_name}"]

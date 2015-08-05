@@ -78,6 +78,8 @@ class dynatrace::role::server (
     dynatrace::resource::configure_init_script { $init_scripts:
       role_name            => $role_name,
       installer_prefix_dir => $installer_prefix_dir,
+      owner                => $dynatrace_owner,
+      group                => $dynatrace_group,
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }
