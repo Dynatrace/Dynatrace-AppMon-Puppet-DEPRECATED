@@ -32,6 +32,7 @@ describe file ('/etc/init.d/dynaTraceCollector') do
   end
 
   its(:content) { should match /^DT_HOME=\/opt\/dynatrace$/ }
+  its(:content) { should match /^DT_OPTARGS="-listen 9998 -server localhost:6698 -Xms256M -Xmx1024M -XX:PermSize=256m -XX:MaxPermSize=384m"$/ }
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 

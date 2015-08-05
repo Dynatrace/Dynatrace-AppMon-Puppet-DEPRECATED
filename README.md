@@ -55,6 +55,8 @@ class { 'dynatrace::role::agents_package':
 }
 ```
 
+**Note:** make sure that attributes related to the Collector's memory configuration are set in accordance to the [Memory Configuration](https://community.dynatrace.com/community/display/DOCDT60/Collector+Configuration#CollectorConfiguration-MemoryConfiguration) section of the [Collector Configuration](https://community.dynatrace.com/community/display/DOCDT60/Collector+Configuration) documentation.
+
 ### dynatrace::role::java_agent
 
 *Installs the Dynatrace Agent Java Agent.*

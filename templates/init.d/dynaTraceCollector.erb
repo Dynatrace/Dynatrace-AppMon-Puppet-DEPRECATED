@@ -23,7 +23,7 @@
 # - DT_OPTARGS  optional arguments (e.g. -vm, -instance, -server, etc.)
 # - DT_INSTANCE instance name if -instance argument is specified
 DT_HOME=<%= @installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-listen <%= @agent_port %> -server <%= @server_hostname %>:<%= @server_port %>"
+DT_OPTARGS="-listen <%= @agent_port %> -server <%= @server_hostname %>:<%= @server_port %><%= " -Xms#{@jvm_xms}" if @jvm_xms %><%= " -Xmx#{@jvm_xmx}" if @jvm_xmx %><%= " -XX:PermSize=#{@jvm_perm_size}" if @jvm_perm_size %><%= " -XX:MaxPermSize=#{@jvm_max_perm_size}" if @jvm_max_perm_size %>"
 # When using an instance name, ensure that the -instance argument from
 # DT_OPTARGS is in sync with the following DT_INSTANCE variable:
 # (e.g.: "-instance InstName" requires "DT_INSTANCE=InstName")

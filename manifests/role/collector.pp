@@ -7,6 +7,10 @@ class dynatrace::role::collector (
   $agent_port           = $dynatrace::params::collector_agent_port,
   $server_hostname      = $dynatrace::params::collector_server_hostname,
   $server_port          = $dynatrace::params::collector_server_port,
+  $jvm_xms              = $dynatrace::params::collector_jvm_xms,
+  $jvm_xmx              = $dynatrace::params::collector_jvm_xmx,
+  $jvm_perm_size        = $dynatrace::params::collector_jvm_perm_size,
+  $jvm_max_perm_size    = $dynatrace::params::collector_jvm_max_perm_size,
   $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
   $dynatrace_group      = $dynatrace::params::dynatrace_group
 ) inherits dynatrace::params {

@@ -22,6 +22,10 @@
 #  $collector_agent_port           => The port where the Dynatrace Collector shall listen for Agents.
 #  $collector_server_hostname      => The location of the Dynatrace Server the Collector shall connect to.
 #  $collector_server_port          => The port on the Dynatrace Server the Collector shall connect to. Use either 6698 (non-SSL) or 6699 (SSL).
+#  $collector_jvm_xms              => The Dynatrace Collector's JVM setting: -Xms.
+#  $collector_jvm_xmx              => The Dynatrace Collector's JVM setting: -Xmx.
+#  $collector_jvm_perm_size        => The Dynatrace Collector's JVM setting: -XX:PermSize.
+#  $collector_jvm_max_perm_size    => The Dynatrace Collector's JVM setting: -XX:MaxPermSize.
 #  
 #  $java_agent_env_var_name       => The name of the environment variable to be used for Dynatrace Agent injection.
 #  $java_agent_env_var_file_name  => The name of the file to be modified.
@@ -74,6 +78,10 @@ class dynatrace::params {
       $collector_agent_port           = '9998'
       $collector_server_hostname      = 'localhost'
       $collector_server_port          = '6698'
+      $collector_jvm_xms              = undef
+      $collector_jvm_xmx              = undef
+      $collector_jvm_perm_size        = undef
+      $collector_jvm_max_perm_size    = undef
 
       $java_agent_env_var_name       = 'JAVA_OPTS'
       $java_agent_env_var_file_name  = undef
