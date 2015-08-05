@@ -88,6 +88,26 @@ class dynatrace::role::server (
     enable => true
   }
 
+  wait_until_port_is_open { $collector_port:
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  }
+
+  wait_until_port_is_open { '2021':
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  }
+
+  wait_until_port_is_open { '6699':
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  }
+
+  wait_until_port_is_open { '8020':
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  }
+
+  wait_until_port_is_open { '8021':
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  }
+
   wait_until_rest_endpoint_is_ready { 'http://localhost:8020/rest/management/pwhconnection/config':
     require => Service["Start and enable the ${role_name}'s service: '${service}'"],
     ensure  => present
