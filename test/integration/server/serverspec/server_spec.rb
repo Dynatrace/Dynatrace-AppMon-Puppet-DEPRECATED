@@ -40,6 +40,7 @@ describe file ('/etc/init.d/dynaTraceServer') do
   end
 
   its(:content) { should match /^DT_HOME=\/opt\/dynatrace$/ }
+  its(:content) { should match /^DT_OPTARGS="-listen 6698"$/ }
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 
