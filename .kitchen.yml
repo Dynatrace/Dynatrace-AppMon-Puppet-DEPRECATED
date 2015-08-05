@@ -10,15 +10,15 @@ driver:
 platforms:
   - name: centos-6.5
     driver_config:
-      image: dynatrace/centos:6
+      image: dynatrace/centos-testing:6
 
   - name: debian-7.4
     driver_config:
-      image: dynatrace/debian:7.4
+      image: dynatrace/debian-testing:7.4
 
   - name: ubuntu-12.04
     driver_config:
-      image: dynatrace/ubuntu:12.04
+      image: dynatrace/ubuntu-testing:12.04
 
 suites:
   - name: apache_wsagent_debian
