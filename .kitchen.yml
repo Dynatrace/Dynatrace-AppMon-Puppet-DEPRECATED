@@ -8,7 +8,7 @@ driver:
   name: docker
 
 platforms:
-  - name: centos-6.5
+  - name: centos-6
     driver_config:
       image: dynatrace/centos-testing:6
 
@@ -32,7 +32,7 @@ suites:
     provisioner:
       manifest: apache_wsagent_redhat/init.pp
     includes:
-      - centos-6.5
+      - centos-6
 
   - name: agents_package
     provisioner:
