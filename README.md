@@ -151,7 +151,7 @@ By default, we run our tests inside [Docker](https://www.docker.com/) containers
 
 ## Questions?
 
-Feel free to post your questions on the Dynatrace Community's [Continuous Delivery Forum](https://community.dynatrace.com/community/pages/viewpage.action?pageId=46628921).
+Feel free to post your questions on the Dynatrace Community's [Continuous Delivery Forum](https://answers.dynatrace.com/spaces/148/open-q-a_2.html?topics=continuous%20delivery).
 
 ## License
 
