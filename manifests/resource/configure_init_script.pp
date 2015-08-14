@@ -1,4 +1,10 @@
-define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $role_name = nil, $owner = nil, $group = nil) {
+define dynatrace::resource::configure_init_script(
+  $ensure               = 'present',
+  $installer_prefix_dir = nil,
+  $role_name            = nil,
+  $owner                = nil,
+  $group                = nil,
+) {
   case $::kernel {
     'Linux': {
       case $::osfamily {
@@ -14,7 +20,14 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
     }
   }
 
+  $link_ensure = $ensure ? {
+    'present' => 'link',
+    'absent'  => 'absent',
+    default   => 'link'
+  }
+
   file { "Configure and copy the ${role_name}'s '${name}' init script":
+    ensure  => $ensure,
     path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     owner   => $owner,
     group   => $group,
@@ -24,9 +37,9 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
   }
 
   file { "Make the '${name}' init script available in /etc/init.d":
+    ensure  => $link_ensure,
     path    => "/etc/init.d/${name}",
     target  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
-    ensure  => link,
     require => File["Configure and copy the ${role_name}'s '${name}' init script"]
   }
 }
