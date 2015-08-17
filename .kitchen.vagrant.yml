@@ -3,8 +3,6 @@ provisioner:
   name: puppet_apply
   files_path: files
   manifests_path: test/integration
-  puppet_debug: false
-  puppet_verbose: false
 
 driver:
   name: vagrant
@@ -16,7 +14,6 @@ driver:
 platforms:
   # Opscode vagrant box names taken from http://www.vagrantbox.es/
   - name: centos-6.5
-#  - name: centos-7.0
   - name: debian-7.4
   - name: ubuntu-12.04
 
