@@ -18,7 +18,7 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
     path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     owner   => $owner,
     group   => $group,
-    mode    => '0744',
+    mode    => '0755',
     content => template("dynatrace/init.d/${name}.erb"),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
