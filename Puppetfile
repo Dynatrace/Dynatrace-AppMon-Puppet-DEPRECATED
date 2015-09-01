@@ -10,6 +10,7 @@ metadata
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-apache'
 mod 'puppetlabs-java'
+mod 'puppetlabs-ruby'
 
 mod 'puppet-editfile',
   :git => 'git://github.com/mstrauss/puppet-editfile.git'

@@ -88,6 +88,7 @@ class dynatrace::role::collector (
   }
 
   wait_until_port_is_open { $agent_port:
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
   }
 }

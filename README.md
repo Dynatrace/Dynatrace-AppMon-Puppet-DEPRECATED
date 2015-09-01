@@ -35,13 +35,11 @@ class { 'dynatrace::role::wsagent_package':
 
 class { 'dynatrace::role::apache_wsagent':
   apache_config_file_path     => '/etc/apache2/apache2.conf',
-  apache_init_script_path     => '/etc/init.d/apache2',
-  apache_do_patch_init_script => true,
   require                     => Class['dynatrace::role::wsagent_package']
 }
 ```
 
-**Note:** you will have to restart the web server after placing the agent. You should also make sure that the Apache HTTP service is started only after the Dynatrace WebServer Agent service to maintain a correct startup order whenever the machine under management gets rebooted. Currently, this can be automated for systems that start the Apache HTTP server via an [LSB init script](http://refspecs.linuxbase.org/LSB_3.0.0/LSB-generic/LSB-generic/iniscrptact.html) in `/etc/init.d` via the `$do_patch_init_script` and related parameters in `manifests/role/apache_wsagent.pp`.
+**Note:** you will have to restart the web server after placing the agent.
 
 ### dynatrace::role::collector
 

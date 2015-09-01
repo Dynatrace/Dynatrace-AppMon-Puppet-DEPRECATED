@@ -11,8 +11,6 @@
 #  $agents_package_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Agents installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
 #
 #  $apache_wsagent_apache_config_file_path     => The path to the Apache HTTP Server's config file.
-#  $apache_wsagent_apache_init_script_path     => The path to the Apache HTTP Server's init script.
-#  $apache_wsagent_apache_do_patch_init_script => Whether the init script shall be patched so that the Apache HTTP Server service is started only after the Dynatrace WebServer Agent service has started, or not.
 #  $apache_wsagent_linux_agent_path            => The path to the Dynatrace Agent library.
 #  
 #  $collector_installer_bitsize    => '32' or '64'.

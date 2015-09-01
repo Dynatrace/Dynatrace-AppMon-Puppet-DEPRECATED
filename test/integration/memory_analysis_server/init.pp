@@ -1,3 +1,7 @@
+class { 'ruby':
+  version  => '1.9.3'
+}
+
 class { 'java':
   distribution => 'jdk'
 }
@@ -8,5 +12,5 @@ class { 'dynatrace::role::memory_analysis_server':
   jvm_xmx            => '1024M',
   jvm_perm_size      => '256m',
   jvm_max_perm_size  => '384m',
-  require            => Class['java']
+  require            => [ Class['ruby'], Class['java'] ]
 }

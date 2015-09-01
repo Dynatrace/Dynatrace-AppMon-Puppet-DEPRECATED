@@ -86,6 +86,7 @@ class dynatrace::role::memory_analysis_server (
   }
 
   wait_until_port_is_open { $server_port:
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
   }
 }

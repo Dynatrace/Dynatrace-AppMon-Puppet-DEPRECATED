@@ -26,7 +26,7 @@ EOH
 
   def self.rest_endpoint_is_available?(address)
     begin
-      open(address)
+      open(address, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
     rescue SocketError,
            Errno::ECONNREFUSED,
            Errno::ECONNRESET,

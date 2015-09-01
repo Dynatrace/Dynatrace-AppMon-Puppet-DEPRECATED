@@ -91,27 +91,44 @@ class dynatrace::role::server (
   }
 
   wait_until_port_is_open { $collector_port:
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
   }
 
   wait_until_port_is_open { '2021':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
   }
 
   wait_until_port_is_open { '6699':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  wait_until_port_is_open { '8020':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
   }
 
   wait_until_port_is_open { '8021':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  wait_until_rest_endpoint_is_ready { 'http://localhost:8020/rest/management/pwhconnection/config':
     require => Service["Start and enable the ${role_name}'s service: '${service}'"],
     ensure  => present
+  }
+
+  wait_until_port_is_open { '9911':
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+    ensure  => present
+  }
+
+  if $do_pwh_connection {
+    wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"],
+      ensure  => present
+    }
+
+    configure_pwh_connection { $pwh_connection_dbms:
+      hostname  => $pwh_connection_hostname,
+      port      => $pwh_connection_port,
+      database  => $pwh_connection_database,
+      username  => $pwh_connection_username,
+      password  => $pwh_connection_password,
+      require   => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config'],
+      ensure    => present
+    }
   }
 }
