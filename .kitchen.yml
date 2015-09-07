@@ -12,9 +12,9 @@ platforms:
     driver_config:
       image: dynatrace/centos-testing:6
 
-  - name: debian-7.4
+  - name: debian-7.8
     driver_config:
-      image: dynatrace/debian-testing:7.4
+      image: dynatrace/debian-testing:7.8
 
   - name: ubuntu-12.04
     driver_config:
@@ -25,7 +25,7 @@ suites:
     provisioner:
       manifest: apache_wsagent_debian/init.pp
     includes:
-      - debian-7.4
+      - debian-7.8
       - ubuntu-12.04
 
   - name: apache_wsagent_redhat
