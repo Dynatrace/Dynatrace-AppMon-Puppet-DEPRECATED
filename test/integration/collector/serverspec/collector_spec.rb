@@ -36,10 +36,10 @@ describe file ('/etc/init.d/dynaTraceCollector') do
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 
-describe process('java') do
+describe process('dtcollector') do
   it { should be_running }
   its(:user) { should eq 'dynatrace' }
-  its(:args) { should match /-name dtcollector/ }
+  its(:args) { should match /-listen 9998/ }
   its(:args) { should match /-Xms256M/ }
   its(:args) { should match /-Xmx1024M/ }
   its(:args) { should match /-XX:PermSize=256m/ }
@@ -48,7 +48,6 @@ end
 
 describe service('dynaTraceCollector') do
   it { should be_enabled }
-  it { should be_running }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
       it { should be_enabled.with_level(3) }

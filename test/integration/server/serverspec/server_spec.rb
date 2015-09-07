@@ -15,12 +15,6 @@ describe file('/opt/dynatrace') do
   it { should be_symlink }
 end
 
-describe file('/opt/dynatrace/agent') do
-  it { should be_directory }
-  it { should be_owned_by 'dynatrace' }
-  it { should be_grouped_into 'dynatrace' }
-end
-
 describe file('/opt/dynatrace/server') do
   it { should be_directory }
   it { should be_owned_by 'dynatrace' }
@@ -44,16 +38,19 @@ describe file ('/etc/init.d/dynaTraceServer') do
   its(:content) { should match /^.*su - dynatrace -c.*$/ }
 end
 
-describe process('java') do
+describe process('dtfrontendserver') do
   it { should be_running }
   its(:user) { should eq 'dynatrace' }
-  its(:args) { should match /-name dtserver/ }
-  its(:args) { should match /-Dcom.dynatrace.diagnostics.listen=:6698/ }
+end
+
+describe process('dtserver') do
+  it { should be_running }
+  its(:user) { should eq 'dynatrace' }
+  its(:args) { should match /-listen 6698/ }
 end
 
 describe service('dynaTraceServer') do
   it { should be_enabled }
-  it { should be_running }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
       it { should be_enabled.with_level(3) }

@@ -20,8 +20,9 @@ describe file('/opt/dynatrace/agent') do
 end
 
 describe file ('/opt/dynatrace/agent/conf/dtwsagent.ini') do
-  its(:content) { should match /^Name .+$/ }
-  its(:content) { should match /^Server .+$/ }
+  its(:content) { should match /^Name dtwsagent$/ }
+  its(:content) { should match /^Server localhost:9998$/ }
+  its(:content) { should match /^Loglevel info$/ }
 end
 
 describe file ('/etc/init.d/dynaTraceWebServerAgent') do
@@ -47,7 +48,6 @@ end
 
 describe service('dynaTraceWebServerAgent') do
   it { should be_enabled }
-  it { should be_running }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
       it { should be_enabled.with_level(3) }
