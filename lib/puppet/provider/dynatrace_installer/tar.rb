@@ -1,4 +1,4 @@
-require 'puppet/provider/dynatrace_installer'
+require_relative '../dynatrace_installer'
 
 Puppet::Type.type(:dynatrace_installer).provide(:tar, :parent => Puppet::Provider::DynatraceInstaller) do
   desc "Puppet type that models a Dynatrace .tar file installer."
