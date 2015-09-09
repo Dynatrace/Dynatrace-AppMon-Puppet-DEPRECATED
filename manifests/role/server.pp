@@ -1,21 +1,21 @@
 class dynatrace::role::server (
   $role_name               = 'Dynatrace Server',
-  $installer_prefix_dir    = $dynatrace::params::server_installer_prefix_dir,
-  $installer_file_name     = $dynatrace::params::server_installer_file_name,
-  $installer_file_url      = $dynatrace::params::server_installer_file_url,
-  $license_file_name       = $dynatrace::params::server_license_file_name,
-  $license_file_url        = $dynatrace::params::server_license_file_url,
-  $collector_port          = $dynatrace::params::server_collector_port,
-  $do_pwh_connection       = $dynatrace::params::server_do_pwh_connection,
-  $pwh_connection_hostname = $dynatrace::params::server_pwh_connection_hostname,
-  $pwh_connection_port     = $dynatrace::params::server_pwh_connection_port,
-  $pwh_connection_dbms     = $dynatrace::params::server_pwh_connection_dbms,
-  $pwh_connection_database = $dynatrace::params::server_pwh_connection_database,
-  $pwh_connection_username = $dynatrace::params::server_pwh_connection_username,
-  $pwh_connection_password = $dynatrace::params::server_pwh_connection_password,
+  $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
+  $installer_file_name     = $dynatrace::server_installer_file_name,
+  $installer_file_url      = $dynatrace::server_installer_file_url,
+  $license_file_name       = $dynatrace::server_license_file_name,
+  $license_file_url        = $dynatrace::server_license_file_url,
+  $collector_port          = $dynatrace::server_collector_port,
+  $do_pwh_connection       = $dynatrace::server_do_pwh_connection,
+  $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
+  $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
+  $pwh_connection_dbms     = $dynatrace::server_pwh_connection_dbms,
+  $pwh_connection_database = $dynatrace::server_pwh_connection_database,
+  $pwh_connection_username = $dynatrace::server_pwh_connection_username,
+  $pwh_connection_password = $dynatrace::server_pwh_connection_password,
   $dynatrace_owner         = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $dynatrace_group         = $dynatrace::params::dynatrace_group,
+) {
   
   validate_bool($do_pwh_connection)
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)

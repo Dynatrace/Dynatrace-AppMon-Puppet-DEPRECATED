@@ -1,14 +1,14 @@
 class dynatrace::role::wsagent_package (
   $role_name            = 'Dynatrace WebServer Agent',
-  $installer_prefix_dir = $dynatrace::params::wsagent_package_installer_prefix_dir,
-  $installer_file_name  = $dynatrace::params::wsagent_package_installer_file_name,
-  $installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
-  $agent_name           = $dynatrace::params::wsagent_package_agent_name,
-  $collector_hostname   = $dynatrace::params::wsagent_package_collector_hostname,
-  $collector_port       = $dynatrace::params::wsagent_package_collector_port,
+  $installer_prefix_dir = $dynatrace::wsagent_package_installer_prefix_dir,
+  $installer_file_name  = $dynatrace::wsagent_package_installer_file_name,
+  $installer_file_url   = $dynatrace::wsagent_package_installer_file_url,
+  $agent_name           = $dynatrace::wsagent_package_agent_name,
+  $collector_hostname   = $dynatrace::wsagent_package_collector_hostname,
+  $collector_port       = $dynatrace::wsagent_package_collector_port,
   $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $dynatrace_group      = $dynatrace::params::dynatrace_group,
+) {
   
   validate_string($installer_prefix_dir, $installer_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)

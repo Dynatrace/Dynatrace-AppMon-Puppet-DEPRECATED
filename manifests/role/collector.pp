@@ -1,18 +1,18 @@
 class dynatrace::role::collector (
   $role_name            = 'Dynatrace Collector',
-  $installer_bitsize    = $dynatrace::params::collector_installer_bitsize,
-  $installer_prefix_dir = $dynatrace::params::collector_installer_prefix_dir,
-  $installer_file_name  = $dynatrace::params::collector_installer_file_name,
-  $installer_file_url   = $dynatrace::params::collector_installer_file_url,
-  $agent_port           = $dynatrace::params::collector_agent_port,
-  $server_hostname      = $dynatrace::params::collector_server_hostname,
-  $server_port          = $dynatrace::params::collector_server_port,
-  $jvm_xms              = $dynatrace::params::collector_jvm_xms,
-  $jvm_xmx              = $dynatrace::params::collector_jvm_xmx,
-  $jvm_perm_size        = $dynatrace::params::collector_jvm_perm_size,
-  $jvm_max_perm_size    = $dynatrace::params::collector_jvm_max_perm_size,
-  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::params::dynatrace_group
+  $installer_bitsize    = $dynatrace::collector_installer_bitsize,
+  $installer_prefix_dir = $dynatrace::collector_installer_prefix_dir,
+  $installer_file_name  = $dynatrace::collector_installer_file_name,
+  $installer_file_url   = $dynatrace::collector_installer_file_url,
+  $agent_port           = $dynatrace::collector_agent_port,
+  $server_hostname      = $dynatrace::collector_server_hostname,
+  $server_port          = $dynatrace::collector_server_port,
+  $jvm_xms              = $dynatrace::collector_jvm_xms,
+  $jvm_xmx              = $dynatrace::collector_jvm_xmx,
+  $jvm_perm_size        = $dynatrace::collector_jvm_perm_size,
+  $jvm_max_perm_size    = $dynatrace::collector_jvm_max_perm_size,
+  $dynatrace_owner      = $dynatrace::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace::params {
   
   validate_re($installer_bitsize, ['^32', '64'])
