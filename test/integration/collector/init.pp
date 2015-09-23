@@ -7,7 +7,7 @@ class { 'java':
 }
 
 class { 'dynatrace::role::collector':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-collector-linux-x86.jar',
+  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-collector.jar',
   jvm_xms            => '256M',
   jvm_xmx            => '1024M',
   jvm_perm_size      => '256m',

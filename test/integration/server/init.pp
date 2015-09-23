@@ -8,7 +8,7 @@ class { 'java':
 }
 
 class { 'dynatrace::role::server':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-linux-x64.jar',
+  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace.jar',
   do_pwh_connection  => true,
   require            => [ Class['ruby'], Class['java'] ]
 }
