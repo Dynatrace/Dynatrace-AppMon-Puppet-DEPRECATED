@@ -28,7 +28,7 @@ class dynatrace::role::server (
       $service = 'dynaTraceServer'
       $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
     }
-    default:
+    default: {}
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"

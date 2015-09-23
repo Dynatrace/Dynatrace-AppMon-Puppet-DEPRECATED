@@ -13,7 +13,7 @@ class dynatrace::role::agents_package (
     'Linux': {
       $installer_script_name = 'install-agents-package.sh'
     }
-    default:
+    default: {}
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"

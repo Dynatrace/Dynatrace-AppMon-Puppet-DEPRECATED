@@ -23,7 +23,7 @@ class dynatrace::role::memory_analysis_server (
       $service = 'dynaTraceAnalysis'
       $init_scripts = [$service]
     }
-    default:
+    default: {}
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"

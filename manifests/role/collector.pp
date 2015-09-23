@@ -25,7 +25,7 @@ class dynatrace::role::collector (
       $service = 'dynaTraceCollector'
       $init_scripts = [$service]
     }
-    default:
+    default: {}
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
