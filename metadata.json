@@ -1,6 +1,6 @@
 {
   "name": "dynatrace-dynatrace",
-  "version": "0.1.5",
+  "version": "0.1.5.1",
   "author": "Martin Etmajer",
   "summary": "Installs the Dynatrace Application Monitoring solution.",
   "license": "MIT",
