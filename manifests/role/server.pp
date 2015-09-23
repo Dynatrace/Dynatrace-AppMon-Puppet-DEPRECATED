@@ -28,6 +28,7 @@ class dynatrace::role::server (
       $service = 'dynaTraceServer'
       $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
     }
+    default:
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
@@ -38,9 +39,9 @@ class dynatrace::role::server (
     dynatrace_group => $dynatrace_group
   }
 
-  file { "Create the installer cache directory":
-    path    => $installer_cache_dir,
+  file { 'Create the installer cache directory':
     ensure  => directory,
+    path    => $installer_cache_dir,
     require => Class['dynatrace::role::dynatrace_user']
   }
 
@@ -48,7 +49,7 @@ class dynatrace::role::server (
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
-    require   => File["Create the installer cache directory"],
+    require   => File['Create the installer cache directory'],
     notify    => [
       File["Configure and copy the ${role_name}'s install script"],
       Dynatrace_installation["Install the ${role_name}"]
@@ -63,6 +64,7 @@ class dynatrace::role::server (
   }
 
   dynatrace_installation { "Install the ${role_name}":
+    ensure                => installed,
     installer_prefix_dir  => $installer_prefix_dir,
     installer_file_name   => $installer_file_name,
     installer_file_url    => $installer_file_url,
@@ -70,8 +72,7 @@ class dynatrace::role::server (
     installer_path_part   => 'server',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir,
-    ensure                => installed
+    installer_cache_dir   => $installer_cache_dir
   }
 
   if $::kernel == 'Linux' {
@@ -85,50 +86,50 @@ class dynatrace::role::server (
   }
 
   service { "Start and enable the ${role_name}'s service: '${service}'":
-    name   => $service,
     ensure => running,
+    name   => $service,
     enable => true
   }
 
   wait_until_port_is_open { $collector_port:
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   wait_until_port_is_open { '2021':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   wait_until_port_is_open { '6699':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   wait_until_port_is_open { '8021':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   wait_until_port_is_open { '9911':
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
   if $do_pwh_connection {
     wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
-      require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-      ensure  => present
+      ensure  => present,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
 
     configure_pwh_connection { $pwh_connection_dbms:
-      hostname  => $pwh_connection_hostname,
-      port      => $pwh_connection_port,
-      database  => $pwh_connection_database,
-      username  => $pwh_connection_username,
-      password  => $pwh_connection_password,
-      require   => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config'],
-      ensure    => present
+      ensure   => present,
+      hostname => $pwh_connection_hostname,
+      port     => $pwh_connection_port,
+      database => $pwh_connection_database,
+      username => $pwh_connection_username,
+      password => $pwh_connection_password,
+      require  => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config']
     }
   }
 }

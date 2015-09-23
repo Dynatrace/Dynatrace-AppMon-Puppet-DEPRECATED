@@ -6,15 +6,14 @@ class dynatrace::role::dynatrace_user(
   validate_string($dynatrace_owner, $dynatrace_group)
 
   user { "Create system user '${dynatrace_owner}'":
-    name    => $dynatrace_owner,
-    system  => true,
-    ensure  => present
+    ensure => present,
+    name   => $dynatrace_owner,
+    system => true
   }
   ->
   group { "Create group '${dynatrace_group}'":
-    name    => $dynatrace_group,
     ensure  => present,
+    name    => $dynatrace_group,
     members => [$dynatrace_owner]
   }
-
 }

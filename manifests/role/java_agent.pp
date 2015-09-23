@@ -14,6 +14,7 @@ class dynatrace::role::java_agent (
     'Linux': {
       $agent_path = $dynatrace::params::java_agent_linux_agent_path
     }
+    default:
   }
 
 

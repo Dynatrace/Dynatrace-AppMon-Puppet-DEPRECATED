@@ -25,6 +25,7 @@ class dynatrace::role::collector (
       $service = 'dynaTraceCollector'
       $init_scripts = [$service]
     }
+    default:
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
@@ -35,9 +36,9 @@ class dynatrace::role::collector (
     dynatrace_group => $dynatrace_group
   }
 
-  file { "Create the installer cache directory":
-    path    => $installer_cache_dir,
+  file { 'Create the installer cache directory':
     ensure  => directory,
+    path    => $installer_cache_dir,
     require => Class['dynatrace::role::dynatrace_user']
   }
 
@@ -45,7 +46,7 @@ class dynatrace::role::collector (
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
-    require   => File["Create the installer cache directory"],
+    require   => File['Create the installer cache directory'],
     notify    => [
       File["Configure and copy the ${role_name}'s install script"],
       Dynatrace_installation["Install the ${role_name}"]
@@ -60,6 +61,7 @@ class dynatrace::role::collector (
   }
 
   dynatrace_installation { "Install the ${role_name}":
+    ensure                => installed,
     installer_prefix_dir  => $installer_prefix_dir,
     installer_file_name   => $installer_file_name,
     installer_file_url    => $installer_file_url,
@@ -67,8 +69,7 @@ class dynatrace::role::collector (
     installer_path_part   => 'collector',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir,
-    ensure                => installed
+    installer_cache_dir   => $installer_cache_dir
   }
 
   if $::kernel == 'Linux' {
@@ -82,13 +83,13 @@ class dynatrace::role::collector (
   }
 
   service { "Start and enable the ${role_name}'s service: '${service}'":
-    name   => $service,
     ensure => running,
+    name   => $service,
     enable => true
   }
 
   wait_until_port_is_open { $agent_port:
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"],
-    ensure  => present
+    ensure  => present,
+    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 }

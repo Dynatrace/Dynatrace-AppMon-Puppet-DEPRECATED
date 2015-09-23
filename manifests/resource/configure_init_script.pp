@@ -24,9 +24,9 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
   }
 
   file { "Make the '${name}' init script available in /etc/init.d":
+    ensure  => link,
     path    => "/etc/init.d/${name}",
     target  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
-    ensure  => link,
     require => File["Configure and copy the ${role_name}'s '${name}' init script"]
   }
 }

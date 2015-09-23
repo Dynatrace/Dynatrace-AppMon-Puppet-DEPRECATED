@@ -6,6 +6,6 @@ class { 'dynatrace::role::wsagent_package':
 }
 
 class { 'dynatrace::role::apache_wsagent':
-  apache_config_file_path     => '/etc/httpd/conf/httpd.conf',
-  require                     => Class['dynatrace::role::wsagent_package']
+  apache_config_file_path => '/etc/httpd/conf/httpd.conf',
+  require                 => Class['dynatrace::role::wsagent_package']
 }

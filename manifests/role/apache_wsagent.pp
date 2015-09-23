@@ -9,6 +9,7 @@ class dynatrace::role::apache_wsagent (
     'Linux': {
       $agent_path = $dynatrace::params::apache_wsagent_linux_agent_path
     }
+    default:
   }
 
 

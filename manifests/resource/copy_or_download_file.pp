@@ -13,9 +13,9 @@ define dynatrace::resource::copy_or_download_file($file_name, $file_url, $path) 
     }
   } else {
     file { "Copy ${file_name} to ${path}":
-      path   => $path,
-      source => "puppet:///modules/dynatrace/${file_name}",
-      ensure => present,
+      ensure  => present,
+      path    => $path,
+      source  => "puppet:///modules/dynatrace/${file_name}",
       require => Exec["Check for the presence of ${path}"]
     }
   }

@@ -8,9 +8,9 @@ class { 'dynatrace::role::agents_package':
 }
 
 file { 'dummy file':
+  ensure  => 'present',
   path    => '/tmp/environment',
   replace => 'no',
-  ensure  => 'present',
   require => Class['dynatrace::role::agents_package']
 }
 
