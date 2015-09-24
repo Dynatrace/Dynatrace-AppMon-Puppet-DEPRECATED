@@ -12,30 +12,30 @@ Please see `Puppetfile` and `metadata.json` for a list of module dependencies.
 
 *Installs the Dynatrace Agents package.*
 
-Download the Dynatrace Agents package from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-agents.jar` in the module's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/agents_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+This class downloads and installs the most recent version of the Dynatrace Agents package for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace-agent.jar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/agents_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-agents.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-agent-unix.jar'
 }
 ```
 
-**Note:** this recipe merely makes the Dynatrace Agents available, but it does not configure your application to actually load any. See the `dynatrace::role::java_agent` class for an example that does.
+**Note:** this class merely makes the Dynatrace Agents available, but it does not configure your application to actually load any. See the `dynatrace::role::java_agent` class for an example that does.
 
 ### dynatrace::role::apache_wsagent
 
 *Installs the Dynatrace WebServer Agent for the Apache HTTP Server.*
 
-Download the Dynatrace WebServer Agent installer from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-wsagent.tar` in the module's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/apache_wsagent.pp` and `manifests/role/wsagent_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+Please refer to `manifests/role/apache_wsagent.pp` and `manifests/role/wsagent_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-wsagent.tar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-wsagent-linux-x64.tar'
 }
 
 class { 'dynatrace::role::apache_wsagent':
-  apache_config_file_path     => '/etc/apache2/apache2.conf',
-  require                     => Class['dynatrace::role::wsagent_package']
+  apache_config_file_path => '/etc/apache2/apache2.conf',
+  require                 => Class['dynatrace::role::wsagent_package']
 }
 ```
 
@@ -45,11 +45,11 @@ class { 'dynatrace::role::apache_wsagent':
 
 *Installs the Dynatrace Collector.*
 
-Download the Dynatrace Collector installer from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-collector.jar` in the module's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/collector.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+This class downloads and installs the most recent version of the Dynatrace Collector for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace-collector.jar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/collector.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
-class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-agents.jar'
+class { 'dynatrace::role::collector':
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-collector-linux-x86.jar'
 }
 ```
 
@@ -57,13 +57,13 @@ class { 'dynatrace::role::agents_package':
 
 ### dynatrace::role::java_agent
 
-*Installs the Dynatrace Agent Java Agent.*
+*Installs the Dynatrace Java Agent.*
 
-Download the Dynatrace Agent package from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-agents.jar` in the module's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` attribute. Please refer to `manifests/role/java_agent.pp` and `manifests/role/agents_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+Please refer to `manifests/role/java_agent.pp` and `manifests/role/agents_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-agents.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-agent-unix.jar'
 }
 
 class { 'dynatrace::role::java_agent':
@@ -80,11 +80,11 @@ class { 'dynatrace::role::java_agent':
 
 *Installs the Dynatrace Memory Analysis Server.*
 
-Download the Dynatrace Memory Analysis Server installer from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-analysisserver.jar` in the modules's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/memory_analysis_server.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+This class downloads and installs the most recent version of the Dynatrace Memory Analysis Server for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace-analysisserver.jar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/memory_analysis_server.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::memory_analysis_server':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-analysisserver.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-analysisserver-linux-x86.jar'
 }
 ```
 
@@ -94,11 +94,11 @@ class { 'dynatrace::role::memory_analysis_server':
 
 *Installs the Dynatrace Server.*
 
-Download the Dynatrace Server installer from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace.jar` in the modules's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_url` parameter. Please refer to `manifests/role/server.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+This class downloads and installs the most recent version of the Dynatrace Memory Analysis Server for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace.jar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/server.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::server':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-linux-x64.jar'
 }
 ```
 
@@ -106,11 +106,11 @@ class { 'dynatrace::role::server':
 
 *Installs the Dynatrace Server License.*
 
-Place the Dynatrace Server License as `dynatrace-license.key` in the module's `files` directory. Alternatively, you can make the license available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$license_file_url` parameter. Please refer to `manifests/role/server_license.pp` for a list of supported attributes, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+Place the Dynatrace Server License as `dynatrace-license.key` in the module's `files` directory. Alternatively, you can make the license available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$license_file_url` parameter. Please refer to `manifests/role/server_license.pp` for a list of supported attributes, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::server':
-  license_file_url => 'http://10.0.2.2/dynatrace/dynatrace-license.key'
+  license_file_url => 'http://my-license-server/dynatrace/dynatrace-license.key'
 }
 ```
 
@@ -118,11 +118,11 @@ class { 'dynatrace::role::server':
 
 *Installs the Dynatrace WebServer Agent package.*
 
-Download the Dynatrace WebServer Agent package from [downloads.dynatrace.com](http://downloads.dynatrace.com) and place the artifact as `dynatrace-wsagent.jar` in the module's `files` directory. Alternatively, you can make the installer available as an *HTTP*, *HTTPS* or *FTP* resource and point the class to the right location via the `$installer_file_name` attribute. Please refer to `manifests/role/wsagent_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, execute the class as follows:
+This class downloads and installs the most recent version of the Dynatrace WebServer Agent installer for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace-wsagent.tar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/wsagent_package.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-wsagent.tar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-wsagent-linux-x64.tar'
 }
 ```
 
