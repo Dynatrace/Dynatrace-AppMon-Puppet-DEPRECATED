@@ -1,7 +1,7 @@
 class dynatrace::role::dynatrace_user(
-  $dynatrace_owner = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $dynatrace_owner = $dynatrace::dynatrace_owner,
+  $dynatrace_group = $dynatrace::dynatrace_group
+) {
 
   validate_string($dynatrace_owner, $dynatrace_group)
 

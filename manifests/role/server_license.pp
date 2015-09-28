@@ -1,11 +1,11 @@
 class dynatrace::role::server_license (
   $role_name               = 'Dynatrace Server License',
-  $installer_prefix_dir    = $dynatrace::params::server_installer_prefix_dir,
-  $license_file_name       = $dynatrace::params::server_license_file_name,
-  $license_file_url        = $dynatrace::params::server_license_file_url,
-  $dynatrace_owner         = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
+  $license_file_name       = $dynatrace::server_license_file_name,
+  $license_file_url        = $dynatrace::server_license_file_url,
+  $dynatrace_owner         = $dynatrace::dynatrace_owner,
+  $dynatrace_group         = $dynatrace::dynatrace_group
+) {
   
   validate_string($installer_prefix_dir, $license_file_name)
 
