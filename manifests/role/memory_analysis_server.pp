@@ -1,17 +1,17 @@
 class dynatrace::role::memory_analysis_server (
   $role_name            = 'Dynatrace Memory Analysis Server',
-  $installer_bitsize    = $dynatrace::params::memory_analysis_server_installer_bitsize,
-  $installer_prefix_dir = $dynatrace::params::memory_analysis_server_installer_prefix_dir,
-  $installer_file_name  = $dynatrace::params::memory_analysis_server_installer_file_name,
-  $installer_file_url   = $dynatrace::params::memory_analysis_server_installer_file_url,
-  $server_port          = $dynatrace::params::memory_analysis_server_server_port,
-  $jvm_xms              = $dynatrace::params::memory_analysis_server_jvm_xms,
-  $jvm_xmx              = $dynatrace::params::memory_analysis_server_jvm_xmx,
-  $jvm_perm_size        = $dynatrace::params::memory_analysis_server_jvm_perm_size,
-  $jvm_max_perm_size    = $dynatrace::params::memory_analysis_server_jvm_max_perm_size,
-  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $installer_bitsize    = $dynatrace::memory_analysis_server_installer_bitsize,
+  $installer_prefix_dir = $dynatrace::memory_analysis_server_installer_prefix_dir,
+  $installer_file_name  = $dynatrace::memory_analysis_server_installer_file_name,
+  $installer_file_url   = $dynatrace::memory_analysis_server_installer_file_url,
+  $server_port          = $dynatrace::memory_analysis_server_server_port,
+  $jvm_xms              = $dynatrace::memory_analysis_server_jvm_xms,
+  $jvm_xmx              = $dynatrace::memory_analysis_server_jvm_xmx,
+  $jvm_perm_size        = $dynatrace::memory_analysis_server_jvm_perm_size,
+  $jvm_max_perm_size    = $dynatrace::memory_analysis_server_jvm_max_perm_size,
+  $dynatrace_owner      = $dynatrace::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::dynatrace_group
+) {
   
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)

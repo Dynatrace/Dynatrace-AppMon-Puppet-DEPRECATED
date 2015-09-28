@@ -1,11 +1,11 @@
 class dynatrace::role::agents_package (
   $role_name            = 'Dynatrace Agents',
-  $installer_prefix_dir = $dynatrace::params::agents_package_installer_prefix_dir,
-  $installer_file_name  = $dynatrace::params::agents_package_installer_file_name,
-  $installer_file_url   = $dynatrace::params::agents_package_installer_file_url,
-  $dynatrace_owner      = $dynatrace::params::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::params::dynatrace_group
-) inherits dynatrace::params {
+  $installer_prefix_dir = $dynatrace::agents_package_installer_prefix_dir,
+  $installer_file_name  = $dynatrace::agents_package_installer_file_name,
+  $installer_file_url   = $dynatrace::agents_package_installer_file_url,
+  $dynatrace_owner      = $dynatrace::dynatrace_owner,
+  $dynatrace_group      = $dynatrace::dynatrace_group
+){
 
   validate_string($installer_prefix_dir, $installer_file_name)
 

@@ -1,11 +1,11 @@
 class dynatrace::role::java_agent (
   $role_name          = 'Dynatrace Java Agent',
-  $env_var_name       = $dynatrace::params::java_agent_env_var_name,
-  $env_var_file_name  = $dynatrace::params::java_agent_env_var_file_name,
-  $agent_name         = $dynatrace::params::java_agent_name,
-  $collector_hostname = $dynatrace::params::java_agent_collector_hostname,
-  $collector_port     = $dynatrace::params::java_agent_collector_port
-) inherits dynatrace::params {
+  $env_var_name       = $dynatrace::java_agent_env_var_name,
+  $env_var_file_name  = $dynatrace::java_agent_env_var_file_name,
+  $agent_name         = $dynatrace::java_agent_name,
+  $collector_hostname = $dynatrace::java_agent_collector_hostname,
+  $collector_port     = $dynatrace::java_agent_collector_port
+){
   
   validate_string($env_var_name, $env_var_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)
