@@ -1,4 +1,5 @@
 class dynatrace::role::wsagent_package (
+  $ensure               = 'present',
   $role_name            = 'Dynatrace WebServer Agent',
   $installer_prefix_dir = $dynatrace::wsagent_package_installer_prefix_dir,
   $installer_file_name  = $dynatrace::wsagent_package_installer_file_name,
@@ -10,6 +11,7 @@ class dynatrace::role::wsagent_package (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) {
   
+  validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)
 
@@ -21,6 +23,24 @@ class dynatrace::role::wsagent_package (
     }
     default: {}
   }
+  
+  $directory_ensure = $ensure ? {
+    'present' => 'directory',
+    'absent'  => 'absent',
+    default   => 'directory',
+  }
+
+  $installation_ensure = $ensure ? {
+    'present' => 'installed',
+    'absent'  => 'uninstalled',
+    default   => 'installed',
+  }
+  
+  $service_ensure = $ensure ? {
+    'present' => 'running',
+    'absent'  => 'stopped',
+    default   => 'running',
+  }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
 
@@ -31,12 +51,13 @@ class dynatrace::role::wsagent_package (
   }
 
   file { 'Create the installer cache directory':
-    ensure  => directory,
+    ensure  => $directory_ensure,
     path    => $installer_cache_dir,
     require => Class['dynatrace::role::dynatrace_user']
   }
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
+    ensure    => $ensure,
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
@@ -48,6 +69,7 @@ class dynatrace::role::wsagent_package (
   }
 
   file { "Configure and copy the ${role_name}'s install script":
+    ensure  => $ensure,
     path    => "${installer_cache_dir}/${installer_script_name}",
     content => template("dynatrace/wsagent_package/${installer_script_name}"),
     mode    => '0744',
@@ -55,7 +77,7 @@ class dynatrace::role::wsagent_package (
   }
 
   dynatrace_installation { "Install the ${role_name}":
-    ensure                => installed,
+    ensure                => $installation_ensure,
     installer_prefix_dir  => $installer_prefix_dir,
     installer_file_name   => $installer_file_name,
     installer_file_url    => $installer_file_url,
@@ -67,6 +89,7 @@ class dynatrace::role::wsagent_package (
   }
 
   file { "Configure and copy the ${role_name}'s 'dtwsagent.ini' file":
+    ensure  => $ensure,
     path    => "${installer_prefix_dir}/dynatrace/agent/conf/dtwsagent.ini",
     owner   => $dynatrace_owner,
     group   => $dynatrace_group,
@@ -77,6 +100,7 @@ class dynatrace::role::wsagent_package (
 
   if $::kernel == 'Linux' {
     dynatrace::resource::configure_init_script { $init_scripts:
+      ensure               => $ensure,
       role_name            => $role_name,
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
@@ -86,7 +110,7 @@ class dynatrace::role::wsagent_package (
   }
 
   service { "Start and enable the ${role_name}'s service: '${service}'":
-    ensure => running,
+    ensure => $service_ensure,
     name   => $service,
     enable => true
   }
