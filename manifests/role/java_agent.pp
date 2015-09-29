@@ -13,7 +13,7 @@ class dynatrace::role::java_agent (
 
   case $::kernel {
     'Linux': {
-      $agent_path = $dynatrace::params::java_agent_linux_agent_path
+      $agent_path = $dynatrace::java_agent_linux_agent_path
     }
     default: {}
   }
