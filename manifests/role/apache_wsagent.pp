@@ -8,7 +8,7 @@ class dynatrace::role::apache_wsagent (
 
   case $::kernel {
     'Linux': {
-      $agent_path = $dynatrace::params::apache_wsagent_linux_agent_path
+      $agent_path = $dynatrace::apache_wsagent_linux_agent_path
     }
     default: {}
   }
