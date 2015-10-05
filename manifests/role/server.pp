@@ -56,20 +56,14 @@ class dynatrace::role::server (
     'absent'  => 'stopped',
     default   => 'running',
   }
+  
+  $enabled_ensure = $ensure ? {
+    'present' => true,
+    'absent'  => false,
+    default   => true,
+  }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
-
-
-#  class { 'dynatrace::role::dynatrace_user':
-#    dynatrace_owner => $dynatrace_owner,
-#    dynatrace_group => $dynatrace_group
-#  }
-#
-#  file { 'Create the installer cache directory':
-#    ensure  => $directory_ensure,
-#    path    => $installer_cache_dir,
-#    require => Class['dynatrace::role::dynatrace_user']
-#  }
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
     ensure    => $ensure,
@@ -77,33 +71,42 @@ class dynatrace::role::server (
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
     require   => File['Create the installer cache directory'],
-    notify    => [
-      File["Configure and copy the ${role_name}'s install script"],
-      #Dynatrace_installation["Install the ${role_name}"]
-    ]
-  }
-
-  file { "Configure and copy the ${role_name}'s install script":
-    ensure  => $ensure,
-    path    => "${installer_cache_dir}/${installer_script_name}",
-    content => template("dynatrace/server/${installer_script_name}"),
-    mode    => '0744',
-    before  => Exec["Run the ${role_name}'s install script"],
   }
   
-  exec { "Run the ${role_name}'s install script":
-    command     => "${installer_cache_dir}/${installer_script_name}",
-    creates     => "/opt/dynatrace-${version}/server",  
-    path        => ['/bin', '/usr/bin', '/usr/sbin'],
-    user        => 'root',
-    group       => 'root',
-  }
+  if $ensure == present {
+    file { "Configure and copy the ${role_name}'s install script":
+      ensure  => $ensure,
+      path    => "${installer_cache_dir}/${installer_script_name}",
+      content => template("dynatrace/server/${installer_script_name}"),
+      mode    => '0744',
+      before  => Exec["Run the ${role_name}'s install script"],
+      require => Dynatrace::Resource::Copy_or_download_file ["Copy or download the ${role_name} installer"],
+    }
+    exec { "Run the ${role_name}'s install script":
+      command     => "${installer_cache_dir}/${installer_script_name}",
+      creates     => "/opt/dynatrace-${version}/server",  
+      path        => ['/bin', '/usr/bin', '/usr/sbin'],
+      user        => 'root',
+      group       => 'root',
+      before      => File ["Create symbolic lync for dynatrace server"],
+    }
+  } 
+#  else {
+#    service { "Stop and disable the ${role_name}'s service: '${service}'":
+#      ensure  => $service_ensure,
+#      require => File["Create symbolic lync for ${role_name} Server"],
+#      name    => $service,
+#      before      => File ["Create symbolic lync for dynatrace server"],
+#    }
+#  }
 
   file { "Create symbolic lync for dynatrace server":
     ensure => $link_ensure,
     path   => "${installer_prefix_dir}/dynatrace",
     target => "${installer_prefix_dir}/dynatrace-${version}",
+    notify => Service["Start and enable the ${role_name}'s service: '${service}'"],
   }
+
 
 #  dynatrace_installation { "Install the ${role_name}":
 #    ensure                => $installation_ensure,
@@ -118,21 +121,39 @@ class dynatrace::role::server (
 #  }
 #
   if $::kernel == 'Linux' {
-    dynatrace::resource::configure_init_script { $init_scripts:
-      ensure               => $ensure,
-      role_name            => $role_name,
-      installer_prefix_dir => $installer_prefix_dir,
-      owner                => $dynatrace_owner,
-      group                => $dynatrace_group,
-      #notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    file { "Create symbolic lync for ${role_name} Server":
+      ensure => $link_ensure,
+      path   => "/etc/init.d/dynaTraceServer",
+      target => "${installer_prefix_dir}/dynatrace-${version}/init.d/dynaTraceServer",
+      mode   => 'u=rwx,go=rx',
+      require => File["Create symbolic lync for dynatrace server"],
+    }
+    file { "Create symbolic lync for ${role_name} FrontServer":
+      ensure => $link_ensure,
+      path   => "/etc/init.d/dynaTraceFrontendServer",
+      target => "${installer_prefix_dir}/dynatrace-${version}/init.d/dynaTraceFrontendServer",
+      mode   => 'u=rwx,go=rx',
+      require => File["Create symbolic lync for dynatrace server"],
+    }
+    file { "Create symbolic lync for ${role_name} BackendServer":
+      ensure => $link_ensure,
+      path   => "/etc/init.d/dynaTraceBackendServer",
+      target => "${installer_prefix_dir}/dynatrace-${version}/init.d/dynaTraceBackendServer",
+      mode   => 'u=rwx,go=rx',
+      require => File["Create symbolic lync for dynatrace server"],
     }
   }
 
   service { "Start and enable the ${role_name}'s service: '${service}'":
-    ensure  => $service_ensure,
-    require => Dynatrace::Resource::Configure_init_script[$init_scripts],
-    name    => $service,
-    enable  => true
+    ensure    => $service_ensure,
+    require   => [File["Create symbolic lync for ${role_name} Server"],
+      File ["Create symbolic lync for ${role_name} FrontServer"],
+      File ["Create symbolic lync for ${role_name} BackendServer"],
+    ],
+    name      => $service,
+    enable    => $enabled_ensure,
+    hasstatus => false,
+    status    => '/etc/init.d/dynaTraceServer status | grep "is running"',
   }
 
   wait_until_port_is_open { $collector_port:
@@ -160,20 +181,20 @@ class dynatrace::role::server (
 #    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
 #  }
 
-#  if $do_pwh_connection {
-#    wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
-#      ensure  => $ensure,
-#      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-#    }
-#
-#    configure_pwh_connection { $pwh_connection_dbms:
-#      ensure   => $ensure,
-#      hostname => $pwh_connection_hostname,
-#      port     => $pwh_connection_port,
-#      database => $pwh_connection_database,
-#      username => $pwh_connection_username,
-#      password => $pwh_connection_password,
-#      require  => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config']
-#    }
-#  }
+  if $do_pwh_connection {
+    wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
+      ensure  => $ensure,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    }
+
+    configure_pwh_connection { $pwh_connection_dbms:
+      ensure   => $ensure,
+      hostname => $pwh_connection_hostname,
+      port     => $pwh_connection_port,
+      database => $pwh_connection_database,
+      username => $pwh_connection_username,
+      password => $pwh_connection_password,
+      require  => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config']
+    }
+  }
 }
