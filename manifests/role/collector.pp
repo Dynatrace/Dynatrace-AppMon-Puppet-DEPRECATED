@@ -16,6 +16,7 @@ class dynatrace::role::collector (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
   
+  validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)
   validate_string($agent_port, $server_hostname, $server_port)

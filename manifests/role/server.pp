@@ -19,6 +19,7 @@ class dynatrace::role::server (
 ) inherits dynatrace {
   
   validate_bool($do_pwh_connection)
+  validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)
   validate_string($collector_port)
   validate_string($pwh_connection_hostname, $pwh_connection_port, $pwh_connection_dbms, $pwh_connection_database, $pwh_connection_username, $pwh_connection_password)
