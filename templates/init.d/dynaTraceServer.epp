@@ -15,8 +15,8 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Default-Start: <%= $linux_service_start_runlevels %>
+# Default-Stop: <%= $linux_service_stop_runlevels %>
 # Description: Start/Stop dynaTrace Server/Backend Server/Frontend Server daemon
 ### END INIT INFO
 
@@ -27,8 +27,8 @@
 # - DT_INSTANCE instance name - requires port offset in DT_OPTARGS, must be equal to DT_FE_INSTANCE
 # - DT_FE_INSTANCE instance name - requires port offset in DT_FE_OPTARGS, must be equal to DT_INSTANCE
 
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-listen <%= @collector_port %>"
+DT_HOME=<%= $installer_prefix_dir %>/dynatrace
+DT_OPTARGS="-listen <%= $collector_port %>"
 DT_FE_OPTARGS=
 
 DT_INSTANCE=

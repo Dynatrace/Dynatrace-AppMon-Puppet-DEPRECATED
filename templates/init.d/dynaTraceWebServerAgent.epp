@@ -12,15 +12,15 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Default-Start: <%= $linux_service_start_runlevels %>
+# Default-Stop: <%= $linux_service_stop_runlevels %>
 # Description: Start/Stop dynaTrace WebServer Agent daemon
 ### END INIT INFO
 
 # To use this file in your environment, adjusting the following variables:
 # - DT_HOME     installation directory of dynaTrace software
 # - DT_OPTARGS  optional arguments (server, ...)
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
+DT_HOME=<%= $installer_prefix_dir %>/dynatrace
 
 DT_PRODUCT="WebServer Agent"
 DT_BINARY=dtwsagent

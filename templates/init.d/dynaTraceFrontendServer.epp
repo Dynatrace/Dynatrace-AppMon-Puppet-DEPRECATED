@@ -1,5 +1,5 @@
 #!/bin/sh
-### Start/Stop dynaTrace Collector daemon
+### Start/Stop dynaTrace Server daemon
 #
 # Copyright 2004-2012 dynaTrace Software
 # All rights reserved.
@@ -9,28 +9,25 @@
 # further adjustments may be necessary.
 #
 ### BEGIN INIT INFO
-# Provides: dynaTraceCollector
+# Provides: dynaTraceServer
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
-# Description: Start/Stop dynaTrace Collector daemon
+# Default-Start: <%= $linux_service_start_runlevels %>
+# Default-Stop: <%= $linux_service_stop_runlevels %>
+# Description: Start/Stop dynaTrace FrontendServer daemon
 ### END INIT INFO
 
 # To use this file in your environment, adjusting the following variables:
 # - DT_HOME     installation directory of dynaTrace software
 # - DT_OPTARGS  optional arguments (e.g. -vm, -instance, -server, etc.)
-# - DT_INSTANCE instance name if -instance argument is specified
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-listen <%= @agent_port %> -server <%= @server_hostname %>:<%= @server_port %><%= " -Xms#{@jvm_xms}" if @jvm_xms %><%= " -Xmx#{@jvm_xmx}" if @jvm_xmx %><%= " -XX:PermSize=#{@jvm_perm_size}" if @jvm_perm_size %><%= " -XX:MaxPermSize=#{@jvm_max_perm_size}" if @jvm_max_perm_size %>"
-# When using an instance name, ensure that the -instance argument from
-# DT_OPTARGS is in sync with the following DT_INSTANCE variable:
-# (e.g.: "-instance InstName" requires "DT_INSTANCE=InstName")
+# - DT_INSTANCE instance name - requires port offset in DT_OPTARGS
+DT_HOME=<%= $installer_prefix_dir %>/dynatrace
+DT_OPTARGS=
 DT_INSTANCE=
 
-DT_PRODUCT=Collector
-DT_BINARY=dtcollector
+DT_PRODUCT=FrontendServer
+DT_BINARY=dtfrontendserver
 
 DT_PIDFILE=/var/run/$DT_BINARY.pid
 if [ -n "$DT_INSTANCE" ]; then
@@ -44,11 +41,13 @@ if [ -f "$DT_PIDFILE" ]; then
   PROCESSPID=$(cat $DT_PIDFILE)
 fi
 if [ -z "$PROCESSPID" ]; then
-  GREPARG=`echo $DT_BINARY | cut -c1-8`
-  if [ -z "$DT_INSTANCE" ]; then
-    PROCESSPID=`ps -e | grep $GREPARG | awk '{{print $1}}'`
-  else
-    PROCESSPID=`ps -ef | grep $GREPARG | grep $DT_INSTANCE | awk '{{print $2}}'`
+  RPID=$(ps -C $DT_BINARY -o pid --no-headers | awk '{printf "%s|", $0}' | awk '{sub(/\|$/,""); printf $0}')
+  if [ ! -z "$RPID" ]; then
+    if [ -z "$DT_INSTANCE" ]; then
+      PROCESSPID=$(ps -ef | grep -v "instance" | grep $DT_BINARY | awk '{{print $2}}' | grep -E $RPID)
+    else
+      PROCESSPID=$(ps -ef | grep $DT_BINARY | grep " $DT_INSTANCE " | awk '{{print $2}}' | grep -E $RPID)
+    fi
   fi
 fi
 

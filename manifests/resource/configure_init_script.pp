@@ -1,4 +1,4 @@
-define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $role_name = nil, $owner = nil, $group = nil) {
+define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $role_name = nil, $owner = nil, $group = nil, $params = {}) {
   case $::kernel {
     'Linux': {
       case $::osfamily {
@@ -19,7 +19,10 @@ define dynatrace::resource::configure_init_script($installer_prefix_dir = nil, $
     owner   => $owner,
     group   => $group,
     mode    => '0755',
-    content => template("dynatrace/init.d/${name}.erb"),
+    content => epp("dynatrace/init.d/${name}", $params.merge({
+      'linux_service_start_runlevels' => $linux_service_start_runlevels,
+      'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
+    })),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
 

@@ -12,16 +12,16 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Default-Start: <%= $linux_service_start_runlevels %>
+# Default-Stop: <%= $linux_service_stop_runlevels %>
 # Description: Start/Stop dynaTrace Analysis Server daemon
 ### END INIT INFO
 
 # To use this file in your environment, adjusting the following variables:
 # - DT_HOME    installation directory of dynaTrace software
 # - DT_OPTARGS optional arguments (e.g. -vm, -instance, -server, etc.)
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-Dcom.dynatrace.diagnostics.listen=:<%= @server_port %><%= " -Xms#{@jvm_xms}" if @jvm_xms %><%= " -Xmx#{@jvm_xmx}" if @jvm_xmx %><%= " -XX:PermSize=#{@jvm_perm_size}" if @jvm_perm_size %><%= " -XX:MaxPermSize=#{@jvm_max_perm_size}" if @jvm_max_perm_size %>"
+DT_HOME=<%= $installer_prefix_dir %>/dynatrace
+DT_OPTARGS="-Dcom.dynatrace.diagnostics.listen=:<%= $server_port %><% if $jvm_xms { %> -Xms<%= $jvm_xms %><% } %><% if $jvm_xmx { %> -Xmx<%= $jvm_xmx %><% } %><% if $jvm_perm_size { %> -XX:PermSize=<%= $jvm_perm_size %><% } %><% if $jvm_max_perm_size { %> -XX:MaxPermSize=<%= $jvm_max_perm_size %><% } %>"
 
 DT_PRODUCT="Memory Analysis Server"
 DT_BINARY=dtanalysisserver
