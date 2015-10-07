@@ -13,7 +13,7 @@ class dynatrace::role::collector (
   $jvm_max_perm_size    = $dynatrace::collector_jvm_max_perm_size,
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
-) {
+) inherits dynatrace {
   
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)

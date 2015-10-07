@@ -8,7 +8,7 @@ class dynatrace::role::wsagent_package (
   $collector_port       = $dynatrace::wsagent_package_collector_port,
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
-) {
+) inherits dynatrace {
   
   validate_string($installer_prefix_dir, $installer_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)

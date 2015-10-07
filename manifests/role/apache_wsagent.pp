@@ -1,7 +1,7 @@
 class dynatrace::role::apache_wsagent (
   $role_name                   = 'Dynatrace Apache WebServer Agent',
   $apache_config_file_path     = $dynatrace::apache_wsagent_apache_config_file_path
-) {
+) inherits dynatrace {
   
   validate_string($apache_config_file_path)
 

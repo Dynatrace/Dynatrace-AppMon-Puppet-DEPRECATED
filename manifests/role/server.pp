@@ -15,7 +15,7 @@ class dynatrace::role::server (
   $pwh_connection_password = $dynatrace::server_pwh_connection_password,
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
-) {
+) inherits dynatrace {
   
   validate_bool($do_pwh_connection)
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)

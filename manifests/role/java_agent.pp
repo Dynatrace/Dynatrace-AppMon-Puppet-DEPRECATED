@@ -5,7 +5,7 @@ class dynatrace::role::java_agent (
   $agent_name         = $dynatrace::java_agent_name,
   $collector_hostname = $dynatrace::java_agent_collector_hostname,
   $collector_port     = $dynatrace::java_agent_collector_port
-){
+) inherits dynatrace {
   
   validate_string($env_var_name, $env_var_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)

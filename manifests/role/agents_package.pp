@@ -5,7 +5,7 @@ class dynatrace::role::agents_package (
   $installer_file_url   = $dynatrace::agents_package_installer_file_url,
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
-){
+) inherits dynatrace {
 
   validate_string($installer_prefix_dir, $installer_file_name)
 
