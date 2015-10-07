@@ -33,7 +33,7 @@ define dynatrace::resource::configure_init_script(
     group   => $group,
     mode    => '0755',
     content => template("dynatrace/init.d/${name}.erb"),
-    require => Dynatrace_installation["Install the ${role_name}"]
+    require => File["Create symbolic lync for dynatrace server"],
   }
 
   file { "Make the '${name}' init script available in /etc/init.d":

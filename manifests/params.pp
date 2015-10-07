@@ -70,6 +70,8 @@ class dynatrace::params {
       $dynatrace_owner = 'dynatrace'
       $dynatrace_group = 'dynatrace'
 
+      $version = '6.2'
+
       $agents_package_installer_prefix_dir = '/opt'
       $agents_package_installer_file_name  = 'dynatrace-agent.jar'
       $agents_package_installer_file_url   = 'http://downloads.dynatracesaas.com/6.2/dynatrace-agent-unix.jar'

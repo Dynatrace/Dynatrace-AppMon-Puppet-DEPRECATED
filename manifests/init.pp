@@ -1,4 +1,6 @@
 class dynatrace (
+  $version                             = $dynatrace::params::version,
+  
   $agents_package_installer_prefix_dir = $dynatrace::params::agents_package_installer_prefix_dir,
   $agents_package_installer_file_name  = $dynatrace::params::agents_package_installer_file_name,
   $agents_package_installer_file_url   = $dynatrace::params::agents_package_installer_file_url,
@@ -58,5 +60,4 @@ class dynatrace (
   $wsagent_package_installer_file_name  = $dynatrace::params::wsagent_package_installer_file_name,
   $wsagent_package_installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
 ) inherits dynatrace::params {
-  
 }
