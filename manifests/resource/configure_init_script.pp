@@ -26,17 +26,14 @@ define dynatrace::resource::configure_init_script(
     'absent'  => 'absent',
     default   => 'link'
   }
-
+  
   file { "Configure and copy the ${role_name}'s '${name}' init script":
     ensure  => $ensure,
     path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     owner   => $owner,
     group   => $group,
     mode    => '0755',
-    content => epp("dynatrace/init.d/${name}", $params.merge({
-      'linux_service_start_runlevels' => $linux_service_start_runlevels,
-      'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
-    })),
+    content => template("dynatrace/init.d/${name}.erb"),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
 
