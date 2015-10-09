@@ -33,7 +33,7 @@ define dynatrace::resource::configure_init_script(
     owner   => $owner,
     group   => $group,
     mode    => '0755',
-    content => epp("dynatrace/init.d/${name}", $params.merge({
+    content => epp("dynatrace/init.d/${name}", merge($params, {
       'linux_service_start_runlevels' => $linux_service_start_runlevels,
       'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
     })),
