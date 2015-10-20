@@ -3,8 +3,8 @@ define dynatrace::resource::configure_init_script(
   $installer_prefix_dir = undef,
   $role_name            = undef,
   $owner                = undef,
-  $group                = undef,
-  $params               = {}
+  $group                = undef
+#  $params               = {}
 ) {
   case $::kernel {
     'Linux': {
