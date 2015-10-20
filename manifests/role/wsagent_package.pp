@@ -105,7 +105,7 @@ class dynatrace::role::wsagent_package (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-      params               => { 'installer_prefix_dir' => $installer_prefix_dir },
+#      params               => { 'installer_prefix_dir' => $installer_prefix_dir },
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }

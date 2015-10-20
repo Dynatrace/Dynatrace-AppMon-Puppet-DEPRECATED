@@ -101,16 +101,16 @@ class dynatrace::role::collector (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-      params               => {
-        'installer_prefix_dir' => $installer_prefix_dir,
-        'agent_port'           => $agent_port,
-        'server_hostname'      => $server_hostname,
-        'server_port'          => $server_port,
-        'jvm_xms'              => $jvm_xms,
-        'jvm_xmx'              => $jvm_xmx,
-        'jvm_perm_size'        => $jvm_perm_size,
-        'jvm_max_perm_size'    => $jvm_max_perm_size
-      },
+#      params               => {
+#        'installer_prefix_dir' => $installer_prefix_dir,
+#        'agent_port'           => $agent_port,
+#        'server_hostname'      => $server_hostname,
+#        'server_port'          => $server_port,
+#        'jvm_xms'              => $jvm_xms,
+#        'jvm_xmx'              => $jvm_xmx,
+#        'jvm_perm_size'        => $jvm_perm_size,
+#        'jvm_max_perm_size'    => $jvm_max_perm_size
+#      },
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }

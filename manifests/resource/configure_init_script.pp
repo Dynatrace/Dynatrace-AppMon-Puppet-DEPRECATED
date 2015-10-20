@@ -33,10 +33,11 @@ define dynatrace::resource::configure_init_script(
     owner   => $owner,
     group   => $group,
     mode    => '0755',
-    content => epp("dynatrace/init.d/${name}", merge($params, {
-      'linux_service_start_runlevels' => $linux_service_start_runlevels,
-      'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
-    })),
+    content => template("dynatrace/init.d/${name}.erb"),
+#    content => epp("dynatrace/init.d/${name}", merge($params, {
+#      'linux_service_start_runlevels' => $linux_service_start_runlevels,
+#      'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
+#    })),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
 

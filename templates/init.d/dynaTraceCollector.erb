@@ -13,8 +13,8 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= $linux_service_start_runlevels %>
-# Default-Stop: <%= $linux_service_stop_runlevels %>
+# Default-Start: <%= @linux_service_start_runlevels %>
+# Default-Stop: <%= @linux_service_stop_runlevels %>
 # Description: Start/Stop dynaTrace Collector daemon
 ### END INIT INFO
 
@@ -22,8 +22,8 @@
 # - DT_HOME     installation directory of dynaTrace software
 # - DT_OPTARGS  optional arguments (e.g. -vm, -instance, -server, etc.)
 # - DT_INSTANCE instance name if -instance argument is specified
-DT_HOME=<%= $installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-listen <%= $agent_port %> -server <%= $server_hostname %>:<%= $server_port %><% if $jvm_xms { %> -Xms<%= $jvm_xms %><% } %><% if $jvm_xmx { %> -Xmx<%= $jvm_xmx %><% } %><% if $jvm_perm_size { %> -XX:PermSize=<%= $jvm_perm_size %><% } %><% if $jvm_max_perm_size { %> -XX:MaxPermSize=<%= $jvm_max_perm_size %><% } %>"
+DT_HOME=<%= @installer_prefix_dir %>/dynatrace
+DT_OPTARGS="-listen <%= @agent_port %> -server <%= @server_hostname %>:<%= @server_port %><% if @jvm_xms %> -Xms<%= @jvm_xms %><% end %><% if @jvm_xmx %> -Xmx<%= @jvm_xmx %><% end %><% if @jvm_perm_size %> -XX:PermSize=<%= @jvm_perm_size %><% end %><% if @jvm_max_perm_size %> -XX:MaxPermSize=<%= @jvm_max_perm_size %><% end %>"
 # When using an instance name, ensure that the -instance argument from
 # DT_OPTARGS is in sync with the following DT_INSTANCE variable:
 # (e.g.: "-instance InstName" requires "DT_INSTANCE=InstName")

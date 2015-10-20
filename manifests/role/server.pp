@@ -104,10 +104,10 @@ class dynatrace::role::server (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-      params               => {
-        'installer_prefix_dir' => $installer_prefix_dir,
-        'collector_port'       => $collector_port
-      },
+#      params               => {
+#        'installer_prefix_dir' => $installer_prefix_dir,
+#        'collector_port'       => $collector_port
+#      },
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }
