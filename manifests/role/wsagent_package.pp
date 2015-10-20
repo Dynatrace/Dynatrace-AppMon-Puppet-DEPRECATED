@@ -43,6 +43,7 @@ class dynatrace::role::wsagent_package (
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
+  $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
   class { 'dynatrace::role::dynatrace_user':
@@ -50,9 +51,8 @@ class dynatrace::role::wsagent_package (
     dynatrace_group => $dynatrace_group
   }
 
-  file { 'Create the installer cache directory':
+  file { $installer_cache_dir_tree:
     ensure  => $directory_ensure,
-    path    => $installer_cache_dir,
     require => Class['dynatrace::role::dynatrace_user']
   }
 
@@ -61,7 +61,7 @@ class dynatrace::role::wsagent_package (
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
-    require   => File['Create the installer cache directory'],
+    require   => File[$installer_cache_dir_tree],
     notify    => [
       File["Configure and copy the ${role_name}'s install script"],
       Dynatrace_installation["Install the ${role_name}"]

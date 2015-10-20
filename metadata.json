@@ -15,16 +15,20 @@
   ],
   "dependencies": [
     {
-      "name":"puppetlabs/apache",
+      "name": "puppetlabs/apache",
       "version_requirement": ">= 1.0.0"
     },
     {
-      "name":"puppetlabs/java",
+      "name": "puppetlabs/java",
       "version_requirement": ">= 1.0.0"
     },
     {
-      "name":"puppetlabs/stdlib",
+      "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "AlexCline/dirtree",
+      "version_requirement": ">= 0.2.1"
     }
   ]
 }
