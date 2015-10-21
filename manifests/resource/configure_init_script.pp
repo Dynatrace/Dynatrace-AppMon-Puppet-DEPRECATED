@@ -4,14 +4,7 @@ define dynatrace::resource::configure_init_script(
   $role_name            = undef,
   $owner                = undef,
   $group                = undef,
-  $agent_port           = $dynatrace::role::collector::agent_port,
-  $server_hostname      = $dynatrace::role::collector::server_hostname,
-  $server_port          = $dynatrace::role::collector::server_port,
-  $jvm_xms              = $dynatrace::role::collector::jvm_xms,
-  $jvm_xmx              = $dynatrace::role::collector::jvm_xmx,
-  $jvm_perm_size        = $dynatrace::role::collector::jvm_perm_size,
-  $jvm_max_perm_size    = $dynatrace::role::collector::jvm_max_perm_size
-#  $params               = {}
+  $params               = {}
 ) {
   case $::kernel {
     'Linux': {
