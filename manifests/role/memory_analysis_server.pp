@@ -99,14 +99,14 @@ class dynatrace::role::memory_analysis_server (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-#      params               => {
-#        'installer_prefix_dir' => $installer_prefix_dir,
-#        'server_port'          => $server_port,
-#        'jvm_xms'              => $jvm_xms,
-#        'jvm_xmx'              => $jvm_xmx,
-#        'jvm_perm_size'        => $jvm_perm_size,
-#        'jvm_max_perm_size'    => $jvm_max_perm_size
-#      },
+      init_scripts_params  => {
+        'installer_prefix_dir' => $installer_prefix_dir,
+        'server_port'          => $server_port,
+        'jvm_xms'              => $jvm_xms,
+        'jvm_xmx'              => $jvm_xmx,
+        'jvm_perm_size'        => $jvm_perm_size,
+        'jvm_max_perm_size'    => $jvm_max_perm_size
+      },
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }

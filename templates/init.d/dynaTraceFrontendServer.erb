@@ -13,8 +13,8 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Default-Start: <%= @params["linux_service_start_runlevels"] %>
+# Default-Stop: <%= @params["linux_service_stop_runlevels"] %>
 # Description: Start/Stop dynaTrace FrontendServer daemon
 ### END INIT INFO
 
@@ -22,7 +22,7 @@
 # - DT_HOME     installation directory of dynaTrace software
 # - DT_OPTARGS  optional arguments (e.g. -vm, -instance, -server, etc.)
 # - DT_INSTANCE instance name - requires port offset in DT_OPTARGS
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
+DT_HOME=<%= @params["installer_prefix_dir"] %>/dynatrace
 DT_OPTARGS=
 DT_INSTANCE=
 

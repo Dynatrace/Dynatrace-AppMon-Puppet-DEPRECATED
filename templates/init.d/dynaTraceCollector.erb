@@ -13,8 +13,8 @@
 # Required-Start: $network
 # Required-Stop: $network
 # X-UnitedLinux-Should-Start:
-# Default-Start: <%= @linux_service_start_runlevels %>
-# Default-Stop: <%= @linux_service_stop_runlevels %>
+# Default-Start: <%= @params["linux_service_start_runlevels"] %>
+# Default-Stop: <%= @params["linux_service_stop_runlevels"] %>
 # Description: Start/Stop dynaTrace Collector daemon
 ### END INIT INFO
 
@@ -24,6 +24,7 @@
 # - DT_INSTANCE instance name if -instance argument is specified
 DT_HOME=<%= @params["installer_prefix_dir"] %>/dynatrace
 DT_OPTARGS="-listen <%= @params["agent_port"] %> -server <%= @params["server_hostname"] %>:<%= @params["server_port"] %><% if @params["jvm_xms"] %> -Xms<%= @params["jvm_xms"] %><% end %><% if @params["jvm_xmx"] %> -Xmx<%= @params["jvm_xmx"] %><% end %><% if @params["jvm_perm_size"] %> -XX:PermSize=<%= @params["jvm_perm_size"] %><% end %><% if @params["jvm_max_perm_size"] %> -XX:MaxPermSize=<%= @params["jvm_max_perm_size"] %><% end %>"
+
 # When using an instance name, ensure that the -instance argument from
 # DT_OPTARGS is in sync with the following DT_INSTANCE variable:
 # (e.g.: "-instance InstName" requires "DT_INSTANCE=InstName")
