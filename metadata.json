@@ -1,6 +1,6 @@
 {
   "name": "dynatrace-dynatrace",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "Martin Etmajer",
   "summary": "Installs the Dynatrace Application Monitoring solution.",
   "license": "MIT",
@@ -29,6 +29,10 @@
     {
       "name": "AlexCline/dirtree",
       "version_requirement": ">= 0.2.1"
+    },
+    {
+      "name": "maestrodev/wget",
+      "version_requirement": ">= 1.7.1"
     }
   ]
 }
