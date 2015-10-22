@@ -22,8 +22,8 @@
 # - DT_HOME     installation directory of dynaTrace software
 # - DT_OPTARGS  optional arguments (e.g. -vm, -instance, -server, etc.)
 # - DT_INSTANCE instance name if -instance argument is specified
-DT_HOME=<%= @installer_prefix_dir %>/dynatrace
-DT_OPTARGS="-listen <%= @agent_port %> -server <%= @server_hostname %>:<%= @server_port %><% if @jvm_xms %> -Xms<%= @jvm_xms %><% end %><% if @jvm_xmx %> -Xmx<%= @jvm_xmx %><% end %><% if @jvm_perm_size %> -XX:PermSize=<%= @jvm_perm_size %><% end %><% if @jvm_max_perm_size %> -XX:MaxPermSize=<%= @jvm_max_perm_size %><% end %>"
+DT_HOME=<%= @params["installer_prefix_dir"] %>/dynatrace
+DT_OPTARGS="-listen <%= @params["agent_port"] %> -server <%= @params["server_hostname"] %>:<%= @params["server_port"] %><% if @params["jvm_xms"] %> -Xms<%= @params["jvm_xms"] %><% end %><% if @params["jvm_xmx"] %> -Xmx<%= @params["jvm_xmx"] %><% end %><% if @params["jvm_perm_size"] %> -XX:PermSize=<%= @params["jvm_perm_size"] %><% end %><% if @params["jvm_max_perm_size"] %> -XX:MaxPermSize=<%= @params["jvm_max_perm_size"] %><% end %>"
 # When using an instance name, ensure that the -instance argument from
 # DT_OPTARGS is in sync with the following DT_INSTANCE variable:
 # (e.g.: "-instance InstName" requires "DT_INSTANCE=InstName")
