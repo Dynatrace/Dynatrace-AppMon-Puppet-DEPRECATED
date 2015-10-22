@@ -1,10 +1,10 @@
 define dynatrace::resource::configure_init_script(
   $ensure               = 'present',
-  $installer_prefix_dir = undef,
   $role_name            = undef,
+  $installer_prefix_dir = undef,
   $owner                = undef,
   $group                = undef,
-  $params               = {}
+  $init_scripts_params  = {}
 ) {
   case $::kernel {
     'Linux': {
@@ -20,7 +20,12 @@ define dynatrace::resource::configure_init_script(
       }
     }
   }
-  
+
+  $params = delete_undef_values(merge($init_scripts_params, {
+    'linux_service_start_runlevels' => $linux_service_start_runlevels,
+    'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
+  }))
+
   $link_ensure = $ensure ? {
     'present' => 'link',
     'absent'  => 'absent',
@@ -33,10 +38,7 @@ define dynatrace::resource::configure_init_script(
     owner   => $owner,
     group   => $group,
     mode    => '0755',
-    content => epp("dynatrace/init.d/${name}", merge($params, {
-      'linux_service_start_runlevels' => $linux_service_start_runlevels,
-      'linux_service_stop_runlevels'  => $linux_service_stop_runlevels
-    })),
+    content => template("dynatrace/init.d/${name}.erb"),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
 

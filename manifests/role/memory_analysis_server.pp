@@ -99,7 +99,7 @@ class dynatrace::role::memory_analysis_server (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-      params               => {
+      init_scripts_params  => {
         'installer_prefix_dir' => $installer_prefix_dir,
         'server_port'          => $server_port,
         'jvm_xms'              => $jvm_xms,

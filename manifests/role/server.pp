@@ -104,7 +104,7 @@ class dynatrace::role::server (
       installer_prefix_dir => $installer_prefix_dir,
       owner                => $dynatrace_owner,
       group                => $dynatrace_group,
-      params               => {
+      init_scripts_params  => {
         'installer_prefix_dir' => $installer_prefix_dir,
         'collector_port'       => $collector_port
       },
