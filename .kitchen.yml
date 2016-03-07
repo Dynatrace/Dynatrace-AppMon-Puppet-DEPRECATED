@@ -10,15 +10,60 @@ driver:
 platforms:
   - name: centos-6
     driver_config:
-      image: dynatrace/centos-puppet-testing:6
+      provision_command:
+        - yum update -y
+        # Install common dependencies
+        - yum install -y net-tools tar wget which
+        # Install ruby dependencies
+        - yum install -y git gcc-c++ libffi-devel libssl-devel openssl-devel readline-devel zlib-devel 
+        # Install ruby 2.2.0
+        - git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+        - git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+        - git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+        - ~/.rbenv/bin/rbenv install 2.2.0
+        - ~/.rbenv/bin/rbenv global 2.2.0
+        - ln `~/.rbenv/bin/rbenv which ruby` /usr/bin/ruby
+        # Install Puppet 4.2.1
+        - ~/.rbenv/shims/gem install puppet -v 4.2.1
+        - ln `~/.rbenv/bin/rbenv which puppet` /usr/bin/puppet
 
   - name: debian-7.8
     driver_config:
-      image: dynatrace/debian-puppet-testing:7.8
+      provision_command:
+        - apt-get update
+        # Install common dependencies
+        - apt-get install -y net-tools tar wget
+        # Install ruby dependencies
+        - apt-get install -y git-core build-essential libffi-dev libssl-dev libcurl4-openssl-dev libreadline-dev
+        # Install ruby 2.2.0
+        - git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+        - git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+        - git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+        - ~/.rbenv/bin/rbenv install 2.2.0
+        - ~/.rbenv/bin/rbenv global 2.2.0
+        - ln `~/.rbenv/bin/rbenv which ruby` /usr/bin/ruby
+        # Install Puppet 4.2.1
+        - ~/.rbenv/shims/gem install puppet -v 4.2.1
+        - ln `~/.rbenv/bin/rbenv which puppet` /usr/bin/puppet
 
   - name: ubuntu-12.04
     driver_config:
-      image: dynatrace/ubuntu-puppet-testing:12.04
+      provision_command:
+        - apt-get update
+        # Install common dependencies
+        - apt-get install -y net-tools tar wget
+        # Install ruby dependencies
+        - apt-get install -y git-core build-essential libffi-dev libssl-dev libcurl4-openssl-dev libreadline-dev
+        # Install ruby 2.2.0
+        - git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+        - git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+        - git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+        - ~/.rbenv/bin/rbenv install 2.2.0
+        - ~/.rbenv/bin/rbenv global 2.2.0
+        - ln `~/.rbenv/bin/rbenv which ruby` /usr/bin/ruby
+        # Install Puppet 4.2.1
+        - ~/.rbenv/shims/gem install puppet -v 4.2.1
+        - ln `~/.rbenv/bin/rbenv which puppet` /usr/bin/puppet
 
 suites:
   - name: apache_wsagent_debian
