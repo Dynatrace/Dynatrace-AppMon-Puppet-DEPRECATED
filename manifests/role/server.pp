@@ -1,6 +1,7 @@
 class dynatrace::role::server (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server',
+  $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
   $installer_file_name     = $dynatrace::server_installer_file_name,
   $installer_file_url      = $dynatrace::server_installer_file_url,
@@ -106,7 +107,8 @@ class dynatrace::role::server (
       group                => $dynatrace_group,
       init_scripts_params  => {
         'installer_prefix_dir' => $installer_prefix_dir,
-        'collector_port'       => $collector_port
+        'collector_port'       => $collector_port,
+        'user'                 => $dynatrace_owner
       },
       notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }

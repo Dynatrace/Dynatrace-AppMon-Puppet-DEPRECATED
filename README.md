@@ -16,7 +16,7 @@ This class downloads and installs the most recent version of the Dynatrace Agent
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-agent-unix.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-agent-unix.jar'
 }
 ```
 
@@ -30,7 +30,7 @@ Please refer to `manifests/role/apache_wsagent.pp` and `manifests/role/wsagent_p
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-wsagent-linux-x64.tar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-wsagent-linux-x64.tar'
 }
 
 class { 'dynatrace::role::apache_wsagent':
@@ -49,7 +49,7 @@ This class downloads and installs the most recent version of the Dynatrace Colle
 
 ```
 class { 'dynatrace::role::collector':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-collector-linux-x86.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-collector-linux-x86.jar'
 }
 ```
 
@@ -63,7 +63,7 @@ Please refer to `manifests/role/java_agent.pp` and `manifests/role/agents_packag
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-agent-unix.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-agent-unix.jar'
 }
 
 class { 'dynatrace::role::java_agent':
@@ -84,7 +84,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatrace::role::memory_analysis_server':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-analysisserver-linux-x86.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-analysisserver-linux-x86.jar'
 }
 ```
 
@@ -98,7 +98,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatrace::role::server':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-linux-x64.jar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-server-linux-x86.jar'
 }
 ```
 
@@ -122,7 +122,7 @@ This class downloads and installs the most recent version of the Dynatrace WebSe
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'http://downloads.dynatracesaas.com/6.2/dynatrace-wsagent-linux-x64.tar'
+  installer_file_url => 'http://downloads.dynatracesaas.com/6.3/dynatrace-wsagent-linux-x64.tar'
 }
 ```
 

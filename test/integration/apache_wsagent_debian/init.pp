@@ -1,8 +1,7 @@
 class { 'apache': }
 
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/dynatrace-wsagent.tar',
-  require            => Class['apache']
+  installer_file_url => 'http://10.0.2.2/dynatrace/6.3/dynatrace-wsagent.tar'
 }
 
 class { 'dynatrace::role::apache_wsagent':

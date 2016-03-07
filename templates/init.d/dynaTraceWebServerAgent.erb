@@ -1,11 +1,11 @@
 #!/bin/sh
-### Start/Stop dynaTrace WebServer Agent daemon
+### Start/Stop Dynatrace WebServer Agent daemon
 #
-# Copyright 2004-2012 dynaTrace Software
+# Copyright 2004-2016 Dynatrace Software
 # All rights reserved.
 #
 # Copy this script to /etc/init.d and use chkconfig for enabling/disabling
-# the daemon.
+# the daemon. Depending on the target environment adjustments may be necessary.
 #
 ### BEGIN INIT INFO
 # Provides: dynaTraceWebServeragent
@@ -14,68 +14,99 @@
 # X-UnitedLinux-Should-Start:
 # Default-Start: <%= @params["linux_service_start_runlevels"] %>
 # Default-Stop: <%= @params["linux_service_stop_runlevels"] %>
-# Description: Start/Stop dynaTrace WebServer Agent daemon
+# Description: Start/Stop Dynatrace WebServer Agent daemon
 ### END INIT INFO
 
 # To use this file in your environment, adjusting the following variables:
-# - DT_HOME     installation directory of dynaTrace software
+# - DT_HOME     installation directory of Dynatrace software
 # - DT_OPTARGS  optional arguments (server, ...)
+# - DT_RUNASUSER  the user to run the Dynatrace process
+
 DT_HOME=<%= @params["installer_prefix_dir"] %>/dynatrace
 
 DT_PRODUCT="WebServer Agent"
 DT_BINARY=dtwsagent
 
-DT_BINARY_WITH_PATH=$DT_HOME/agent/lib64/$DT_BINARY
-DT_PIDFILE=$DT_HOME/$DT_BINARY.pid
+DT_RUNASUSER=<%= @params["user"] %>
 
-if [ ! -x "$DT_BINARY_WITH_PATH" ]; then
-  DT_BINARY_WITH_PATH=$DT_HOME/agent/lib/$DT_BINARY
+DT_SHUTDOWN_WAIT=60
+
+DT_PIDFILE_DIR=/tmp
+
+DT_PIDFILE=${DT_PIDFILE_DIR}/${DT_BINARY}63.pid
+
+OS_TYPE=`uname`
+
+DT_BINARY_WITH_PATH="${DT_HOME}"/agent/lib64/${DT_BINARY}
+
+if [ ! -x "${DT_BINARY_WITH_PATH}" ]; then
+  DT_BINARY_WITH_PATH="${DT_HOME}"/agent/lib/${DT_BINARY}
 fi
 
-if [ ! -x "$DT_BINARY_WITH_PATH" ]; then
-  echo "File not found or not executable: $DT_BINARY_WITH_PATH"
+if [ ! -x "${DT_BINARY_WITH_PATH}" ]; then
+  echo "File not found or not executable: ${DT_BINARY_WITH_PATH}"
   exit 1
 fi
 
-if [ -f "$DT_PIDFILE" ]; then
-  TEST_PID=`cat $DT_PIDFILE`
+if [ -f "${DT_PIDFILE}" ]; then
+  TEST_PID=`cat ${DT_PIDFILE}`
   ps -e | grep "^\s*${TEST_PID}\s" >/dev/null
   if [ $? = 0 ]; then
-    PROCESSPID=`cat $DT_PIDFILE`
+    PROCESSPID=`cat ${DT_PIDFILE}`
   else
-    rm $DT_PIDFILE
+    rm ${DT_PIDFILE}
   fi
 fi
 
-if [ -z "$PROCESSPID" ]; then
-  GREPARG=`echo $DT_BINARY | cut -c1-8`
-  PROCESSPID=`ps -e | grep $GREPARG | awk '{{print $1}}'`
+if [ -z "${PROCESSPID}" ]; then
+  GREPARG=`echo ${DT_BINARY} | cut -c1-8`
+  PROCESSPID=`ps -e | grep ${GREPARG} | awk '{{print $1}}'`
 fi
 
 case "$1" in
 'start')
-  su - dynatrace -c "nohup $DT_BINARY_WITH_PATH $DT_OPTARGS >/dev/null 2>&1 &"
-  echo $! >$DT_PIDFILE
-  ;;
-'stop')
-  if [ -n "$PROCESSPID" ]; then
-    echo "Terminating dynaTrace $DT_PRODUCT process $PROCESSPID"
-    kill -15 $PROCESSPID
-    rm $DT_PIDFILE
-  fi
-  ;;
-'status')
-  if [ -n "$PROCESSPID" ]; then
-    echo "dynaTrace $DT_PRODUCT daemon is running:"
-    ps -ef | grep $DT_BINARY | grep $PROCESSPID
+  if [ -z "${DT_RUNASUSER}" ]; then
+    nohup "${DT_BINARY_WITH_PATH}" ${DT_OPTARGS} >/dev/null 2>&1 &
+    echo $! >${DT_PIDFILE}
   else
-    echo "dynaTrace $DT_PRODUCT daemon not running."
-    exit 1
-  fi
-  ;;
-*)
-  echo "usage: $0 {start|stop|status}"
-  ;;
-esac
+    if [ "$OS_TYPE" = 'SunOS' ]; then
+      su "${DT_RUNASUSER}" -c "nohup ${DT_BINARY_WITH_PATH} ${DT_OPTARGS} >/dev/null 2>&1 &"
+    else
+      su -c "nohup ${DT_BINARY_WITH_PATH} ${DT_OPTARGS} >/dev/null 2>&1 &" "${DT_RUNASUSER}"
+    fi
+    echo $! >${DT_PIDFILE}
+  fi    
+    ;;
+'stop')
+    if [ -n "${PROCESSPID}" ]; then
+    echo "Terminating Dynatrace $DT_PRODUCT process ${PROCESSPID}"
+    kill -15 ${PROCESSPID}
+    COUNT=0;
+      while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
+      do
+        echo "Waiting for Dynatrace $DT_PRODUCT (${PROCESSPID}) to finish shutdown";
+        sleep 1
+        COUNT=`expr ${COUNT} + 1`
+      done
 
-exit 0
+      if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
+        echo "Killing Dynatrace ${DT_PRODUCT} (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
+        kill -9 ${PROCESSPID}
+      fi
+    if [ -f "${DT_PIDFILE}" ]; then 
+      rm -f ${DT_PIDFILE}
+    fi
+    fi
+    ;;
+'status')
+    if [ -n "${PROCESSPID}" ]; then
+      echo "Dynatrace $DT_PRODUCT daemon is running:"
+      ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
+    else
+      echo "Dynatrace ${DT_PRODUCT} daemon not running."
+    fi
+    ;;
+*)
+    echo "usage: $0 {start|stop|status}"
+    ;;
+esac

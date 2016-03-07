@@ -11,7 +11,7 @@ Puppet::Type.newtype(:wait_until_port_is_open) do
   end
 
   newparam(:timeout) do
-    defaultto 120
+    defaultto 300
   end
 
 end

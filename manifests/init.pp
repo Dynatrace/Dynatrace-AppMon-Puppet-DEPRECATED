@@ -37,6 +37,7 @@ class dynatrace (
   $memory_analysis_server_jvm_perm_size        = $dynatrace::params::memory_analysis_server_jvm_perm_size,
   $memory_analysis_server_jvm_max_perm_size    = $dynatrace::params::memory_analysis_server_jvm_max_perm_size,
 
+  $server_installer_bitsize       = $dynatrace::params::server_installer_bitsize,
   $server_installer_prefix_dir    = $dynatrace::params::server_installer_prefix_dir,
   $server_installer_file_name     = $dynatrace::params::server_installer_file_name,
   $server_installer_file_url      = $dynatrace::params::server_installer_file_url,

@@ -38,7 +38,7 @@ describe file ('/etc/init.d/dynaTraceWebServerAgent') do
   end
 
   its(:content) { should match /^DT_HOME=\/opt\/dynatrace$/ }
-  its(:content) { should match /^.*su - dynatrace -c.*$/ }
+  its(:content) { should match /^DT_RUNASUSER=dynatrace$/ }
 end
 
 describe process('dtwsagent') do
