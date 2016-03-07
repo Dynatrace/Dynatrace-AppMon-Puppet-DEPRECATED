@@ -51,7 +51,7 @@ fi
 
 case "$1" in
 'start')
-    if [ -z "${PROCESSPID}" ]; then
+  if [ -z "${PROCESSPID}" ]; then
     if [ -z "${DT_RUNASUSER}" ]; then
       echo "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
       "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
@@ -61,45 +61,49 @@ case "$1" in
       su -c "${DT_HOME}/${DT_BINARY} -bg ${DT_OPTARGS}" "${DT_RUNASUSER}"
       echo $! >${DT_PIDFILE}
     fi    
-    else
+  else
     echo "Dynatrace ${DT_PRODUCT} daemon is already running!"
-    exit 1
-    fi
-    ;;
+  fi
+  ;;
 'stop')
-    if [ -n "${PROCESSPID}" ]; then
-      echo "Terminating Dynatrace ${DT_PRODUCT} process ${PROCESSPID}"
-      kill -15 ${PROCESSPID}
-        COUNT=0;
-      while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
-      do
-        echo "Waiting for Dynatrace ${DT_PRODUCT} (${PROCESSPID}) to finish shutdown";
-        sleep 1
-        COUNT=`expr ${COUNT} + 1`
-      done
+  if [ -n "${PROCESSPID}" ]; then
+    echo "Terminating Dynatrace ${DT_PRODUCT} process ${PROCESSPID}"
+    kill -15 ${PROCESSPID}
 
-      if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
-        echo "Killing Dynatrace ${DT_PRODUCT} (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
-        kill -9 ${PROCESSPID}
-      fi
+    COUNT=0;
+    while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
+    do
+      echo "Waiting for Dynatrace ${DT_PRODUCT} (${PROCESSPID}) to finish shutdown";
+      sleep 1
+      COUNT=`expr ${COUNT} + 1`
+    done
+
+    if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
+      echo "Killing Dynatrace ${DT_PRODUCT} (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
+      kill -9 ${PROCESSPID}
+    fi
+
     if [ -f "${DT_PIDFILE}" ]; then 
       rm -f ${DT_PIDFILE}
     fi
-    fi
-    ;;
+  fi
+  ;;
 'version')
-    "${DT_HOME}"/${DT_BINARY} -v
-    ;;
+  "${DT_HOME}"/${DT_BINARY} -v
+  ;;
 'status')
-    if [ -n "${PROCESSPID}" ]; then
-      echo "Dynatrace ${DT_PRODUCT} daemon is running:"
-      ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
-        # | grep -v org.eclipse.equinox
-    else
-      echo "Dynatrace ${DT_PRODUCT} daemon not running."
-    fi
-    ;;
+  if [ -n "${PROCESSPID}" ]; then
+    echo "Dynatrace ${DT_PRODUCT} daemon is running:"
+    ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
+      # | grep -v org.eclipse.equinox
+  else
+    echo "Dynatrace ${DT_PRODUCT} daemon not running."
+    exit 1
+  fi
+  ;;
 *)
-    echo "usage: $0 {start|stop|status|version}"
-    ;;
+  echo "usage: $0 {start|stop|status|version}"
+  ;;
 esac
+
+exit 0

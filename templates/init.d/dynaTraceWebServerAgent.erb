@@ -76,37 +76,42 @@ case "$1" in
     fi
     echo $! >${DT_PIDFILE}
   fi    
-    ;;
+  ;;
 'stop')
-    if [ -n "${PROCESSPID}" ]; then
+  if [ -n "${PROCESSPID}" ]; then
     echo "Terminating Dynatrace $DT_PRODUCT process ${PROCESSPID}"
     kill -15 ${PROCESSPID}
-    COUNT=0;
-      while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
-      do
-        echo "Waiting for Dynatrace $DT_PRODUCT (${PROCESSPID}) to finish shutdown";
-        sleep 1
-        COUNT=`expr ${COUNT} + 1`
-      done
 
-      if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
-        echo "Killing Dynatrace ${DT_PRODUCT} (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
-        kill -9 ${PROCESSPID}
-      fi
+    COUNT=0;
+    while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
+    do
+      echo "Waiting for Dynatrace $DT_PRODUCT (${PROCESSPID}) to finish shutdown";
+      sleep 1
+      COUNT=`expr ${COUNT} + 1`
+    done
+
+    if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
+      echo "Killing Dynatrace ${DT_PRODUCT} (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
+      kill -9 ${PROCESSPID}
+    fi
+
     if [ -f "${DT_PIDFILE}" ]; then 
       rm -f ${DT_PIDFILE}
     fi
-    fi
-    ;;
+  fi
+  ;;
 'status')
-    if [ -n "${PROCESSPID}" ]; then
-      echo "Dynatrace $DT_PRODUCT daemon is running:"
-      ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
-    else
-      echo "Dynatrace ${DT_PRODUCT} daemon not running."
-    fi
-    ;;
+  if [ -n "${PROCESSPID}" ]; then
+    echo "Dynatrace $DT_PRODUCT daemon is running:"
+    ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
+  else
+    echo "Dynatrace ${DT_PRODUCT} daemon not running."
+    exit 1
+  fi
+  ;;
 *)
-    echo "usage: $0 {start|stop|status}"
-    ;;
+  echo "usage: $0 {start|stop|status}"
+  ;;
 esac
+
+exit 0

@@ -88,14 +88,13 @@ frontendstart() {
       su -c "${DT_HOME}/${DT_FE_BINARY} -bg ${DT_FE_OPTARGS}" "${DT_RUNASUSER}"
       echo $! >${DT_FE_PIDFILE}
     fi
-    else
+  else
     echo "Dynatrace ${DT_FE_PRODUCT} daemon is already running!"
-    exit 1
-    fi
+  fi
 }
 
 backendstart() {
-    if [ -z "${PROCESSPID}" ]; then
+  if [ -z "${PROCESSPID}" ]; then
     if [ -z "${DT_RUNASUSER}" ]; then
       echo "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
       "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
@@ -105,98 +104,106 @@ backendstart() {
       su -c "${DT_HOME}/${DT_BINARY} -bg ${DT_OPTARGS}" "${DT_RUNASUSER}"
       echo $! >${DT_PIDFILE}
     fi
-    else
+  else
     echo "Dynatrace ${DT_PRODUCT} daemon is already running!"
-    exit 1
-    fi
+  fi
 }
 
 frontendstop() {
   if [ -n "${FE_PROCESSPID}" ]; then
-      echo "Terminating Dynatrace ${DT_FE_PRODUCT} process ${FE_PROCESSPID}"
-      kill -15 ${FE_PROCESSPID}
-    COUNT=0;
-      while [ `ps -A -o pid | grep -c ${FE_PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${FE_PROCESSPID} | grep -c ${FE_PROCESSPID}` -ne 0]
-      do
-        echo "Waiting for Dynatrace ${DT_FE_PRODUCT} (${FE_PROCESSPID}) to finish shutdown";
-        sleep 1
-        COUNT=`expr ${COUNT} + 1`
-      done
+    echo "Terminating Dynatrace ${DT_FE_PRODUCT} process ${FE_PROCESSPID}"
+    kill -15 ${FE_PROCESSPID}
 
-      if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
-        echo "Killing Dynatrace ${DT_FE_PRODUCT} (${FE_PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
-        kill -9 ${FE_PROCESSPID}
-      fi
+    COUNT=0;
+    while [ `ps -A -o pid | grep -c ${FE_PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${FE_PROCESSPID} | grep -c ${FE_PROCESSPID}` -ne 0]
+    do
+      echo "Waiting for Dynatrace ${DT_FE_PRODUCT} (${FE_PROCESSPID}) to finish shutdown";
+      sleep 1
+      COUNT=`expr ${COUNT} + 1`
+    done
+
+    if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
+      echo "Killing Dynatrace ${DT_FE_PRODUCT} (${FE_PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
+      kill -9 ${FE_PROCESSPID}
+    fi
+
     if [ -f "${DT_FE_PIDFILE}" ]; then
       rm -f ${DT_FE_PIDFILE}
     fi
-    fi
+  fi
 }
 
 backendstop() {
-    if [ -n "${PROCESSPID}" ]; then
-      echo "Terminating Dynatrace ${DT_PRODUCT} process ${PROCESSPID}"
-      kill -15 ${PROCESSPID}
-    COUNT=0;
-      while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
-      do
-        echo "Waiting for Dynatrace $DT_PRODUCT (${PROCESSPID}) to finish shutdown";
-        sleep 1
-        COUNT=`expr ${COUNT} + 1`
-      done
+  if [ -n "${PROCESSPID}" ]; then
+    echo "Terminating Dynatrace ${DT_PRODUCT} process ${PROCESSPID}"
+    kill -15 ${PROCESSPID}
 
-      if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
-        echo "Killing Dynatrace $DT_PRODUCT (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
-        kill -9 ${PROCESSPID}
-      fi
+    COUNT=0;
+    while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
+    do
+      echo "Waiting for Dynatrace $DT_PRODUCT (${PROCESSPID}) to finish shutdown";
+      sleep 1
+      COUNT=`expr ${COUNT} + 1`
+    done
+
+    if [ "${COUNT}" -gt "${DT_SHUTDOWN_WAIT}" ]; then
+      echo "Killing Dynatrace $DT_PRODUCT (${PROCESSPID}) because the shutdown lasted longer than ${DT_SHUTDOWN_WAIT} seconds"
+      kill -9 ${PROCESSPID}
+    fi
+
     if [ -f "${DT_PIDFILE}" ]; then
       rm -f ${DT_PIDFILE}
     fi
-    fi
+  fi
 }
 
 case "$1" in
 'start')
   backendstart
   frontendstart
-    ;;
+  ;;
 'start-frontend')
   frontendstart
-    ;;
+  ;;
 'start-backend')
-    backendstart
-    ;;
+  backendstart
+  ;;
 'stop')
   frontendstop
   backendstop
-    ;;
+  ;;
 'stop-frontend')
   frontendstop
-    ;;
+  ;;
 'stop-backend')
-    backendstop
-    ;;
+  backendstop
+  ;;
 'version')
-    "${DT_HOME}/${DT_BINARY}" -v
+  "${DT_HOME}/${DT_BINARY}" -v
   "${DT_HOME}/${DT_FE_BINARY}" -v
-    ;;
+  ;;
 'status')
-    if [ -n "${PROCESSPID}" ]; then
-      echo "Dynatrace ${DT_PRODUCT} daemon is running:"
-      ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
-        # | grep -v org.eclipse.equinox
-    else
-      echo "Dynatrace ${DT_PRODUCT} daemon not running."
-    fi
+  if [ -n "${PROCESSPID}" ]; then
+    echo "Dynatrace ${DT_PRODUCT} daemon is running:"
+    ps -ef | grep ${DT_BINARY} | grep ${PROCESSPID}
+      # | grep -v org.eclipse.equinox
+  else
+    echo "Dynatrace ${DT_PRODUCT} daemon not running."
+    exit 1
+  fi
+
   if [ -n "${FE_PROCESSPID}" ]; then
-      echo "Dynatrace ${DT_FE_PRODUCT} daemon is running:"
-      ps -ef | grep ${DT_FE_BINARY} | grep ${FE_PROCESSPID}
-        # | grep -v org.eclipse.equinox
-    else
-      echo "Dynatrace ${DT_FE_PRODUCT} daemon not running."
-    fi
-    ;;
+    echo "Dynatrace ${DT_FE_PRODUCT} daemon is running:"
+    ps -ef | grep ${DT_FE_BINARY} | grep ${FE_PROCESSPID}
+      # | grep -v org.eclipse.equinox
+  else
+    echo "Dynatrace ${DT_FE_PRODUCT} daemon not running."
+    exit 1
+  fi
+  ;;
 *)
-    echo "usage: $0 {start|start-frontend|start-backend|stop|stop-frontend|stop-backend|status|version|}"
-    ;;
+  echo "usage: $0 {start|start-frontend|start-backend|stop|stop-frontend|stop-backend|status|version|}"
+  ;;
 esac
+
+exit 0
