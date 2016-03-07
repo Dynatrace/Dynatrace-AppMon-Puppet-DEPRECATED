@@ -15,10 +15,9 @@ define dynatrace::resource::copy_or_download_file(
     }
     
     if $file_url {
-      exec { "Download ${file_url} to ${path}":
-        command => "/usr/bin/wget -q ${file_url} -O ${path}",
-        creates => $path,
-        require => Exec["Check for the presence of ${path}"]
+      wget::fetch { "Download ${file_url} to ${path}":
+        source      => $file_url,
+        destination => $path
       }
     } else {
       file { "Copy ${file_name} to ${path}":
