@@ -11,10 +11,7 @@ class dynatrace::role::server_license (
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $license_file_name)
 
-  class { 'dynatrace::role::dynatrace_user':
-    dynatrace_owner => $dynatrace_owner,
-    dynatrace_group => $dynatrace_group
-  }
+  include dynatrace::role::dynatrace_user
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} file":
     ensure    => $ensure,

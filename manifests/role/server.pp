@@ -56,15 +56,12 @@ class dynatrace::role::server (
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
-  class { 'dynatrace::role::dynatrace_user':
-    dynatrace_owner => $dynatrace_owner,
-    dynatrace_group => $dynatrace_group
-  }
+  include dynatrace::role::dynatrace_user
 
-  file { $installer_cache_dir_tree:
+  ensure_resource(file, $installer_cache_dir_tree, {
     ensure  => $directory_ensure,
     require => Class['dynatrace::role::dynatrace_user']
-  }
+  })
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
     ensure    => $ensure,

@@ -7,7 +7,7 @@ Puppet::Type.newtype(:wait_until_rest_endpoint_is_ready) do
   end
 
   newparam(:timeout) do
-    defaultto 120
+    defaultto 360
   end
 
 end

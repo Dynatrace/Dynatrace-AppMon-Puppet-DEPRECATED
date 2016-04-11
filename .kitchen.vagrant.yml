@@ -47,6 +47,10 @@ suites:
     provisioner:
       manifest: server/init.pp
 
+  - name: server_collector_agent
+    provisioner:
+      manifest: server_collector_agent/init.pp
+
   - name: wsagent_package
     provisioner:
       manifest: wsagent_package/init.pp
