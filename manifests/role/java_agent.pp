@@ -22,6 +22,7 @@ class dynatrace::role::java_agent (
   file_line { "Inject the ${role_name} into ${env_var_file_name}":
     ensure => $ensure,
     path   => $env_var_file_name,
-    line   => "export ${env_var_name}=\"$${env_var_name} -agentpath:${agent_path}=name=${agent_name},collector=${collector_hostname}:${collector_port}\""
+    line   => "export ${env_var_name}=\"$${env_var_name} -agentpath:${agent_path}=name=${agent_name},collector=${collector_hostname}:${collector_port}\"",
+    match  => "^.+-agentpath:.+"
   }
 }

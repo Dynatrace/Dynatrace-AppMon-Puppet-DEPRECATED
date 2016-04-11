@@ -17,6 +17,7 @@ class dynatrace::role::apache_wsagent (
   file_line { "Inject the ${role_name} into Apache HTTPD's config file":
     ensure => $ensure,
     path   => $apache_config_file_path,
-    line   => "LoadModule dtagent_module \"${agent_path}\""
+    line   => "LoadModule dtagent_module \"${agent_path}\"",
+    match  => '^LoadModule\ dtagent_module .+'
   }
 }
