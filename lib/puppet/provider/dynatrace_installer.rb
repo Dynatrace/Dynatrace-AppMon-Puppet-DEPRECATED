@@ -41,7 +41,10 @@ class Puppet::Provider::DynatraceInstaller < Puppet::Provider
     install_path << execute("#{resource[:installer_cache_dir]}/#{resource[:installer_script_name]}").strip
 
     FileUtils.chown_R(resource[:installer_owner], resource[:installer_group], install_path)
-    FileUtils.ln_s(install_path, "#{resource[:installer_prefix_dir]}/dynatrace", :force => true)
+
+    if ! File.exist?("#{resource[:installer_prefix_dir]}/dynatrace")
+      FileUtils.ln_s(install_path, "#{resource[:installer_prefix_dir]}/dynatrace")
+    end
   end
 
   def destroy
