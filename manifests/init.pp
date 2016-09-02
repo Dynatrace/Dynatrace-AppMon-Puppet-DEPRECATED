@@ -20,6 +20,9 @@ class dynatrace (
   $collector_jvm_perm_size        = $dynatrace::params::collector_jvm_perm_size,
   $collector_jvm_max_perm_size    = $dynatrace::params::collector_jvm_max_perm_size,
 
+  $dynatrace_owner                = $dynatrace::params::dynatrace_owner,
+  $dynatrace_group                = $dynatrace::params::dynatrace_group,
+
   $java_agent_env_var_name       = $dynatrace::params::java_agent_env_var_name,
   $java_agent_env_var_file_name  = $dynatrace::params::java_agent_env_var_file_name,
   $java_agent_name               = $dynatrace::params::java_agent_name,
@@ -59,5 +62,5 @@ class dynatrace (
   $wsagent_package_installer_file_name  = $dynatrace::params::wsagent_package_installer_file_name,
   $wsagent_package_installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
 ) inherits dynatrace::params {
-  
+
 }
