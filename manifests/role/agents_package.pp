@@ -17,7 +17,7 @@ class dynatrace::role::agents_package (
     }
     default: {}
   }
-  
+
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     'absent'  => 'absent',
@@ -30,7 +30,7 @@ class dynatrace::role::agents_package (
     default   => 'installed',
   }
 
-  $installer_cache_dir = "${settings::vardir}/dynatrace"
+  $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 

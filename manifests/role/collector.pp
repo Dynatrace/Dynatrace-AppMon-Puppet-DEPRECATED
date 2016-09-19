@@ -48,7 +48,7 @@ class dynatrace::role::collector (
     default   => 'running',
   }
 
-  $installer_cache_dir = "${settings::vardir}/dynatrace"
+  $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
