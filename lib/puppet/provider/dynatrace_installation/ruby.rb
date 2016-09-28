@@ -1,3 +1,5 @@
+require 'fileutils'
+
 Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   def initialize(*args)
     super
@@ -34,19 +36,48 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
       @installer.install
     end
   end
-
+  
   def uninstall
     self.initialize_installer
-    @installer.destroy if @installer.exists?
 
+    installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
+    @installer.destroy if @installer.exists?
+    
     symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
-    if ::File.symlink?(symlink)
-      target = ::File.readlink(symlink)
-      if target
-        ::File.delete(symlink)
-        ::File.delete(target)
-      end
-    end
+    puts "Delete symlink=#{symlink}"
+    ::File.delete(symlink)
+    
+    target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
+    puts "Delete target=#{target}"
+    FileUtils.rm_rf(target)
+    puts "Delete cache directory=#{resource[:installer_cache_dir]}"
+    FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
+    
+# doesn't work!...
+#    if ::File.symlink?(symlink)
+#      target = ::File.readlink(symlink)
+#      if target
+#        ::File.delete(symlink)
+#        ::File.delete(target)
+#      end
+#    end
+    
+#    directory "Delete the target directory #{target}" do
+#      path   target
+#      recursive true
+#      action :delete
+#    end
+    
+#    directory "Delete the installer cache directory #{installer_cache_dir}" do
+#      path   installer_cache_dir
+#      recursive true
+#      action :delete
+#    end
+    
+  end
+
+  def uninstalled
+    self.uninstall
   end
 
   protected
@@ -64,3 +95,4 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     return @requires_installation
   end
 end
+

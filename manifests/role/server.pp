@@ -18,6 +18,7 @@ class dynatrace::role::server (
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
+
   
   validate_bool($do_pwh_connection)
   validate_re($ensure, ['^present$', '^absent$'])

@@ -32,7 +32,8 @@ EOH
     begin
       s.connect_nonblock(sa)
       return true
-    rescue IO::WaitWritable
+    #rescue IO::WaitWritable
+    rescue
       if IO.select(nil, [s], nil, 1)
         begin
           s.connect_nonblock(sa)
