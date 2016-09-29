@@ -51,11 +51,11 @@ class dynatrace::role::server_uninstall (
     enable => false
   }
 
-  $d_file_exists = 0
-  #execute fact on agent
-  if $dynatrace_file_exists == 1 {
-    $d_file_exists = 1
-  }  
+#  $d_file_exists = 0
+#  #execute fact on agent
+#  if $dynatrace_file_exists == 1 {
+#    $d_file_exists = 1
+#  }  
   
 #  exec {"check_presence":
 #    command => '/bin/true',

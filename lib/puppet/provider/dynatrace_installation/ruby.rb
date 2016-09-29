@@ -44,12 +44,25 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     @installer.destroy if @installer.exists?
     
     symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
-    puts "Delete symlink=#{symlink}"
-    ::File.delete(symlink)
     
-    target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
-    puts "Delete target=#{target}"
-    FileUtils.rm_rf(target)
+    if ::File.symlink?(symlink)
+      puts "Symlink=#{symlink}"
+      target = ::File.readlink(symlink)
+      if target
+        puts "Delete symlink=#{symlink}"
+        ::File.delete(symlink)
+        puts "Delete target=#{target}"
+        ::File.delete(target)
+      end
+    end
+    
+#    puts "Delete symlink=#{symlink}"
+#    ::File.delete(symlink)
+    
+#    target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
+#    puts "Delete target=#{target}"
+#    FileUtils.rm_rf(target)
+    
     puts "Delete cache directory=#{resource[:installer_cache_dir]}"
     FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
     
