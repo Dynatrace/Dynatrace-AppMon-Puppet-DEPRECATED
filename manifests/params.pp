@@ -3,8 +3,8 @@
 # This class configures parameters for the dynatrace-dynatrace module.
 #
 # Parameters:
-#  $dynatrace_owner     => The system user that owns a Dynatrace installation.
-#  $dynatrace_group     => The system user's group that owns a Dynatrace installation.
+#  $dynatrace_owner => The system user that owns a Dynatrace installation.
+#  $dynatrace_group => The system user's group that owns a Dynatrace installation.
 #  $installer_cache_dir => The path where the installation script and downloaded jar-file will be temporarily placed
 #
 #  $agents_package_installer_prefix_dir => The Dynatrace Agents package will be installed into the directory $agents_package_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $agents_package_installer_prefix_dir/dynatrace.
@@ -69,13 +69,13 @@ class dynatrace::params {
 
   case $::kernel {
     'Linux': {
-      $dynatrace_owner     = 'dynatrace'
-      $dynatrace_group     = 'dynatrace'
+      $dynatrace_owner = 'dynatrace'
+      $dynatrace_group = 'dynatrace'
       $installer_cache_dir = "${settings::vardir}"
 
       $agents_package_installer_prefix_dir = '/opt'
       $agents_package_installer_file_name  = 'dynatrace-agent.jar'
-      $agents_package_installer_file_url   = 'http://downloads.dynatracesaas.com/6.3/dynatrace-agent-unix.jar'
+      $agents_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
 
       $apache_wsagent_apache_config_file_path     = '/etc/apache2/apache2.conf'
       $apache_wsagent_apache_init_script_path     = '/etc/init.d/apache2'
@@ -85,10 +85,10 @@ class dynatrace::params {
       $collector_installer_bitsize    = '64'
       $collector_installer_prefix_dir = '/opt'
       $collector_installer_file_name  = 'dynatrace-collector.jar'
-      $collector_installer_file_url   = 'http://downloads.dynatracesaas.com/6.3/dynatrace-collector-linux-x86.jar'
+      $collector_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-collector-6.5.0.1289-linux-x86.jar'
       $collector_agent_port           = '9998'
       $collector_server_hostname      = 'localhost'
-      $collector_server_port          = '6698'
+      $collector_server_port          = '6699'     #port 6698 is for version 6.3 and below; 6699 is since version 6.5
       $collector_jvm_xms              = undef
       $collector_jvm_xmx              = undef
       $collector_jvm_perm_size        = undef
@@ -104,7 +104,7 @@ class dynatrace::params {
       $memory_analysis_server_installer_bitsize    = '64'
       $memory_analysis_server_installer_prefix_dir = '/opt'
       $memory_analysis_server_installer_file_name  = 'dynatrace-analysisserver.jar'
-      $memory_analysis_server_installer_file_url   = 'http://downloads.dynatracesaas.com/6.3/dynatrace-analysisserver-linux-x86.jar'
+      $memory_analysis_server_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-analysisserver-6.5.0.1289-linux-x86.jar'
       $memory_analysis_server_server_port          = '7788'
       $memory_analysis_server_jvm_xms              = undef
       $memory_analysis_server_jvm_xmx              = undef
@@ -114,10 +114,10 @@ class dynatrace::params {
       $server_installer_bitsize    = '64'
       $server_installer_prefix_dir = '/opt'
       $server_installer_file_name  = 'dynatrace.jar'
-      $server_installer_file_url   = 'http://downloads.dynatracesaas.com/6.3/dynatrace-server-linux-x86.jar'
+      $server_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-server-6.5.0.1289-linux-x86.jar'
       $server_license_file_name    = 'dynatrace-license.key'
       $server_license_file_url     = undef
-      $server_collector_port       = '6698'
+      $server_collector_port       = '6699'     #port 6698 is for version 6.3 and below; 6699 is since version 6.5
       $server_do_pwh_connection    = false
 
       $server_pwh_connection_hostname = 'localhost'
@@ -132,7 +132,7 @@ class dynatrace::params {
       $wsagent_package_collector_port       = '9998'
       $wsagent_package_installer_prefix_dir = '/opt'
       $wsagent_package_installer_file_name  = 'dynatrace-wsagent.tar'
-      $wsagent_package_installer_file_url   = 'http://downloads.dynatracesaas.com/6.3/dynatrace-wsagent-linux-x64.tar'
+      $wsagent_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-wsagent-6.5.0.1289-linux-x86-64.tar'
     }
     default: {
       fail("The kernel '${::kernel}' is currently not supported.")
