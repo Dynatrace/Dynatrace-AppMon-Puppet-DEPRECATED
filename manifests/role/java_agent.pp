@@ -21,6 +21,10 @@ class dynatrace::role::java_agent (
     default: {}
   }
 
+  file { $env_var_file_name :
+    ensure => file,
+  }
+  
   file_line { "Inject the ${role_name} into ${env_var_file_name}":
     ensure => $ensure,
     path   => $env_var_file_name,
