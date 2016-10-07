@@ -91,6 +91,7 @@ class dynatrace::role::server (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'server',
+    installer_path_detailed => '',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir
@@ -112,6 +113,8 @@ class dynatrace::role::server (
     }
   }
 
+  include dynatrace::role::server_license
+  
   service { "Start and enable the ${role_name}'s service: '${service}'":
     ensure => $service_ensure,
     name   => $service,
@@ -128,9 +131,11 @@ class dynatrace::role::server (
     require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 
-  wait_until_port_is_open { '6699':
-    ensure  => $ensure,
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  if $collector_port != '6699' {
+    wait_until_port_is_open { '6699':
+      ensure  => $ensure,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    }
   }
 
   wait_until_port_is_open { '8021':
@@ -160,3 +165,4 @@ class dynatrace::role::server (
     }
   }
 }
+

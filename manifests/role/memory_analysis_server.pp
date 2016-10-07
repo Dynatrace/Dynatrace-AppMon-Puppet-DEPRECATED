@@ -46,7 +46,7 @@ class dynatrace::role::memory_analysis_server (
     default   => 'running',
   }
 
-  $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
+  $installer_cache_dir = "${settings::vardir}/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
@@ -84,6 +84,7 @@ class dynatrace::role::memory_analysis_server (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'dtanalysisserver',
+    installer_path_detailed => '',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir

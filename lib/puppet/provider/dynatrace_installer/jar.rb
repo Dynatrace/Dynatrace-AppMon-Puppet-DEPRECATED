@@ -1,6 +1,7 @@
 #require_relative '../dynatrace_installer'
 require File.join(File.dirname(__FILE__), '../dynatrace_installer')
 
+
 Puppet::Type.type(:dynatrace_installer).provide(:jar, :parent => Puppet::Provider::DynatraceInstaller) do
   desc "Puppet type that models a Dynatrace .jar file installer."
 

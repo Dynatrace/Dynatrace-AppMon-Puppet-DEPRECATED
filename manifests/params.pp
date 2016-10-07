@@ -77,8 +77,8 @@ class dynatrace::params {
       $agents_package_installer_file_name  = 'dynatrace-agent.jar'
       $agents_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
 
-      $apache_wsagent_apache_config_file_path     = '/etc/apache2/apache2.conf'
-      $apache_wsagent_apache_init_script_path     = '/etc/init.d/apache2'
+      $apache_wsagent_apache_config_file_path     = '/etc/httpd/conf/httpd.conf'
+      $apache_wsagent_apache_init_script_path     = '/etc/init.d/httpd'
       $apache_wsagent_apache_do_patch_init_script = false
       $apache_wsagent_linux_agent_path            = '/opt/dynatrace/agent/lib64/libdtagent.so'
 
@@ -88,7 +88,7 @@ class dynatrace::params {
       $collector_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-collector-6.5.0.1289-linux-x86.jar'
       $collector_agent_port           = '9998'
       $collector_server_hostname      = 'localhost'
-      $collector_server_port          = '6699'     #port 6698 is for version 6.3 and below; 6699 is since version 6.5
+      $collector_server_port          = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
       $collector_jvm_xms              = undef
       $collector_jvm_xmx              = undef
       $collector_jvm_perm_size        = undef
@@ -117,7 +117,7 @@ class dynatrace::params {
       $server_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-server-6.5.0.1289-linux-x86.jar'
       $server_license_file_name    = 'dynatrace-license.key'
       $server_license_file_url     = undef
-      $server_collector_port       = '6699'     #port 6698 is for version 6.3 and below; 6699 is since version 6.5
+      $server_collector_port       = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
       $server_do_pwh_connection    = false
 
       $server_pwh_connection_hostname = 'localhost'
@@ -139,3 +139,4 @@ class dynatrace::params {
     }
   }
 }
+

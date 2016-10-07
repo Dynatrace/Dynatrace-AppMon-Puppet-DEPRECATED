@@ -80,6 +80,8 @@ class dynatrace::role::wsagent_package (
     installer_file_url    => $installer_file_url,
     installer_script_name => $installer_script_name,
     installer_path_part   => 'agent',
+    #installer_path_detailed => '/opt/dynatrace/init.d/dynaTraceWebServerAgent',
+    installer_path_detailed => '/opt/dynatrace/agent/lib/dtwsagent',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
     installer_cache_dir   => $installer_cache_dir
@@ -116,3 +118,4 @@ class dynatrace::role::wsagent_package (
     enable => true
   }
 }
+

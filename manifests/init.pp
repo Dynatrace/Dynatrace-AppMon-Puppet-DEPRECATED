@@ -63,6 +63,7 @@ class dynatrace (
   $wsagent_package_installer_prefix_dir = $dynatrace::params::wsagent_package_installer_prefix_dir,
   $wsagent_package_installer_file_name  = $dynatrace::params::wsagent_package_installer_file_name,
   $wsagent_package_installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
+
 ) inherits dynatrace::params {
 
 }

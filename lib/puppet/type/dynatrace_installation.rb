@@ -30,6 +30,10 @@ Puppet::Type.newtype(:dynatrace_installation) do
   newparam(:installer_path_part) do
     defaultto ''
   end
+  
+  newparam(:installer_path_detailed) do
+    defaultto ''
+  end
 
   newparam(:installer_owner) do
     defaultto 'dynatrace'
@@ -44,3 +48,4 @@ Puppet::Type.newtype(:dynatrace_installation) do
   end
 
 end
+
