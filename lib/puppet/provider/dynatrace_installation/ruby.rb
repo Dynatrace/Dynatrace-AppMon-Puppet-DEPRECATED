@@ -175,18 +175,15 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   
     installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
     installer_path_to_check = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}/#{resource[:installer_path_part]}"
-    puts "installer_path_to_check =#{installer_path_to_check}"
     alter_path = "#{resource[:installer_path_detailed]}"
-    puts "alter_path =#{alter_path}"
     if alter_path.to_s.strip.length > 0
       #for installer_path_part=agent there have to be extension because when there is already 'agent' folder then reqires_installation is false
       installer_path_to_check = alter_path
-      puts "installer_path_to_check after change=#{installer_path_to_check}"
     end
   
     @requires_installation = !::File.exist?(installer_path_to_check)
   
-    puts "!!! requires_installation path to check: installer_path_to_check=#{installer_path_to_check} result=#{@requires_installation}"
+    puts "Checking if requires installation: #{@requires_installation}, for path: #{installer_path_to_check}."
   
     return @requires_installation
   end
