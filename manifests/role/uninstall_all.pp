@@ -52,8 +52,11 @@ class dynatrace::role::uninstall_all (
 
 
   $symlink = "${installer_prefix_dir}/dynatrace"
-  if defined(File[$symlink]) {
-    notice("${symlink} is defined.")
+  
+  #when used ' defined(File[$symlink])' then only symlink is deleted ...
+  
+#  if defined(File[$symlink]) {
+#    notice("${symlink} is defined.")
 
     dynatrace_installation { "Uninstall the ${role_name}":
       ensure                => uninstalled,
@@ -67,9 +70,9 @@ class dynatrace::role::uninstall_all (
       installer_group       => $dynatrace_group,
       installer_cache_dir   => $installer_cache_dir,
     }
-  } else {
-    notice("${symlink} is defined - nothing to do.")
-  }
+#  } else {
+#    notice("${symlink} is defined - nothing to do.")
+#  }
     
   file {'remove_directory':
     ensure => absent,
