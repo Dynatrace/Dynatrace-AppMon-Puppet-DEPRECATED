@@ -51,10 +51,8 @@ class dynatrace::role::uninstall_all (
   }
 
 
+  #when used 'if defined(File[$symlink])' then only symlink is deleted ...
   $symlink = "${installer_prefix_dir}/dynatrace"
-  
-  #when used ' defined(File[$symlink])' then only symlink is deleted ...
-  
 #  if defined(File[$symlink]) {
 #    notice("${symlink} is defined.")
 
