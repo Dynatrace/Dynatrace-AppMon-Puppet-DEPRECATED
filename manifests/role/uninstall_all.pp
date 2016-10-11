@@ -18,6 +18,8 @@ class dynatrace::role::uninstall_all (
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
+
+  notify{"uninstall_all": message => "executing dynatrace::role::uninstall_all"; }
   
   validate_re($ensure, ['^absent$'])
 

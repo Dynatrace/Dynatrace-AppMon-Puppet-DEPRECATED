@@ -9,6 +9,8 @@ class dynatrace::role::java_agent (
   $collector_port     = $dynatrace::java_agent_collector_port,
   $java_agent_linux_agent_path = $dynatrace::java_agent_linux_agent_path
 ) inherits dynatrace {
+
+  notify{"java_agent": message => "executing dynatrace::role::java_agent"; }
   
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($env_var_name, $env_var_file_name)
