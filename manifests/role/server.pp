@@ -113,8 +113,6 @@ class dynatrace::role::server (
     }
   }
 
-  include dynatrace::role::server_license
-  
   service { "Start and enable the ${role_name}'s service: '${service}'":
     ensure => $service_ensure,
     name   => $service,
