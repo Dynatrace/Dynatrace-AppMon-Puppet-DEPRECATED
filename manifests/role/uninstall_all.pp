@@ -84,7 +84,7 @@ class dynatrace::role::uninstall_all (
   
 
 #    #execute fact on agent - will kill all orphaned dynatrace server processes
-  if $dynatrace_clean_agent == 1 {          #TODO how to pass $::osfamily as an argumet to dynatrace_clean_agent fact
-  }  
+#  if $dynatrace_clean_agent == 1 {          #TODO how to pass $::osfamily as an argumet to dynatrace_clean_agent fact
+#  }  
 }
 
