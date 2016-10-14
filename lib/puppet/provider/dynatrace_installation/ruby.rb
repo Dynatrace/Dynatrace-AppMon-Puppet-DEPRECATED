@@ -102,64 +102,67 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     pids
   end
   
-  def uninstall
-    self.initialize_installer
-    symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
-    if ::File.symlink?(symlink)
-      puts "Symlink=#{symlink}"
-      target = ::File.readlink(symlink)
-      if target
-        puts "Delete symlink=#{symlink}"
-        ::File.delete(symlink)
-        puts "Delete target directory=#{target}"
-        ::File.delete(target)
-      end
-    else
-      installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
-      @installer.destroy if @installer.exists?
-      
-      target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
-      puts "Target directory=#{target}"
-      if ::File.directory?(target)
-        puts "Delete target directory=#{target}"
-        FileUtils.rm_rf(target)
-      end
+def uninstall
+  self.initialize_installer
+
+  execute("rm -f /etc/init.d/dynaTrace*");
+
+  symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
+  if ::File.symlink?(symlink)
+    puts "Symlink=#{symlink}"
+    target = ::File.readlink(symlink)
+    if target
+      puts "Delete symlink=#{symlink}"
+      ::File.delete(symlink)
+      puts "Delete target directory=#{target}"
+      ::File.delete(target)
     end
-    
-    puts "Cache directory=#{resource[:installer_cache_dir]}"
-    if ::File.directory?("#{resource[:installer_cache_dir]}")
-      puts "Delete cache directory=#{resource[:installer_cache_dir]}"
-      FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
+  else
+    installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
+    @installer.destroy if @installer.exists?
+
+    target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
+    puts "Target directory=#{target}"
+    if ::File.directory?(target)
+      puts "Delete target directory=#{target}"
+      FileUtils.rm_rf(target)
     end
-    
-    
-    
-    puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
-    
-    #this should stop any dynaTraceServer process on agent node
-    stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-    
-    #Stop any running instance of dynatrace service: dtserver
-    stop_processes('dtserver', nil, 'rhel', 5, 'TERM')
-
-    #Stop any running instance of dynatrace service: dtfrontendserver
-    stop_processes('dtfrontendserver', nil, 'rhel', 5, 'TERM')
-    
-    #this should stop any dynatrace user process on agent node
-    stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-    
-
-    
-    #this should stop any dynaTraceServer process on agent node
-    stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'KILL')
-    
-    #Stop any running instance of dynatrace service: dtserver
-    stop_processes('dtserver', nil, 'rhel', 5, 'KILL')
-
-    #Stop any running instance of dynatrace service: dtfrontendserver
-    stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
-
   end
+
+  puts "Cache directory=#{resource[:installer_cache_dir]}"
+  if ::File.directory?("#{resource[:installer_cache_dir]}")
+    puts "Delete cache directory=#{resource[:installer_cache_dir]}"
+    FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
+  end
+
+
+
+  puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
+
+  #this should stop any dynaTraceServer process on agent node
+  stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
+
+  #Stop any running instance of dynatrace service: dtserver
+  stop_processes('dtserver', nil, 'rhel', 5, 'TERM')
+
+  #Stop any running instance of dynatrace service: dtfrontendserver
+  stop_processes('dtfrontendserver', nil, 'rhel', 5, 'TERM')
+
+  #this should stop any dynatrace user process on agent node
+  stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
+
+
+
+  #this should stop any dynaTraceServer process on agent node
+  stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'KILL')
+
+  #Stop any running instance of dynatrace service: dtserver
+  stop_processes('dtserver', nil, 'rhel', 5, 'KILL')
+
+  #Stop any running instance of dynatrace service: dtfrontendserver
+  stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
+
+end
 
   def uninstalled
     self.uninstall

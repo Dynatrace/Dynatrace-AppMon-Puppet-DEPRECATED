@@ -1,5 +1,5 @@
 class dynatrace::role::uninstall_all (
-  $ensure                  = 'absent',
+  $ensure                  = 'uninstalled',
   $role_name               = 'Dynatrace Server',
   $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
@@ -19,10 +19,6 @@ class dynatrace::role::uninstall_all (
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
-  notify{"uninstall_all": message => "executing dynatrace::role::uninstall_all"; }
-  
-  validate_re($ensure, ['^absent$'])
-
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
@@ -31,12 +27,12 @@ class dynatrace::role::uninstall_all (
     }
     default: {}
   }
-  
+
   $installation_ensure = $ensure ? {
     'absent'  => 'uninstalled',
     default   => 'installed',
   }
-  
+
   $service_ensure = $ensure ? {
     'absent'  => 'stopped',
     default   => 'stopped',
@@ -73,7 +69,7 @@ class dynatrace::role::uninstall_all (
 #  } else {
 #    notice("${symlink} is defined - nothing to do.")
 #  }
-    
+
   file {'remove_directory':
     ensure => absent,
     path => $symlink,
@@ -81,10 +77,9 @@ class dynatrace::role::uninstall_all (
     purge => true,
     force => true,
   }
-  
 
 #    #execute fact on agent - will kill all orphaned dynatrace server processes
 #  if $dynatrace_clean_agent == 1 {          #TODO how to pass $::osfamily as an argumet to dynatrace_clean_agent fact
-#  }  
+#  }
 }
 
