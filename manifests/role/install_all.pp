@@ -16,13 +16,22 @@ class dynatrace::role::install_all (
   $pwh_connection_username = $dynatrace::server_pwh_connection_username,
   $pwh_connection_password = $dynatrace::server_pwh_connection_password,
 
+  # java Agent parameters
   $env_var_name            = $dynatrace::env_var_name,
   $env_var_file_name       = $dynatrace::env_var_file_name,
   $agent_name              = $dynatrace::agent_name,
 
+  # Host Agent parameters
+  $host_agent_name           = $dynatrace::host_agent_name,
+  $host_installer_prefix_dir = $dynatrace::host_agent_installer_prefix_dir,
+  $host_installer_file_name  = $dynatrace::host_agent_installer_file_name,
+  $host_installer_file_url   = $dynatrace::host_agent_installer_file_url,
+  $host_collector_name       = $dynatrace::host_agent_collector,    
+  
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::dynatrace_group
-) inherits dynatrace {
+  $dynatrace_group         = $dynatrace::dynatrace_group,
+  
+  ) inherits dynatrace {
 
   notify{"install_all": message => "executing dynatrace::role::install_all"; }
 
@@ -46,5 +55,9 @@ class dynatrace::role::install_all (
     env_var_name      => $env_var_name,
     env_var_file_name => $env_var_file_name,
     agent_name        => $agent_name,
+  } ->
+  class { 'dynatrace::role::host_agent':
+#    require => Class['dynatrace::role::agents_package']
   }
 }
+

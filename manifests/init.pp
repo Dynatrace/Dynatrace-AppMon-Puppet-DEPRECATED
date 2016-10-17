@@ -64,6 +64,12 @@ class dynatrace (
   $wsagent_package_installer_file_name  = $dynatrace::params::wsagent_package_installer_file_name,
   $wsagent_package_installer_file_url   = $dynatrace::params::wsagent_package_installer_file_url,
 
+  $host_agent_installer_prefix_dir = $dynatrace::params::host_agent_installer_prefix_dir,
+  $host_agent_installer_file_name  = $dynatrace::params::host_agent_installer_file_name,
+  $host_agent_installer_file_url   = $dynatrace::params::host_agent_installer_file_url,
+  $host_agent_name                 = $dynatrace::params::host_agent_name,
+  $host_agent_collector            = $dynatrace::params::host_agent_collector,
+  
 ) inherits dynatrace::params {
 
 }
