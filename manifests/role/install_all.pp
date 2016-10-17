@@ -37,7 +37,8 @@ class dynatrace::role::install_all (
 
   validate_re($ensure, ['^present$', '^absent$'])
 
-  # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent
+  # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent, host agent
+  # note that installation order is important for base modules: server, server_license, collector, agents_package
   class { 'dynatrace::role::server':
   }  -> # and then:
   class { 'dynatrace::role::server_license':
@@ -57,7 +58,6 @@ class dynatrace::role::install_all (
     agent_name        => $agent_name,
   } ->
   class { 'dynatrace::role::host_agent':
-#    require => Class['dynatrace::role::agents_package']
   }
 }
 

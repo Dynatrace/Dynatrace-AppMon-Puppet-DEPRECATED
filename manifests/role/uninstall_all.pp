@@ -49,26 +49,20 @@ class dynatrace::role::uninstall_all (
   }
 
 
-  #when used 'if defined(File[$symlink])' then only symlink is deleted ...
   $symlink = "${installer_prefix_dir}/dynatrace"
-#  if defined(File[$symlink]) {
-#    notice("${symlink} is defined.")
 
-    dynatrace_installation { "Uninstall the ${role_name}":
-      ensure                => uninstalled,
-      installer_prefix_dir  => $installer_prefix_dir,
-      installer_file_name   => $installer_file_name,
-      installer_file_url    => $installer_file_url,
-      installer_script_name => $installer_script_name,
-      installer_path_part   => 'server',
-      installer_path_detailed => '',
-      installer_owner       => $dynatrace_owner,
-      installer_group       => $dynatrace_group,
-      installer_cache_dir   => $installer_cache_dir,
-    }
-#  } else {
-#    notice("${symlink} is defined - nothing to do.")
-#  }
+  dynatrace_installation { "Uninstall the ${role_name}":
+    ensure                => uninstalled,
+    installer_prefix_dir  => $installer_prefix_dir,
+    installer_file_name   => $installer_file_name,
+    installer_file_url    => $installer_file_url,
+    installer_script_name => $installer_script_name,
+    installer_path_part   => 'server',
+    installer_path_detailed => '',
+    installer_owner       => $dynatrace_owner,
+    installer_group       => $dynatrace_group,
+    installer_cache_dir   => $installer_cache_dir,
+  }
 
   file {'remove_directory':
     ensure => absent,
@@ -78,8 +72,5 @@ class dynatrace::role::uninstall_all (
     force => true,
   }
 
-#    #execute fact on agent - will kill all orphaned dynatrace server processes
-#  if $dynatrace_clean_agent == 1 {          #TODO how to pass $::osfamily as an argumet to dynatrace_clean_agent fact
-#  }
 }
 
