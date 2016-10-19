@@ -22,7 +22,7 @@ class dynatrace::role::install_all (
   $agent_name              = $dynatrace::agent_name,
 
   # Host Agent parameters
-  $host_agent_name           = $dynatrace::host_agent_name,
+  $hostagent_name           = $dynatrace::host_agent_name,
   $host_installer_prefix_dir = $dynatrace::host_agent_installer_prefix_dir,
   $host_installer_file_name  = $dynatrace::host_agent_installer_file_name,
   $host_installer_file_url   = $dynatrace::host_agent_installer_file_url,
@@ -33,7 +33,7 @@ class dynatrace::role::install_all (
 
   ) inherits dynatrace {
 
-  notify{"install_all": message => "executing dynatrace::role::install_all"; }
+  notify{"install_all": message => "executing dynatrace::role::install_all"; } 
 
   validate_re($ensure, ['^present$', '^absent$'])
 
@@ -58,11 +58,11 @@ class dynatrace::role::install_all (
     agent_name        => $agent_name,
   } ->
   class { 'dynatrace::role::host_agent':
-    host_agent_name           => $host_agent_name,
+    host_agent_name           => $hostagent_name,
     host_installer_prefix_dir => $host_agent_installer_prefix_dir,
     host_installer_file_name  => $host_agent_installer_file_name,
     host_installer_file_url   => $host_agent_installer_file_url,
-    host_collector_name       => $host_agent_collector_name,
+    host_collector_name       => $host_collector_name,
   }
 }
 
