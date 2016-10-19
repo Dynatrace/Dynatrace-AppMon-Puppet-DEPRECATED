@@ -33,7 +33,7 @@ class dynatrace::role::install_all (
 
   ) inherits dynatrace {
 
-  notify{"install_all": message => "executing dynatrace::role::install_all"; } 
+  notify{"install_all": message => "executing dynatrace::role::install_all"; }
 
   validate_re($ensure, ['^present$', '^absent$'])
 
@@ -63,6 +63,7 @@ class dynatrace::role::install_all (
     host_installer_file_name  => $host_agent_installer_file_name,
     host_installer_file_url   => $host_agent_installer_file_url,
     host_collector_name       => $host_collector_name,
+  } ->
+  class { 'dynatrace::role::memory_analysis_server':
   }
 }
-
