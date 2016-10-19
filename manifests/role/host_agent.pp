@@ -50,14 +50,14 @@ class dynatrace::role::host_agent (
 
   include dynatrace::role::dynatrace_user
 
-  file_line { "Inject the Host Agent name ${host_agent_name} and ${host_collector_name} into ${ini_file}":
+  file_line { "Inject the Host Agent name ${host_agent_name} into ${ini_file}":
     ensure => $ensure,
     path   => $ini_file,
     line   => "Name ${host_agent_name}",
     match  => "^Name host.*$"
   }
 
-  file_line { "Inject the collector name ${host_agent_name} and ${host_collector_name} into ${ini_file}":
+  file_line { "Inject the collector name ${host_collector_name} into ${ini_file}":
     ensure => $ensure,
     path   => $ini_file,
     line   => "Server ${host_collector_name}",

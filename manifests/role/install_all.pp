@@ -26,11 +26,11 @@ class dynatrace::role::install_all (
   $host_installer_prefix_dir = $dynatrace::host_agent_installer_prefix_dir,
   $host_installer_file_name  = $dynatrace::host_agent_installer_file_name,
   $host_installer_file_url   = $dynatrace::host_agent_installer_file_url,
-  $host_collector_name       = $dynatrace::host_agent_collector,    
-  
+  $host_collector_name       = $dynatrace::host_agent_collector_name,
+
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group,
-  
+
   ) inherits dynatrace {
 
   notify{"install_all": message => "executing dynatrace::role::install_all"; }
@@ -58,6 +58,11 @@ class dynatrace::role::install_all (
     agent_name        => $agent_name,
   } ->
   class { 'dynatrace::role::host_agent':
+    host_agent_name           => $host_agent_name,
+    host_installer_prefix_dir => $host_agent_installer_prefix_dir,
+    host_installer_file_name  => $host_agent_installer_file_name,
+    host_installer_file_url   => $host_agent_installer_file_url,
+    host_collector_name       => $host_agent_collector_name,
   }
 }
 
