@@ -69,7 +69,6 @@ class dynatrace::role::host_agent (
     command => "ln -s ${host_installer_prefix_dir}/dynatrace/init.d/dynaTraceHostagent /etc/init.d/${service}",
     path    => ['/usr/bin', '/usr/sbin', '/bin'],
     unless  => ["test -L /etc/init.d/${service}"],
-    }
   } ->
   service { "Start and enable the ${role_name}'s service: '${service}'":
     ensure => $service_ensure,

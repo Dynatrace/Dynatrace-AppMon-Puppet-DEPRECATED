@@ -65,11 +65,11 @@
 #  $wsagent_package_installer_file_name  => The file name of the Dynatrace WebServer Agent installer in the module's files directory.
 #  $wsagent_package_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Web Server Agent installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
 #
-#  $host_agent_installer_prefix_dir = '/opt'
-#  $host_agent_installer_file_name  = 'dynatrace-hostagent.tar'
-#  $host_agent_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-hostagent-6.5.0.1289-linux-x86-64.tar'
-#  $host_agent_name                 = 'hostagent'
-#  $host_agent_collector            = 'localhost'
+#  $host_agent_installer_prefix_dir => The Dynatrace Host Agent will be installed into the directory $host_agent_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $host_agent_installer_prefix_dir/dynatrace.
+#  $host_agent_installer_file_name  => The file name of the Dynatrace Host Agent installer in the module's files directory.
+#  $host_agent_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Web Host Agent installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
+#  $host_agent_name                 => Dynatrace Host Agent name
+#  $host_agent_collector            => Dynatrace Host Agent Collector identifier (collector IP address or host name)
 #  
 #  
 class dynatrace::params {
@@ -145,7 +145,7 @@ class dynatrace::params {
       $host_agent_installer_file_name  = 'dynatrace-hostagent.tar'
       $host_agent_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-hostagent-6.5.0.1289-linux-x86-64.tar'
       $host_agent_name                 = 'hostagent'
-      $host_agent_collector            = 'localhost'
+      $host_agent_collector_name       = 'localhost'
       
     }
     default: {
