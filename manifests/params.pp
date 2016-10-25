@@ -71,6 +71,10 @@
 #  $host_agent_name                 => Dynatrace Host Agent name
 #  $host_agent_collector            => Dynatrace Host Agent Collector identifier (collector IP address or host name)
 #  
+#  $update_file_url                 => URL to the update zip file with tds inside e.g. 'https://files.dynatrace.com/downloads/fixpacks/dynaTrace-6.5.1.1003.zip'
+#  $update_rest_url                 => the REST URL to perform update 
+#  $update_user                     => user name 
+#  $update_passwd                   => user password
 #  
 class dynatrace::params {
 
@@ -146,7 +150,12 @@ class dynatrace::params {
       $host_agent_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-hostagent-6.5.0.1289-linux-x86-64.tar'
       $host_agent_name                 = 'hostagent'
       $host_agent_collector_name       = 'localhost'
-      
+
+      $update_file_url           = undef
+      $update_rest_url           = 'https://localhost:8021/rest/management/installjobs'
+      $update_user               = 'admin'
+      $update_passwd             = 'admin'
+            
     }
     default: {
       fail("The kernel '${::kernel}' is currently not supported.")
