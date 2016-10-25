@@ -24,7 +24,7 @@ Puppet::Type.type(:make_server_update).provide(:ruby) do
   private
   def self.make_server_update(update_file_path, rest_update_url, rest_update_status_url, user, passwd)
 
-    puts "Making AppMon Server update process using REST URL=#{rest_update_url}"    
+    puts "Start AppMon Server update process using REST URL=#{rest_update_url}"    
     jobid = nil
     
     uri = URI(rest_update_url)

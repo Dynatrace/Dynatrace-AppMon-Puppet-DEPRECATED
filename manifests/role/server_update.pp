@@ -17,7 +17,13 @@ class dynatrace::role::server_update (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
+      
       $service = 'dynaTraceServer'
+      $collectorService = 'dynaTraceCollector'
+      $dynaTraceAnalysis = 'dynaTraceAnalysis'
+      $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
+      $dynaTraceHostagent = 'dynaTraceHostagent'
+      
       $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
       
       $update_file_path = "${installer_cache_dir}/dynatrace/server_update/dynaTrace-6.5.1.1003.dtf"
@@ -54,7 +60,7 @@ class dynatrace::role::server_update (
     group  => $dynatrace_group,
   }
 
-  # introducing order (archive then update and stop then start service)  
+  # introducing order (archive then update and stop then start services)  
   archive { 'dynaTrace-update':
      ensure => present,
      url => $update_file_url,
@@ -71,13 +77,60 @@ class dynatrace::role::server_update (
     user => $update_user,
     passwd => $update_passwd
   } ->
-  service { "Stop the ${role_name}'s service: '${service}'":    #hack to ensure restart service (stop service then start it)  
-    ensure => stopped,
-    name   => $service,
-    enable => true
-  } -> 
-  exec {"Start the service ${service}":
+    
+  exec {"Stop the service ${service}":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${service} stop",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${service}"],                  #stop service only if its service link exists
+  } ->
+  exec {"Start the service ${service}":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
     command => "service ${service} start",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-  }  
+    onlyif  => ["test -L /etc/init.d/${service}"],                  #stop service only if its service link exists
+  } ->
+  
+  exec {"Stop the ${role_name}'s service: '${collectorService}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${collectorService} stop",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${collectorService}"],
+  } ->
+  exec {"Start the ${role_name}'s service: '${collectorService}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${collectorService} start",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${collectorService}"],
+  } ->
+  
+  exec {"Stop the ${role_name}'s service: '${dynaTraceAnalysis}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceAnalysis} stop",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceAnalysis}"],
+  } ->
+  exec {"Start the ${role_name}'s service: '${dynaTraceAnalysis}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceAnalysis} start",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceAnalysis}"],
+  } ->
+    
+  exec {"Stop the ${role_name}'s service: '${dynaTraceWebServerAgent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceWebServerAgent} stop",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceWebServerAgent}"],
+  } ->
+  exec {"Start the ${role_name}'s service: '${dynaTraceWebServerAgent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceWebServerAgent} start",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceWebServerAgent}"],
+  } ->
+  
+  exec {"Stop the ${role_name}'s service: '${dynaTraceHostagent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceHostagent} stop",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceHostagent}"],
+  } ->
+  exec {"Start the ${role_name}'s service: '${dynaTraceHostagent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
+    command => "service ${dynaTraceHostagent} start",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L /etc/init.d/${dynaTraceHostagent}"],
+  }
+  
 }
