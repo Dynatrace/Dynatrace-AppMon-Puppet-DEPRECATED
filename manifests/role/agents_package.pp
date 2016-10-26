@@ -1,6 +1,7 @@
 class dynatrace::role::agents_package (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Agents',
+  $installer_bitsize    = $dynatrace::agents_package_installer_bitsize,
   $installer_prefix_dir = $dynatrace::agents_package_installer_prefix_dir,
   $installer_file_name  = $dynatrace::agents_package_installer_file_name,
   $installer_file_url   = $dynatrace::agents_package_installer_file_url,
@@ -9,6 +10,7 @@ class dynatrace::role::agents_package (
 ) inherits dynatrace {
 
   validate_re($ensure, ['^present$', '^absent$'])
+  validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)
 
   case $::kernel {
@@ -43,6 +45,7 @@ class dynatrace::role::agents_package (
 
   dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
     ensure    => $ensure,
+
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",

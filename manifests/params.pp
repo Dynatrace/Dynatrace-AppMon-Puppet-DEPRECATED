@@ -7,6 +7,7 @@
 #  $dynatrace_group => The system user's group that owns a Dynatrace installation.
 #  $installer_cache_dir => The path where the installation script and downloaded jar-file will be temporarily placed
 #
+#  $agents_package_server_installer_bitsize => '32' or '64'.
 #  $agents_package_installer_prefix_dir => The Dynatrace Agents package will be installed into the directory $agents_package_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $agents_package_installer_prefix_dir/dynatrace.
 #  $agents_package_installer_file_name  => The file name of the Dynatrace Agents installer in the module's files directory.
 #  $agents_package_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Agents installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
@@ -73,6 +74,7 @@ class dynatrace::params {
       $dynatrace_group = 'dynatrace'
       $installer_cache_dir = "${settings::vardir}"
 
+      $agents_package_installer_bitsize    = '64'
       $agents_package_installer_prefix_dir = '/opt'
       $agents_package_installer_file_name  = 'dynatrace-agent.jar'
       $agents_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
