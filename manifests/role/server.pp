@@ -19,7 +19,8 @@ class dynatrace::role::server (
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
-  
+  notify{"server": message => "executing dynatrace::role::server"; }
+    
   validate_bool($do_pwh_connection)
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)
@@ -113,8 +114,6 @@ class dynatrace::role::server (
     }
   }
 
-  include dynatrace::role::server_license
-  
   service { "Start and enable the ${role_name}'s service: '${service}'":
     ensure => $service_ensure,
     name   => $service,

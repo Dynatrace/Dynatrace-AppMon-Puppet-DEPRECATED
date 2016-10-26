@@ -14,6 +14,8 @@ class dynatrace::role::memory_analysis_server (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
   
+  notify{"memory_analysis_server": message => "executing dynatrace::role::memory_analysis_server"; }
+    
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)

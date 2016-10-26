@@ -39,23 +39,31 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     end
   end
   
-  
   def stop_processes(proc_pattern, proc_user, platform_family, timeout = 15, signal = 'TERM')
     pids = find_pids(proc_pattern, proc_user, platform_family)
+    # puts "Process(es) to kill: #{pids}"
     killed = false
     unless pids.empty?
-      Process.kill signal, *pids
-      # TODO! when process does not exit anymore exception is thrown Errno::ESRCH No such process
+      until pids.empty?
+        begin
+          Process.kill signal, *pids
+          break
+        rescue Errno::ESRCH
+          # The process could have terminated by itself. Retry to find processes matching search pattern.
+          # puts "No such process(es): #{pids}. Retrying search pattern..."
+          pids = find_pids(proc_pattern, proc_user, platform_family)
+        end
+      end
       begin
         Timeout.timeout(timeout, DynatraceTimeout) do
           loop do
             pids = find_pids(proc_pattern, proc_user, platform_family)
             if pids.empty?
-              # puts("Process(es) #{pids} terminated")
+              # puts "Terminated process(es)"
               killed = true
               break
             end
-            # puts("Waiting for process(es) #{pids} to finish")
+            # puts "Waiting for process(es) #{pids} to finish"
             sleep 1
           end
         end
@@ -104,6 +112,9 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   
   def uninstall
     self.initialize_installer
+  
+    execute("rm -f /etc/init.d/dynaTrace*");
+  
     symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
     if ::File.symlink?(symlink)
       puts "Symlink=#{symlink}"
@@ -117,7 +128,7 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     else
       installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
       @installer.destroy if @installer.exists?
-      
+  
       target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
       puts "Target directory=#{target}"
       if ::File.directory?(target)
@@ -125,40 +136,40 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
         FileUtils.rm_rf(target)
       end
     end
-    
+  
     puts "Cache directory=#{resource[:installer_cache_dir]}"
     if ::File.directory?("#{resource[:installer_cache_dir]}")
       puts "Delete cache directory=#{resource[:installer_cache_dir]}"
       FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
     end
-    
-    
-    
+  
+  
+  
     puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
-    
+  
     #this should stop any dynaTraceServer process on agent node
     stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-    
+  
     #Stop any running instance of dynatrace service: dtserver
     stop_processes('dtserver', nil, 'rhel', 5, 'TERM')
-
+  
     #Stop any running instance of dynatrace service: dtfrontendserver
     stop_processes('dtfrontendserver', nil, 'rhel', 5, 'TERM')
-    
+  
     #this should stop any dynatrace user process on agent node
     stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-    
-
-    
+  
+  
+  
     #this should stop any dynaTraceServer process on agent node
     stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'KILL')
-    
+  
     #Stop any running instance of dynatrace service: dtserver
     stop_processes('dtserver', nil, 'rhel', 5, 'KILL')
-
+  
     #Stop any running instance of dynatrace service: dtfrontendserver
     stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
-
+  
   end
 
   def uninstalled

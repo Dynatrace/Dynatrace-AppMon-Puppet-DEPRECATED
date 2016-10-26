@@ -3,6 +3,8 @@ class dynatrace::role::dynatrace_user(
   $dynatrace_group = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
+  notify{"dynatrace_user": message => "executing dynatrace::role::dynatrace_user"; }
+    
   validate_string($dynatrace_owner, $dynatrace_group)
 
   ensure_resource(user, "Create system user '${dynatrace_owner}'", {

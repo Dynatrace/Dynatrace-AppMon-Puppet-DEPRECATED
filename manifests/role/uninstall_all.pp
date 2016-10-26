@@ -1,5 +1,5 @@
 class dynatrace::role::uninstall_all (
-  $ensure                  = 'absent',
+  $ensure                  = 'uninstalled',
   $role_name               = 'Dynatrace Server',
   $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
@@ -18,8 +18,6 @@ class dynatrace::role::uninstall_all (
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
-  
-  validate_re($ensure, ['^absent$'])
 
   case $::kernel {
     'Linux': {
@@ -29,12 +27,12 @@ class dynatrace::role::uninstall_all (
     }
     default: {}
   }
-  
+
   $installation_ensure = $ensure ? {
     'absent'  => 'uninstalled',
     default   => 'installed',
   }
-  
+
   $service_ensure = $ensure ? {
     'absent'  => 'stopped',
     default   => 'stopped',
@@ -51,27 +49,21 @@ class dynatrace::role::uninstall_all (
   }
 
 
-  #when used 'if defined(File[$symlink])' then only symlink is deleted ...
   $symlink = "${installer_prefix_dir}/dynatrace"
-#  if defined(File[$symlink]) {
-#    notice("${symlink} is defined.")
 
-    dynatrace_installation { "Uninstall the ${role_name}":
-      ensure                => uninstalled,
-      installer_prefix_dir  => $installer_prefix_dir,
-      installer_file_name   => $installer_file_name,
-      installer_file_url    => $installer_file_url,
-      installer_script_name => $installer_script_name,
-      installer_path_part   => 'server',
-      installer_path_detailed => '',
-      installer_owner       => $dynatrace_owner,
-      installer_group       => $dynatrace_group,
-      installer_cache_dir   => $installer_cache_dir,
-    }
-#  } else {
-#    notice("${symlink} is defined - nothing to do.")
-#  }
-    
+  dynatrace_installation { "Uninstall the ${role_name}":
+    ensure                => uninstalled,
+    installer_prefix_dir  => $installer_prefix_dir,
+    installer_file_name   => $installer_file_name,
+    installer_file_url    => $installer_file_url,
+    installer_script_name => $installer_script_name,
+    installer_path_part   => 'server',
+    installer_path_detailed => '',
+    installer_owner       => $dynatrace_owner,
+    installer_group       => $dynatrace_group,
+    installer_cache_dir   => $installer_cache_dir,
+  }
+
   file {'remove_directory':
     ensure => absent,
     path => $symlink,
@@ -79,10 +71,6 @@ class dynatrace::role::uninstall_all (
     purge => true,
     force => true,
   }
-  
 
-#    #execute fact on agent - will kill all orphaned dynatrace server processes
-  if $dynatrace_clean_agent == 1 {          #TODO how to pass $::osfamily as an argumet to dynatrace_clean_agent fact
-  }  
 }
 

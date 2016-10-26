@@ -9,6 +9,8 @@ class dynatrace::role::agents_package (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
+  notify{"agents_package": message => "executing dynatrace::role::agents_package"; }
+  
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)
