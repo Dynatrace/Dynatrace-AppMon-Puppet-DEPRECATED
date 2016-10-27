@@ -2,11 +2,7 @@
 cd <%= @installer_prefix_dir %>
 
 # run the installer, capture its STDOUT and exit status
-installer_output=`java -jar <%= @installer_cache_dir %>/<%= @installer_file_name %> <<STDIN
-<%= @installer_bitsize %>
-Y
-STDIN`
-
+installer_output=`java -jar <%= @installer_cache_dir %>/<%= @installer_file_name %> -b <%= @installer_bitsize %> -y`
 result=$?
 
 # fetch an arbitrary init script name from the installer STDOUT
