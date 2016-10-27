@@ -113,38 +113,7 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   def uninstall
     self.initialize_installer
   
-    execute("rm -f /etc/init.d/dynaTrace*");
-  
-    symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
-    if ::File.symlink?(symlink)
-      puts "Symlink=#{symlink}"
-      target = ::File.readlink(symlink)
-      if target
-        puts "Delete symlink=#{symlink}"
-        ::File.delete(symlink)
-        puts "Delete target directory=#{target}"
-        ::File.delete(target)
-      end
-    else
-      installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
-      @installer.destroy if @installer.exists?
-  
-      target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
-      puts "Target directory=#{target}"
-      if ::File.directory?(target)
-        puts "Delete target directory=#{target}"
-        FileUtils.rm_rf(target)
-      end
-    end
-  
-    puts "Cache directory=#{resource[:installer_cache_dir]}"
-    if ::File.directory?("#{resource[:installer_cache_dir]}")
-      puts "Delete cache directory=#{resource[:installer_cache_dir]}"
-      FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
-    end
-  
-  
-  
+    puts 'Execute uninstall'
     puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
   
     #this should stop any dynaTraceServer process on agent node
@@ -169,7 +138,42 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   
     #Stop any running instance of dynatrace service: dtfrontendserver
     stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
+
+    execute("rm -f /etc/init.d/dynaTrace*");
   
+    puts "Cache directory=#{resource[:installer_cache_dir]}"
+    if ::File.directory?("#{resource[:installer_cache_dir]}")
+      puts "Delete cache directory=#{resource[:installer_cache_dir]}"
+      FileUtils.rm_rf("#{resource[:installer_cache_dir]}")
+    end
+  
+    symlink = "#{resource[:installer_prefix_dir]}/dynatrace"
+    if ::File.symlink?(symlink)
+      puts "Symlink=#{symlink}"
+      target = ::File.readlink(symlink)
+      puts "Target directory=#{target}"
+
+#      puts "Delete symlink=#{symlink}"
+#      ::File.delete(symlink)
+#      
+#      if target
+#        puts "Delete target directory=#{target}"
+#        ::File.delete(target)
+#        puts "Deleted target directory=#{target}"
+#      end
+    else
+      puts "Symlink=#{symlink} not found."
+      installer_install_dir = @installer.get_install_dir("#{resource[:installer_cache_dir]}/#{resource[:installer_file_name]}")
+      @installer.destroy if @installer.exists?
+  
+      target = "#{resource[:installer_prefix_dir]}/#{installer_install_dir}"
+      puts "Target directory=#{target}"
+#      if ::File.directory?(target)
+#        puts "Delete target directory=#{target}"
+#        FileUtils.rm_rf(target)
+#        puts "Deleted target directory=#{target}"
+#      end
+    end
   end
 
   def uninstalled
