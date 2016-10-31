@@ -71,10 +71,10 @@ class dynatrace (
   $host_agent_name                 = $dynatrace::params::host_agent_name,
   $host_agent_collector_name       = $dynatrace::params::host_agent_collector_name,
 
-  $update_file_url           = $dynatrace::update_file_url,
-  $update_rest_url           = $dynatrace::update_rest_url,
-  $update_user               = $dynatrace::update_user,
-  $update_passwd             = $dynatrace::update_passwd,
+  $update_file_url           = $dynatrace::params::update_file_url,
+  $update_rest_url           = $dynatrace::params::update_rest_url,
+  $update_user               = $dynatrace::params::update_user,
+  $update_passwd             = $dynatrace::params::update_passwd,
     
 ) inherits dynatrace::params {
 
