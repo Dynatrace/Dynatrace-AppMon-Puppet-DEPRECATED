@@ -115,7 +115,14 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   
     puts 'Execute uninstall'
     puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
-  
+
+#    $service = 'dynaTraceServer'
+#    $collectorService = 'dynaTraceCollector'
+#    $dynaTraceAnalysis = 'dynaTraceAnalysis'
+#    $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
+#    $dynaTraceHostagent = 'dynaTraceHostagent'
+    
+      
     #this should stop any dynaTraceServer process on agent node
     stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
   
@@ -128,7 +135,12 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     #this should stop any dynatrace user process on agent node
     stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
   
-  
+    stop_processes('dynaTraceServer', nil, 'rhel', 5, 'TERM')
+    stop_processes('dynaTraceCollector', nil, 'rhel', 5, 'TERM')
+    stop_processes('dynaTraceAnalysis', nil, 'rhel', 5, 'TERM')
+    stop_processes('dynaTraceWebServerAgent', nil, 'rhel', 5, 'TERM')
+    stop_processes('dynaTraceHostagent', nil, 'rhel', 5, 'TERM')
+    
   
     #this should stop any dynaTraceServer process on agent node
     stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'KILL')
@@ -139,6 +151,12 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     #Stop any running instance of dynatrace service: dtfrontendserver
     stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
 
+    stop_processes('dynaTraceServer', nil, 'rhel', 5, 'KILL')
+    stop_processes('dynaTraceCollector', nil, 'rhel', 5, 'KILL')
+    stop_processes('dynaTraceAnalysis', nil, 'rhel', 5, 'KILL')
+    stop_processes('dynaTraceWebServerAgent', nil, 'rhel', 5, 'KILL')
+    stop_processes('dynaTraceHostagent', nil, 'rhel', 5, 'KILL')
+    
     execute("rm -f /etc/init.d/dynaTrace*");
   
     puts "Cache directory=#{resource[:installer_cache_dir]}"

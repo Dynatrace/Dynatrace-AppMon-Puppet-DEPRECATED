@@ -46,42 +46,61 @@ class dynatrace::role::uninstall_all (
   $install_link = "${installer_prefix_dir}/dynatrace"
   $symlink      = "${installer_prefix_dir}/dynatrace"
 
-  service { "Stop the ${role_name}'s service: '${service}'  installer_cache_dir='${installer_cache_dir}'  install_link='${install_link}'":
+  if ("test -L /etc/init.d/${service}") {
+    notify {"Service ${service} exists ": }
+  }  
+  
+  service { "Service ${service} exists ":
     ensure => 'stopped',
     name   => $service,
     enable => false
-  } ->
+  }
 
-  exec {"Stop the service ${service}":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
-    command => "service ${service} stop",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-    onlyif  => ["test -L /etc/init.d/${service}"],                  #stop service only if its service link exists
-  } ->
   
-  exec {"Stop the ${role_name}'s service: '${collectorService}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
-    command => "service ${collectorService} stop",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-    onlyif  => ["test -L /etc/init.d/${collectorService}"],
-  } ->
+  if ("test -L /etc/init.d/${collectorService}") {
+    notify {"Service ${collectorService} exists ": }
+  }  
+  service { "Service ${collectorService} exists ":
+    ensure => 'stopped',
+    name   => $collectorService,
+    enable => false
+  }
   
-  exec {"Stop the ${role_name}'s service: '${dynaTraceAnalysis}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
-    command => "service ${dynaTraceAnalysis} stop",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-    onlyif  => ["test -L /etc/init.d/${dynaTraceAnalysis}"],
-  } ->
     
-  exec {"Stop the ${role_name}'s service: '${dynaTraceWebServerAgent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
-    command => "service ${dynaTraceWebServerAgent} stop",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-    onlyif  => ["test -L /etc/init.d/${dynaTraceWebServerAgent}"],
-  } ->
+  if ("test -L /etc/init.d/${dynaTraceAnalysis}") {
+    notify {"Service ${dynaTraceAnalysis} exists ": }
+  }  
+  service { "Service ${dynaTraceAnalysis} exists ":
+    ensure => 'stopped',
+    name   => $dynaTraceAnalysis,
+    enable => false
+  }
+
+      
+  if ("test -L /etc/init.d/${dynaTraceWebServerAgent}") {
+    notify {"Service ${dynaTraceWebServerAgent} exists ": }
+  }  
+  service { "Service ${dynaTraceWebServerAgent} exists ":
+    ensure => 'stopped',
+    name   => $dynaTraceWebServerAgent,
+    enable => false
+  }
   
+        
+  if ("test -L /etc/init.d/${dynaTraceHostagent}") {
+    notify {"Service ${dynaTraceHostagent} exists ": }
+  }  
+  service { "Service ${dynaTraceHostagent} exists ":
+    ensure => 'stopped',
+    name   => $dynaTraceHostagent,
+    enable => false
+  }
+      
   exec {"Stop the ${role_name}'s service: '${dynaTraceHostagent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
     command => "service ${dynaTraceHostagent} stop",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
     onlyif  => ["test -L /etc/init.d/${dynaTraceHostagent}"],
   } ->
-
   
   dynatrace_installation { "Uninstall the ${role_name}":
     installer_prefix_dir  => $installer_prefix_dir,
@@ -96,7 +115,7 @@ class dynatrace::role::uninstall_all (
   } ->
 
   exec {"remove directory using symlink=${symlink}":
-    # remove directory using symlink (Chef directory resource does not work in this case)
+    # remove directory using symlink (Puppet file resource does not work sometimes in this case)
     command => "rm -rf \"$(readlink ${symlink})\"; rm -rf ${symlink}",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
     onlyif  => ["test -L ${symlink}"],
@@ -107,8 +126,9 @@ class dynatrace::role::uninstall_all (
     recurse => true,
     purge => true,
     force => true,
-    notify               => tidy ['clean /tmp folder from dynatrace files']
-  }
+#    notify               => tidy ['clean /tmp folder from dynatrace files']
+#  }
+  } ->
   
   tidy { 'clean /tmp folder from dynatrace files':
     path    => '/tmp',
@@ -126,7 +146,7 @@ class dynatrace::role::uninstall_all (
     path    => '/tmp/hsperfdata_root',
     recurse => 1,
     matches => [ '[0-9]*' ],
-  } ->
+  }
   
   file {'remove tmp dynatrace directory':
     ensure => absent,
@@ -144,4 +164,3 @@ class dynatrace::role::uninstall_all (
     force => true,
    }
 }
-
