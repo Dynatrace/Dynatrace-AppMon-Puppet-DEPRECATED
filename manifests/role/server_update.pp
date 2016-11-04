@@ -4,7 +4,6 @@ class dynatrace::role::server_update (
   
   $update_file_url           = $dynatrace::update_file_url,
   $update_rest_url           = $dynatrace::update_rest_url,
-  $update_rest_version_url   = $dynatrace::update_rest_version_url,
   $update_user               = $dynatrace::update_user,
   $update_passwd             = $dynatrace::update_passwd,
   
@@ -19,6 +18,11 @@ class dynatrace::role::server_update (
       $installer_script_name = 'install-server.sh'
       
       $service = 'dynaTraceServer'
+      
+      if ("test -L /etc/init.d/${service}") {
+        fail "Service ${service} does not exists. Update will not be executed."
+      }  
+      
       $collectorService = 'dynaTraceCollector'
       $dynaTraceAnalysis = 'dynaTraceAnalysis'
       $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
