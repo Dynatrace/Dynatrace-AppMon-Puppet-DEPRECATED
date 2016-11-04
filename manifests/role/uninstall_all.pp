@@ -26,6 +26,8 @@ class dynatrace::role::uninstall_all (
       $dynaTraceAnalysis = 'dynaTraceAnalysis'
       $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
       $dynaTraceHostagent = 'dynaTraceHostagent'
+      $dynaTraceBackendServer = 'dynaTraceBackendServer'
+      $dynaTraceFrontendServer = 'dynaTraceFrontendServer'
     }
     default: {}
   }
@@ -148,7 +150,7 @@ class dynatrace::role::uninstall_all (
     matches => [ '[0-9]*' ],
   }
   
-  file {'remove tmp dynatrace directory':
+  file {"remove tmp dynatrace directory":
     ensure => absent,
     path => '/tmp/hsperfdata_dynatrace',
     recurse => true,
@@ -156,11 +158,67 @@ class dynatrace::role::uninstall_all (
     force => true,
   } ->
 
-  file {'remove tmp directory':
+  file {"remove tmp directory":
     ensure => absent,
     path => '/tmp/hsperfdata_root',
     recurse => true,
     purge => true,
     force => true,
-   }
+  } ->
+  
+  file {"remove /etc/init.d/${service} link":
+    ensure => absent,
+    path => "/etc/init.d/${service}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+
+  file {"remove /etc/init.d/${collectorService} link":
+    ensure => absent,
+    path => "/etc/init.d/${collectorService}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+  
+  file {"remove /etc/init.d/${dynaTraceAnalysis} link":
+    ensure => absent,
+    path => "/etc/init.d/${dynaTraceAnalysis}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+    
+  file {"remove /etc/init.d/${dynaTraceWebServerAgent} link":
+    ensure => absent,
+    path => "/etc/init.d/${dynaTraceWebServerAgent}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+      
+  file {"remove /etc/init.d/${dynaTraceHostagent} link":
+    ensure => absent,
+    path => "/etc/init.d/${dynaTraceHostagent}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+        
+  file {"remove /etc/init.d/${dynaTraceBackendServer} link":
+    ensure => absent,
+    path => "/etc/init.d/${dynaTraceBackendServer}",
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+      
+  file {"remove /etc/init.d/${dynaTraceFrontendServer} link":
+    ensure => absent,
+    path => "/etc/init.d/${dynaTraceFrontendServer}",
+    recurse => true,
+    purge => true,
+    force => true,
+  }
 }
