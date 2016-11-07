@@ -19,10 +19,6 @@ class dynatrace::role::server_update (
       
       $service = 'dynaTraceServer'
       
-      if ("test -L /etc/init.d/${service}") {
-        fail "Service ${service} does not exists. Update will not be executed."
-      }  
-      
       $collectorService = 'dynaTraceCollector'
       $dynaTraceAnalysis = 'dynaTraceAnalysis'
       $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
