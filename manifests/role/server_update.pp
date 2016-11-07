@@ -131,6 +131,30 @@ class dynatrace::role::server_update (
     command => "service ${dynaTraceHostagent} start",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
     onlyif  => ["test -L /etc/init.d/${dynaTraceHostagent}"],
+  } ->
+  
+
+# can be extended to  $collector_port but it looks like it isn't necessary
+#  wait_until_port_is_open { $collector_port:
+#    ensure  => $ensure,
+#  }
+
+  wait_until_port_is_open { '2021':
+    ensure  => $ensure,
+  } ->
+
+#  if $collector_port != '6699' {
+    wait_until_port_is_open { '6699':
+      ensure  => $ensure,
+    } ->
+#  }
+
+  wait_until_port_is_open { '8021':
+    ensure  => $ensure,
+  } ->
+
+  wait_until_port_is_open { '9911':
+    ensure  => $ensure,
   }
   
 }
