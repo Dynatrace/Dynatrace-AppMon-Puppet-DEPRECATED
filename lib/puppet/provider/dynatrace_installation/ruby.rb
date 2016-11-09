@@ -1,4 +1,5 @@
 require 'fileutils'
+#require 'stop_processes'
 
 Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   def initialize(*args)
@@ -39,124 +40,14 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
     end
   end
   
-  def stop_processes(proc_pattern, proc_user, platform_family, timeout = 15, signal = 'TERM')
-    pids = find_pids(proc_pattern, proc_user, platform_family)
-    # puts "Process(es) to kill: #{pids}"
-    killed = false
-    unless pids.empty?
-      until pids.empty?
-        begin
-          Process.kill signal, *pids
-          break
-        rescue Errno::ESRCH
-          # The process could have terminated by itself. Retry to find processes matching search pattern.
-          # puts "No such process(es): #{pids}. Retrying search pattern..."
-          pids = find_pids(proc_pattern, proc_user, platform_family)
-        end
-      end
-      begin
-        Timeout.timeout(timeout, DynatraceTimeout) do
-          loop do
-            pids = find_pids(proc_pattern, proc_user, platform_family)
-            if pids.empty?
-              # puts "Terminated process(es)"
-              killed = true
-              break
-            end
-            # puts "Waiting for process(es) #{pids} to finish"
-            sleep 1
-          end
-        end
-      rescue DynatraceTimeout
-        raise "Process(es) #{pids} did not stop"
-      end
-    end
-    killed
-  end
-  
-  # private_class_method
-  def find_pids(pattern, user, platform_family)
-    pids = []
-    if %w(debian fedora rhel).include? platform_family
-      pgrep_pattern_opt = !pattern.nil? ? "-f \"#{pattern}\"" : ''
-      pgrep_user_opt = !user.nil? ? "-u #{user}" : ''
-      search_processes_cmd = "pgrep #{pgrep_pattern_opt} #{pgrep_user_opt}"
-  
-      #################################################################
-      # code below doesn't work if workstation is on windows
-      #        %x[#{search_processes_cmd}].each_line do |pidStr|
-      #          if !pidStr.empty?
-      #            puts 'pid:' + pidStr
-      #            pids << pidStr.to_i
-      #          end
-      #          return pids
-      #        end
-      # this part working and fixes code above
-      pidStr = `#{search_processes_cmd}`
-      unless pidStr.empty?
-        text = []
-        text << pidStr.lines.map(&:chomp)
-        text.each do |x|
-          x.each do |y|
-            pids << y.to_i
-          end
-        end
-      end
-      #################################################################
-  
-    else
-      raise 'ERROR: Unsupported platform'
-    end
-    pids
-  end
-  
   def uninstall
     self.initialize_installer
   
     puts 'Execute uninstall'
-    puts "dynatrace_clean_agent user=#{resource[:installer_owner]}"
-
-#    $service = 'dynaTraceServer'
-#    $collectorService = 'dynaTraceCollector'
-#    $dynaTraceAnalysis = 'dynaTraceAnalysis'
-#    $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
-#    $dynaTraceHostagent = 'dynaTraceHostagent'
     
-      
-    #this should stop any dynaTraceServer process on agent node
-    stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-  
-    #Stop any running instance of dynatrace service: dtserver
-    stop_processes('dtserver', nil, 'rhel', 5, 'TERM')
-  
-    #Stop any running instance of dynatrace service: dtfrontendserver
-    stop_processes('dtfrontendserver', nil, 'rhel', 5, 'TERM')
-  
-    #this should stop any dynatrace user process on agent node
-    stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, 'TERM')
-  
-    stop_processes('dynaTraceServer', nil, 'rhel', 5, 'TERM')
-    stop_processes('dynaTraceCollector', nil, 'rhel', 5, 'TERM')
-    stop_processes('dynaTraceAnalysis', nil, 'rhel', 5, 'TERM')
-    stop_processes('dynaTraceWebServerAgent', nil, 'rhel', 5, 'TERM')
-    stop_processes('dynaTraceHostagent', nil, 'rhel', 5, 'TERM')
-    
-  
-    #this should stop any dynaTraceServer process on agent node
-    stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, 'KILL')
-  
-    #Stop any running instance of dynatrace service: dtserver
-    stop_processes('dtserver', nil, 'rhel', 5, 'KILL')
-  
-    #Stop any running instance of dynatrace service: dtfrontendserver
-    stop_processes('dtfrontendserver', nil, 'rhel', 5, 'KILL')
-
-    stop_processes('dynaTraceServer', nil, 'rhel', 5, 'KILL')
-    stop_processes('dynaTraceCollector', nil, 'rhel', 5, 'KILL')
-    stop_processes('dynaTraceAnalysis', nil, 'rhel', 5, 'KILL')
-    stop_processes('dynaTraceWebServerAgent', nil, 'rhel', 5, 'KILL')
-    stop_processes('dynaTraceHostagent', nil, 'rhel', 5, 'KILL')
-    
+    #TODO    
+    stop_processes::stop_all
+        
     execute("rm -f /etc/init.d/dynaTrace*");
   
     puts "Cache directory=#{resource[:installer_cache_dir]}"
@@ -216,7 +107,7 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   
     @requires_installation = !::File.exist?(installer_path_to_check)
   
-    puts "Checking if requires installation: #{@requires_installation}, for path: #{installer_path_to_check}."
+    puts "Checking if requires installation for path: #{installer_path_to_check}. Result: #{@requires_installation}, ensure= #{resource[:ensure]}"
   
     return @requires_installation
   end

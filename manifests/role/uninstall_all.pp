@@ -48,74 +48,10 @@ class dynatrace::role::uninstall_all (
   $install_link = "${installer_prefix_dir}/dynatrace"
   $symlink      = "${installer_prefix_dir}/dynatrace"
 
-  if ("test -L /etc/init.d/${service}") {
-    notify {"Service ${service} exists ": }
-  }  
-  
-  service { "Service ${service} exists ":
-    ensure => 'stopped',
-    name   => $service,
-    enable => false
-  }
+  #stopp all Dynatrace processes
+  include dynatrace::role::stop_all_processes
 
-  
-  if ("test -L /etc/init.d/${collectorService}") {
-    notify {"Service ${collectorService} exists ": }
-  }  
-  service { "Service ${collectorService} exists ":
-    ensure => 'stopped',
-    name   => $collectorService,
-    enable => false
-  }
-  
-    
-  if ("test -L /etc/init.d/${dynaTraceAnalysis}") {
-    notify {"Service ${dynaTraceAnalysis} exists ": }
-  }  
-  service { "Service ${dynaTraceAnalysis} exists ":
-    ensure => 'stopped',
-    name   => $dynaTraceAnalysis,
-    enable => false
-  }
-
-      
-  if ("test -L /etc/init.d/${dynaTraceWebServerAgent}") {
-    notify {"Service ${dynaTraceWebServerAgent} exists ": }
-  }  
-  service { "Service ${dynaTraceWebServerAgent} exists ":
-    ensure => 'stopped',
-    name   => $dynaTraceWebServerAgent,
-    enable => false
-  }
-  
-        
-  if ("test -L /etc/init.d/${dynaTraceHostagent}") {
-    notify {"Service ${dynaTraceHostagent} exists ": }
-  }  
-  service { "Service ${dynaTraceHostagent} exists ":
-    ensure => 'stopped',
-    name   => $dynaTraceHostagent,
-    enable => false
-  }
-      
-  exec {"Stop the ${role_name}'s service: '${dynaTraceHostagent}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
-    command => "service ${dynaTraceHostagent} stop",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-    onlyif  => ["test -L /etc/init.d/${dynaTraceHostagent}"],
-  } ->
-  
-  dynatrace_installation { "Uninstall the ${role_name}":
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => 'install-server.sh',
-    installer_path_part   => 'server',
-    installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir,
-  } ->
-
+  #removing folders and links  
   exec {"remove directory using symlink=${symlink}":
     # remove directory using symlink (Puppet file resource does not work sometimes in this case)
     command => "rm -rf \"$(readlink ${symlink})\"; rm -rf ${symlink}",
@@ -128,8 +64,6 @@ class dynatrace::role::uninstall_all (
     recurse => true,
     purge => true,
     force => true,
-#    notify               => tidy ['clean /tmp folder from dynatrace files']
-#  }
   } ->
   
   tidy { 'clean /tmp folder from dynatrace files':
@@ -165,7 +99,8 @@ class dynatrace::role::uninstall_all (
     purge => true,
     force => true,
   } ->
-  
+
+  #TODO use array with services names and iterate it  
   file {"remove /etc/init.d/${service} link":
     ensure => absent,
     path => "/etc/init.d/${service}",

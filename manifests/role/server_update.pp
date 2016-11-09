@@ -37,11 +37,11 @@ class dynatrace::role::server_update (
     default   => 'directory',
   }
 
-  $installation_ensure = $ensure ? {
-    'present' => 'installed',
-    'absent'  => 'uninstalled',
-    default   => 'installed',
-  }
+#  $installation_ensure = $ensure ? {
+#    'present' => 'installed',
+#    'absent'  => 'uninstalled',
+#    default   => 'installed',
+#  }
   
   $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
