@@ -150,12 +150,12 @@ Puppet::Type.type(:stop_processes).provide(:ruby) do
       services.each {
         |x| 
 #        print x, " -- " 
-        do_stop_processes(x, nil, 'rhel', 5, kill_type)
+        do_stop_processes(x, nil, 'rhel', 500, kill_type)
       }
     end
 
     do_stop_processes('dynaTraceServer', "#{resource[:installer_owner]}", 'rhel', 5, kill_type)
-    do_stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 5, kill_type)
+    do_stop_processes(nil, "#{resource[:installer_owner]}", 'rhel', 500, kill_type)
   end
 end
 

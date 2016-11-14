@@ -48,7 +48,7 @@ class dynatrace::role::uninstall_all (
   $install_link = "${installer_prefix_dir}/dynatrace"
   $symlink      = "${installer_prefix_dir}/dynatrace"
 
-  #stopp all Dynatrace processes
+  #stop all Dynatrace processes
   include dynatrace::role::stop_all_processes
 
   #removing folders and links  

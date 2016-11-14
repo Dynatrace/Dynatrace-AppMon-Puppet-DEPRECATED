@@ -1,6 +1,6 @@
 class dynatrace::role::stop_all_processes (
   $ensure                  = 'stopped',
-  $role_name               = 'Dynatrace Server',
+  $role_name               = 'Dynatrace Server stop all processes',
   $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
   $installer_file_name     = $dynatrace::server_installer_file_name,
@@ -38,8 +38,7 @@ class dynatrace::role::stop_all_processes (
     if ("test -L /etc/init.d/${x}") {
       notify {"Service ${x} exists and will be stopped.": }
     }  
-    
-    service { "Service ${x} exists and will be stopped.":
+    service { "${role_name}: Service ${x} exists and will be stopped.":
       ensure => 'stopped',
       name   => $x,
 #        enable => false
@@ -48,7 +47,7 @@ class dynatrace::role::stop_all_processes (
 
   #TODO add lambda to delay execution on agent  
   $services_to_stop_string = join($services_to_stop_array,",")
-  notify{"server": message => "executing dynatrace::role::stop_all_processes  services_to_stop=${services_to_stop_string}"; }
+  notify{"server - stop all processes": message => "executing dynatrace::role::stop_all_processes  services_to_stop=${services_to_stop_string}"; }
    
   stop_processes { "Stop the ${role_name} processes: ${services_to_stop_string}":
     services_to_stop      => $services_to_stop_string,
