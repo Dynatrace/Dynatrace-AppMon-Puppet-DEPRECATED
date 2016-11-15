@@ -22,11 +22,11 @@ class dynatrace::role::start_all_processes (
   case $::kernel {
     'Linux': {
       $services_to_start_array = [
-        'dynaTraceServer',
-        'dynaTraceCollector',
-        'dynaTraceAnalysis',  
-        'dynaTraceWebServerAgent',
-        'dynaTraceHostagent',
+        $dynatrace::dynaTraceServer,
+        $dynatrace::dynaTraceCollector,
+        $dynatrace::dynaTraceAnalysis,  
+        $dynatrace::dynaTraceWebServerAgent,
+        $dynatrace::dynaTraceHostagent,
 #        'dynaTraceBackendServer',
 #        'dynaTraceFrontendServer' 
         ]

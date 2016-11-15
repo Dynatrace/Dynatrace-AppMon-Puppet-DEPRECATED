@@ -1,6 +1,6 @@
 class dynatrace::role::uninstall_all (
   $ensure                  = 'uninstalled',
-  $role_name               = 'Dynatrace Server',
+  $role_name               = 'Dynatrace Server uninstall',
   $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
   $installer_file_name     = $dynatrace::server_installer_file_name,
@@ -21,13 +21,7 @@ class dynatrace::role::uninstall_all (
 
   case $::kernel {
     'Linux': {
-      $service = 'dynaTraceServer'
-      $collectorService = 'dynaTraceCollector'
-      $dynaTraceAnalysis = 'dynaTraceAnalysis'
-      $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
-      $dynaTraceHostagent = 'dynaTraceHostagent'
-      $dynaTraceBackendServer = 'dynaTraceBackendServer'
-      $dynaTraceFrontendServer = 'dynaTraceFrontendServer'
+      $services_to_manage_array = $dynatrace::services_to_manage_array
     }
     default: {}
   }
@@ -98,62 +92,15 @@ class dynatrace::role::uninstall_all (
     recurse => true,
     purge => true,
     force => true,
-  } ->
+  }
 
-  #TODO use array with services names and iterate it  
-  file {"remove /etc/init.d/${service} link":
-    ensure => absent,
-    path => "/etc/init.d/${service}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-
-  file {"remove /etc/init.d/${collectorService} link":
-    ensure => absent,
-    path => "/etc/init.d/${collectorService}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-  
-  file {"remove /etc/init.d/${dynaTraceAnalysis} link":
-    ensure => absent,
-    path => "/etc/init.d/${dynaTraceAnalysis}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-    
-  file {"remove /etc/init.d/${dynaTraceWebServerAgent} link":
-    ensure => absent,
-    path => "/etc/init.d/${dynaTraceWebServerAgent}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-      
-  file {"remove /etc/init.d/${dynaTraceHostagent} link":
-    ensure => absent,
-    path => "/etc/init.d/${dynaTraceHostagent}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-        
-  file {"remove /etc/init.d/${dynaTraceBackendServer} link":
-    ensure => absent,
-    path => "/etc/init.d/${dynaTraceBackendServer}",
-    recurse => true,
-    purge => true,
-    force => true,
-  } ->
-      
-  file {"remove /etc/init.d/${dynaTraceFrontendServer} link":
-    ensure => absent,
-    path => "/etc/init.d/${dynaTraceFrontendServer}",
-    recurse => true,
-    purge => true,
-    force => true,
+  $services_to_manage_array.each |$x| {
+    file {"remove /etc/init.d/${x} link":
+      ensure => absent,
+      path => "/etc/init.d/${x}",
+      recurse => true,
+      purge => true,
+      force => true,
+    }
   }
 }

@@ -28,7 +28,7 @@ class dynatrace::role::host_agent (
 
   case $::kernel {
     'Linux': {
-      $service = 'dynaTraceHostagent'
+      $service = $dynatrace::dynaTraceHostagent
       $ini_file = "${host_installer_prefix_dir}/dynatrace/agent/conf/dthostagent.ini"
       $init_scripts = [$service]
     }

@@ -157,7 +157,31 @@ class dynatrace::params {
       $update_rest_url           = 'https://localhost:8021/rest/management/installjobs'
       $update_user               = 'admin'
       $update_passwd             = 'admin'
+
+      ######
+      #TODO try to remove exact version number!!!
+      $update_file_path_dtf = "/dynatrace/server_update/dynaTrace-6.5.1.1003.dtf"
             
+      ######
+      $dynaTraceCollector      = 'dynaTraceCollector'
+      $dynaTraceHostagent      = 'dynaTraceHostagent'
+      $dynaTraceAnalysis       = 'dynaTraceAnalysis'
+      $dynaTraceServer         = 'dynaTraceServer'
+      $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
+      $dynaTraceFrontendServer = 'dynaTraceFrontendServer'
+      $dynaTraceBackendServer  = 'dynaTraceBackendServer'
+      
+      $services_to_manage_array = [
+        $dynaTraceServer,
+        $dynaTraceCollector,
+        $dynaTraceAnalysis,  
+        $dynaTraceWebServerAgent,
+        $dynaTraceHostagent,
+        
+        $dynaTraceBackendServer,
+        $dynaTraceFrontendServer 
+        ]
+
     }
     default: {
       fail("The kernel '${::kernel}' is currently not supported.")

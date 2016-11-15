@@ -30,8 +30,8 @@ class dynatrace::role::server (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
-      $service = 'dynaTraceServer'
-      $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
+      $service = $dynatrace::dynaTraceServer
+      $init_scripts = [$service, $dynatrace::dynaTraceFrontendServer, $dynatrace::dynaTraceBackendServer]
     }
     default: {}
   }

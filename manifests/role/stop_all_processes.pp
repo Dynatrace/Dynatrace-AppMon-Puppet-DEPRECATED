@@ -21,27 +21,18 @@ class dynatrace::role::stop_all_processes (
 
   case $::kernel {
     'Linux': {
-      $services_to_stop_array = [
-        'dynaTraceServer',
-        'dynaTraceCollector',
-        'dynaTraceAnalysis',  
-        'dynaTraceWebServerAgent',
-        'dynaTraceHostagent',
-        'dynaTraceBackendServer',
-        'dynaTraceFrontendServer' 
-        ]
+      $services_to_stop_array = $dynatrace::services_to_manage_array
     }
     default: {}
   }
 
   $services_to_stop_array.each |$x| {
-    if ("test -L /etc/init.d/${x}") {
-      notify {"Service ${x} exists and will be stopped.": }
-    }  
-    service { "${role_name}: Service ${x} exists and will be stopped.":
+#    if ("test -L /etc/init.d/${x}") {
+#      notify {"Service ${x} exists and will be stopped.": }
+#    }  
+    service { "${role_name}: Service ${x} will be stopped.":
       ensure => 'stopped',
       name   => $x,
-#        enable => false
     }
   }
 
