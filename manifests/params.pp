@@ -160,7 +160,7 @@ class dynatrace::params {
 
       ######
       #TODO try to remove exact version number!!!
-      $update_file_path_dtf = "/dynatrace/server_update/dynaTrace-6.5.1.1003.dtf"
+      $update_file_path_dtf = "server_update/dynaTrace-6.5.1.1003.dtf"
             
       ######
       $dynaTraceCollector      = 'dynaTraceCollector'

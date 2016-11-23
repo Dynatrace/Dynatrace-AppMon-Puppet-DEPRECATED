@@ -69,15 +69,32 @@ Puppet::Type.type(:make_server_update).provide(:ruby) do
               break
             else
               puts "Update not finished. Waiting for server..."
-              sleep 5
+              sleep 10
             end
           end
         else
           puts "Waiting for server..."    
-          sleep 5
+          sleep 10
         end
       end
     end
+
+    #restart server
+    restart_url = 'https://localhost:8021/rest/management/server/restart'
+    uri = URI(restart_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    puts "Restarting the server using REST URL=#{restart_url}"
+    
+    request = Net::HTTP::Post.new(uri.path, 'Accept' => 'application/xml')
+    request.basic_auth(user, passwd)
+    response = http.request(request)
+
+    puts "Server responded with code '#{response.code} #{response.message}' when restarting..."
+    puts "Waiting for server..."
+    sleep 10
+    puts "Server is restarting..."
+    
   end
 end
-
