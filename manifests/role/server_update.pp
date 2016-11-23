@@ -26,7 +26,21 @@ class dynatrace::role::server_update (
       $dynaTraceWebServerAgent = $dynatrace::dynaTraceWebServerAgent
       $dynaTraceHostagent      = $dynatrace::dynaTraceHostagent
       
+      $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
+      $installer_cache_dir_tree = dirtree($installer_cache_dir)
       $update_file_path = "${installer_cache_dir}/${dynatrace::update_file_path_dtf}"
+      $services_to_stop_array = $dynatrace::services_to_manage_array
+      
+      $services_to_start_array = [
+        $dynatrace::dynaTraceServer,
+        $dynatrace::dynaTraceCollector,
+        $dynatrace::dynaTraceAnalysis,  
+        $dynatrace::dynaTraceWebServerAgent,
+        $dynatrace::dynaTraceHostagent,
+#        'dynaTraceBackendServer',
+#        'dynaTraceFrontendServer' 
+        ]
+
     }
     default: {}
   }
@@ -36,9 +50,6 @@ class dynatrace::role::server_update (
     'absent'  => 'absent',
     default   => 'directory',
   }
-
-  $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
-  $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
   include dynatrace::role::dynatrace_user
 
@@ -71,15 +82,40 @@ class dynatrace::role::server_update (
     rest_update_status_url => $update_rest_url,
     user => $update_user,
     passwd => $update_passwd,
+    
+    notify => Wait_until_port_is_open[  $collector_port ]
+  }
+
+#  dynatrace::resource::stop_all_services { "stop_all_services 1":
+#    ensure  => 'stopped',
+#    require => Class['dynatrace::role::dynatrace_user']
+#  } ~>
+#
+#  dynatrace::resource::start_all_services { "start_all_services 1":
+#    ensure                  => 'running',
+#    collector_port          => $collector_port,
+#    require                => Make_server_update["${update_file_path}"]
+#  }
+    
+  wait_until_port_is_open { $collector_port:
+    ensure  => $ensure,
+  } -> 
+
+  wait_until_port_is_open { '2021':
+    ensure  => $ensure,
   } ->
 
-  dynatrace::resource::stop_all_services { "stop_all_services 1":
-    ensure  => 'stopped',
-    require => Class['dynatrace::role::dynatrace_user']
-  } ~>
+  wait_until_port_is_open { '8021':
+    ensure  => $ensure,
+  } ->
 
-  dynatrace::resource::start_all_services { "start_all_services 1":
-    ensure                  => 'running',
-    collector_port          => $collector_port,
+  wait_until_port_is_open { '9911':
+    ensure  => $ensure,
+  }
+    
+  if $collector_port != '6699' {
+    wait_until_port_is_open { '6699':
+      ensure  => $ensure,
+    }
   }
 }
