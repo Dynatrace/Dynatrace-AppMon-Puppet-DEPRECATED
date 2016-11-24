@@ -27,15 +27,12 @@ class dynatrace::role::stop_all_processes (
   }
 
   $services_to_stop_array.each |$x| {
-#    if ("test -L /etc/init.d/${x}") {
-#      notify {"Service ${x} exists and will be stopped.": }
-#    }  
     service { "${role_name}: Service ${x} will be stopped.":
       ensure => 'stopped',
       name   => $x,
     }
   }
-
+  
   #TODO add lambda to delay execution on agent  
   $services_to_stop_string = join($services_to_stop_array,",")
   notify{"server - stop all processes": message => "executing dynatrace::role::stop_all_processes  services_to_stop=${services_to_stop_string}"; }

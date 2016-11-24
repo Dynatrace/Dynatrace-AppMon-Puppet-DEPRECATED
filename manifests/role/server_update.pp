@@ -86,17 +86,6 @@ class dynatrace::role::server_update (
     notify => Wait_until_port_is_open[  $collector_port ]
   }
 
-#  dynatrace::resource::stop_all_services { "stop_all_services 1":
-#    ensure  => 'stopped',
-#    require => Class['dynatrace::role::dynatrace_user']
-#  } ~>
-#
-#  dynatrace::resource::start_all_services { "start_all_services 1":
-#    ensure                  => 'running',
-#    collector_port          => $collector_port,
-#    require                => Make_server_update["${update_file_path}"]
-#  }
-    
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
   } -> 
