@@ -37,8 +37,6 @@ class dynatrace::role::uninstall_all (
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
-  $installer_cache_dir_tree = dirtree($installer_cache_dir)
-  
   $install_link = "${installer_prefix_dir}/dynatrace"
   $symlink      = "${installer_prefix_dir}/dynatrace"
 
@@ -76,6 +74,14 @@ class dynatrace::role::uninstall_all (
     path    => '/tmp/hsperfdata_root',
     recurse => 1,
     matches => [ '[0-9]*' ],
+  }
+
+  file { "${installer_cache_dir}":
+    ensure => absent,
+    path => $installer_cache_dir,
+    recurse => true,
+    purge => true,
+    force => true,
   }
   
   file {"remove tmp dynatrace directory":
