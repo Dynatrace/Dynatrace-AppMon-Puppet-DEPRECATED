@@ -9,9 +9,6 @@ Puppet::Type.newtype(:make_server_update) do
   newparam(:rest_update_url) do
   end
   
-  newparam(:rest_update_status_url) do
-  end
-
   newparam(:user) do
   end
 

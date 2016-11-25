@@ -28,7 +28,7 @@ class dynatrace::role::server_update (
       
       $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
       $installer_cache_dir_tree = dirtree($installer_cache_dir)
-      $update_file_path = "${installer_cache_dir}/${dynatrace::update_file_path_dtf}"
+      $update_file_path = "${installer_cache_dir}"
       $services_to_stop_array = $dynatrace::services_to_manage_array
       
       $services_to_start_array = [
@@ -79,10 +79,8 @@ class dynatrace::role::server_update (
     ensure => present,
     update_file_path => $update_file_path,
     rest_update_url => $update_rest_url,
-    rest_update_status_url => $update_rest_url,
     user => $update_user,
     passwd => $update_passwd,
-    
     notify => Wait_until_port_is_open[  $collector_port ]
   }
 

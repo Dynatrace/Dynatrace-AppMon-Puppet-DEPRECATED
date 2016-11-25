@@ -153,16 +153,11 @@ class dynatrace::params {
       $host_agent_name                 = 'hostagent'
       $host_agent_collector_name       = 'localhost'
 
-      $update_file_url           = undef
-      $update_rest_url           = 'https://localhost:8021/rest/management/installjobs'
-      $update_user               = 'admin'
-      $update_passwd             = 'admin'
+      $update_file_url             = undef
+      $update_rest_url             = 'https://localhost:8021/rest/management/'
+      $update_user                 = 'admin'
+      $update_passwd               = 'admin'
 
-      ######
-      #TODO try to remove exact version number!!!
-      $update_file_path_dtf = "server_update/dynaTrace-6.5.1.1003.dtf"
-            
-      ######
       $dynaTraceCollector      = 'dynaTraceCollector'
       $dynaTraceHostagent      = 'dynaTraceHostagent'
       $dynaTraceAnalysis       = 'dynaTraceAnalysis'

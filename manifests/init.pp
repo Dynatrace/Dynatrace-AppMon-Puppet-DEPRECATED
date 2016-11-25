@@ -76,8 +76,6 @@ class dynatrace (
   $update_user               = $dynatrace::params::update_user,
   $update_passwd             = $dynatrace::params::update_passwd,
   
-  $update_file_path_dtf    = $dynatrace::params::update_file_path_dtf,
-        
   $dynaTraceCollector      = $dynatrace::params::dynaTraceCollector,
   $dynaTraceHostagent      = $dynatrace::params::dynaTraceHostagent,
   $dynaTraceAnalysis       = $dynatrace::params::dynaTraceAnalysis,
