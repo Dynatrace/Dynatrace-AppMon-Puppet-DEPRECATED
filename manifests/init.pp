@@ -1,6 +1,7 @@
 class dynatrace (
   $installer_cache_dir = $dynatrace::params::installer_cache_dir,
 
+  $agents_package_installer_bitsize    = $dynatrace::params::agents_package_installer_bitsize,
   $agents_package_installer_prefix_dir = $dynatrace::params::agents_package_installer_prefix_dir,
   $agents_package_installer_file_name  = $dynatrace::params::agents_package_installer_file_name,
   $agents_package_installer_file_url   = $dynatrace::params::agents_package_installer_file_url,
@@ -69,7 +70,22 @@ class dynatrace (
   $host_agent_installer_file_url   = $dynatrace::params::host_agent_installer_file_url,
   $host_agent_name                 = $dynatrace::params::host_agent_name,
   $host_agent_collector_name       = $dynatrace::params::host_agent_collector_name,
+
+  $update_file_url           = $dynatrace::params::update_file_url,
+  $update_rest_url           = $dynatrace::params::update_rest_url,
+  $update_user               = $dynatrace::params::update_user,
+  $update_passwd             = $dynatrace::params::update_passwd,
   
+  $dynaTraceCollector      = $dynatrace::params::dynaTraceCollector,
+  $dynaTraceHostagent      = $dynatrace::params::dynaTraceHostagent,
+  $dynaTraceAnalysis       = $dynatrace::params::dynaTraceAnalysis,
+  $dynaTraceServer         = $dynatrace::params::dynaTraceServer,
+  $dynaTraceWebServerAgent = $dynatrace::params::dynaTraceWebServerAgent,
+  $dynaTraceFrontendServer = $dynatrace::params::dynaTraceFrontendServer,
+  $dynaTraceBackendServer  = $dynatrace::params::dynaTraceBackendServer,
+  
+  $services_to_manage_array = $dynatrace::params::services_to_manage_array,
+    
 ) inherits dynatrace::params {
 
 }

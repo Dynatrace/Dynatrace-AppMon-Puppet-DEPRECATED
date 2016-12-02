@@ -7,6 +7,7 @@
 #  $dynatrace_group => The system user's group that owns a Dynatrace installation.
 #  $installer_cache_dir => The path where the installation script and downloaded jar-file will be temporarily placed
 #
+#  $agents_package_server_installer_bitsize => '32' or '64'.
 #  $agents_package_installer_prefix_dir => The Dynatrace Agents package will be installed into the directory $agents_package_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $agents_package_installer_prefix_dir/dynatrace.
 #  $agents_package_installer_file_name  => The file name of the Dynatrace Agents installer in the module's files directory.
 #  $agents_package_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Agents installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
@@ -71,6 +72,10 @@
 #  $host_agent_name                 => Dynatrace Host Agent name
 #  $host_agent_collector            => Dynatrace Host Agent Collector identifier (collector IP address or host name)
 #  
+#  $update_file_url                 => URL to the update zip file with tds inside e.g. 'https://files.dynatrace.com/downloads/fixpacks/dynaTrace-6.5.1.1003.zip'
+#  $update_rest_url                 => the REST URL to perform update 
+#  $update_user                     => user name 
+#  $update_passwd                   => user password
 #  
 class dynatrace::params {
 
@@ -80,6 +85,7 @@ class dynatrace::params {
       $dynatrace_group = 'dynatrace'
       $installer_cache_dir = "${settings::vardir}"
 
+      $agents_package_installer_bitsize    = '64'
       $agents_package_installer_prefix_dir = '/opt'
       $agents_package_installer_file_name  = 'dynatrace-agent.jar'
       $agents_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
@@ -146,7 +152,31 @@ class dynatrace::params {
       $host_agent_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-hostagent-6.5.0.1289-linux-x86-64.tar'
       $host_agent_name                 = 'hostagent'
       $host_agent_collector_name       = 'localhost'
+
+      $update_file_url             = undef
+      $update_rest_url             = 'https://localhost:8021/rest/management/'
+      $update_user                 = 'admin'
+      $update_passwd               = 'admin'
+
+      $dynaTraceCollector      = 'dynaTraceCollector'
+      $dynaTraceHostagent      = 'dynaTraceHostagent'
+      $dynaTraceAnalysis       = 'dynaTraceAnalysis'
+      $dynaTraceServer         = 'dynaTraceServer'
+      $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
+      $dynaTraceFrontendServer = 'dynaTraceFrontendServer'
+      $dynaTraceBackendServer  = 'dynaTraceBackendServer'
       
+      $services_to_manage_array = [
+        $dynaTraceServer,
+        $dynaTraceCollector,
+        $dynaTraceAnalysis,  
+        $dynaTraceWebServerAgent,
+        $dynaTraceHostagent,
+        
+        $dynaTraceBackendServer,
+        $dynaTraceFrontendServer 
+        ]
+
     }
     default: {
       fail("The kernel '${::kernel}' is currently not supported.")

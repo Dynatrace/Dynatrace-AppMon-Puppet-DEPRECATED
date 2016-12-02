@@ -20,7 +20,7 @@ class dynatrace::role::wsagent_package (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-wsagent-package.sh'
-      $service = 'dynaTraceWebServerAgent'
+      $service = $dynatrace::dynaTraceWebServerAgent
       $init_scripts = [$service]
     }
     default: {}

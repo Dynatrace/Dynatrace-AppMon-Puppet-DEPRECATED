@@ -1,6 +1,6 @@
 class dynatrace::role::uninstall_all (
   $ensure                  = 'uninstalled',
-  $role_name               = 'Dynatrace Server',
+  $role_name               = 'Dynatrace Server uninstall',
   $installer_bitsize       = $dynatrace::server_installer_bitsize,
   $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
   $installer_file_name     = $dynatrace::server_installer_file_name,
@@ -21,9 +21,7 @@ class dynatrace::role::uninstall_all (
 
   case $::kernel {
     'Linux': {
-      $installer_script_name = 'install-server.sh'
-      $service = 'dynaTraceServer'
-      $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
+      $services_to_manage_array = $dynatrace::services_to_manage_array
     }
     default: {}
   }
@@ -39,38 +37,76 @@ class dynatrace::role::uninstall_all (
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
-  $installer_cache_dir_tree = dirtree($installer_cache_dir)
   $install_link = "${installer_prefix_dir}/dynatrace"
+  $symlink      = "${installer_prefix_dir}/dynatrace"
 
-  service { "Stop the ${role_name}'s service: '${service}'  installer_cache_dir='${installer_cache_dir}'  install_link='${install_link}'":
-    ensure => 'stopped',
-    name   => $service,
-    enable => false
-  }
+  #stop all Dynatrace processes
+  include dynatrace::role::stop_all_processes
 
-
-  $symlink = "${installer_prefix_dir}/dynatrace"
-
-  dynatrace_installation { "Uninstall the ${role_name}":
-    ensure                => uninstalled,
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => $installer_script_name,
-    installer_path_part   => 'server',
-    installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir,
-  }
-
-  file {'remove_directory':
-    ensure => absent,
+  #removing folders and links  
+  exec {"remove directory using symlink=${symlink}":
+    # remove directory using symlink (Puppet file resource does not work sometimes in this case)
+    command => "rm -rf \"$(readlink ${symlink})\"; rm -rf ${symlink}",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -L ${symlink}"],
+  } ->
+  
+  file {"remove directory by symlink=${symlink}":
     path => $symlink,
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+  
+  tidy { 'clean /tmp folder from dynatrace files':
+    path    => '/tmp',
+    recurse => 1,
+    matches => [ 'dt*', 'java_*', 'dynaTrace*.zip' ],
+  } ->
+
+  tidy { 'clean dynatrace temp folder':
+    path    => '/tmp/hsperfdata_dynatrace',
+    recurse => 1,
+    matches => [ '[0-9]*' ],
+  } ->
+
+  tidy { 'clean temp folder':
+    path    => '/tmp/hsperfdata_root',
+    recurse => 1,
+    matches => [ '[0-9]*' ],
+  }
+
+  file { "${installer_cache_dir}":
+    ensure => absent,
+    path => $installer_cache_dir,
+    recurse => true,
+    purge => true,
+    force => true,
+  }
+  
+  file {"remove tmp dynatrace directory":
+    ensure => absent,
+    path => '/tmp/hsperfdata_dynatrace',
+    recurse => true,
+    purge => true,
+    force => true,
+  } ->
+
+  file {"remove tmp directory":
+    ensure => absent,
+    path => '/tmp/hsperfdata_root',
     recurse => true,
     purge => true,
     force => true,
   }
 
+  $services_to_manage_array.each |$x| {
+    file {"remove /etc/init.d/${x} link":
+      ensure => absent,
+      path => "/etc/init.d/${x}",
+      recurse => true,
+      purge => true,
+      force => true,
+    }
+  }
 }
-

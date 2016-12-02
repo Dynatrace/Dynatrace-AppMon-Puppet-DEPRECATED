@@ -34,7 +34,7 @@ describe file ('/etc/init.d/dynaTraceServer') do
   end
 
   its(:content) { should match /^DT_HOME=\/opt\/dynatrace$/ }
-  its(:content) { should match /^DT_OPTARGS="-listen 6698"$/ }
+  its(:content) { should match /^DT_OPTARGS="-listen 6699"$/ }
   its(:content) { should match /^DT_RUNASUSER=dynatrace$/ }
 end
 
@@ -46,7 +46,7 @@ end
 describe process('dtserver') do
   it { should be_running }
   its(:user) { should eq 'dynatrace' }
-  its(:args) { should match /-listen 6698/ }
+  its(:args) { should match /-listen 6699/ }
 end
 
 describe service('dynaTraceServer') do
@@ -60,10 +60,6 @@ describe service('dynaTraceServer') do
 end
 
 describe port(2021) do
-  it { should be_listening }
-end
-
-describe port(6698) do
   it { should be_listening }
 end
 

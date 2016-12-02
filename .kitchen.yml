@@ -6,6 +6,7 @@ provisioner:
 
 driver:
   name: docker
+  use_sudo: false
 
 platforms:
   - name: centos-6

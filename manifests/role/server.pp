@@ -19,7 +19,7 @@ class dynatrace::role::server (
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
-  notify{"server": message => "executing dynatrace::role::server"; }
+  notify{"server": message => "executing dynatrace::role::server  do_pwh_connection=${do_pwh_connection}"; }
     
   validate_bool($do_pwh_connection)
   validate_re($ensure, ['^present$', '^absent$'])
@@ -30,8 +30,8 @@ class dynatrace::role::server (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
-      $service = 'dynaTraceServer'
-      $init_scripts = [$service, 'dynaTraceFrontendServer', 'dynaTraceBackendServer']
+      $service = $dynatrace::dynaTraceServer
+      $init_scripts = [$service, $dynatrace::dynaTraceFrontendServer, $dynatrace::dynaTraceBackendServer]
     }
     default: {}
   }
@@ -148,6 +148,8 @@ class dynatrace::role::server (
   }
 
   if $do_pwh_connection {
+    notify{"server 2": message => "executing dynatrace::role::server  do_pwh_connection"; }
+  
     wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
       ensure  => $ensure,
       require => Service["Start and enable the ${role_name}'s service: '${service}'"]

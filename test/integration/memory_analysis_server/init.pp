@@ -7,7 +7,7 @@ class { 'java':
 }
 
 class { 'dynatrace::role::memory_analysis_server':
-  installer_file_url => 'http://10.0.2.2/dynatrace/6.3/dynatrace-analysisserver.jar',
+  installer_file_url => 'http://172.18.129.150:8000/dynatrace-analysisserver-linux-x86.jar',
   jvm_xms            => '256M',
   jvm_xmx            => '1024M',
   jvm_perm_size      => '256m',

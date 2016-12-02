@@ -26,7 +26,7 @@ class dynatrace::role::collector (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-collector.sh'
-      $service = 'dynaTraceCollector'
+      $service = $dynatrace::dynaTraceCollector
       $init_scripts = [$service]
     }
     default: {}

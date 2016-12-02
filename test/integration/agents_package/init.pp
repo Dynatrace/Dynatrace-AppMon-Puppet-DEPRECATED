@@ -3,6 +3,6 @@ class { 'java':
 }
 
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'http://10.0.2.2/dynatrace/6.3/dynatrace-agent.jar',
+  installer_file_url => 'http://172.18.129.150:8000/dynatrace-agent-unix.jar',
   require            => Class['java']
 }

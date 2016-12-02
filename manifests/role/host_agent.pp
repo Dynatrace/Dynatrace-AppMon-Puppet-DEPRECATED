@@ -28,7 +28,7 @@ class dynatrace::role::host_agent (
 
   case $::kernel {
     'Linux': {
-      $service = 'dynaTraceHostagent'
+      $service = $dynatrace::dynaTraceHostagent
       $ini_file = "${host_installer_prefix_dir}/dynatrace/agent/conf/dthostagent.ini"
       $init_scripts = [$service]
     }
@@ -65,14 +65,18 @@ class dynatrace::role::host_agent (
   }
 
   # ln -s /opt/dynatrace/init.d/dynaTraceHostagent /etc/init.d/dynaTraceHostagent
-  exec {"Creates link to execute service":
+  exec {"Creates link to execute service  ln -s ${host_installer_prefix_dir}/dynatrace/init.d/dynaTraceHostagent /etc/init.d/${service}":
     command => "ln -s ${host_installer_prefix_dir}/dynatrace/init.d/dynaTraceHostagent /etc/init.d/${service}",
     path    => ['/usr/bin', '/usr/sbin', '/bin'],
     unless  => ["test -L /etc/init.d/${service}"],
   } ->
-  service { "Start and enable the ${role_name}'s service: '${service}'":
-    ensure => $service_ensure,
+  service { "Enable and stop the ${role_name}'s service: '${service}'":    #hack to ensure start service (enable and stop service then start it)  
+    ensure => stopped,
     name   => $service,
     enable => true
-  }
+  } -> 
+  exec {"Start service ${service}":
+    command => "service ${service} start",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+  }  
 }

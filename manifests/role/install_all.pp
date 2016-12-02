@@ -8,6 +8,7 @@ class dynatrace::role::install_all (
   $license_file_name       = $dynatrace::server_license_file_name,
   $license_file_url        = $dynatrace::server_license_file_url,
   $collector_port          = $dynatrace::server_collector_port,
+  
   $do_pwh_connection       = $dynatrace::server_do_pwh_connection,
   $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
   $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
@@ -33,13 +34,20 @@ class dynatrace::role::install_all (
 
   ) inherits dynatrace {
 
-  notify{"install_all": message => "executing dynatrace::role::install_all"; }
+  notify{"install_all": message => "executing dynatrace::role::install_all   do_pwh_connection=${do_pwh_connection}"; }
 
   validate_re($ensure, ['^present$', '^absent$'])
 
   # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent, host agent
   # note that installation order is important for base modules: server, server_license, collector, agents_package
   class { 'dynatrace::role::server':
+    do_pwh_connection       => $do_pwh_connection,
+    pwh_connection_hostname => $pwh_connection_hostname,
+    pwh_connection_port     => $pwh_connection_port,
+    pwh_connection_dbms     => $pwh_connection_dbms,
+    pwh_connection_database => $pwh_connection_database,
+    pwh_connection_username => $pwh_connection_username,
+    pwh_connection_password => $pwh_connection_password,
   }  -> # and then:
   class { 'dynatrace::role::server_license':
     license_file_url => $license_file_url,
