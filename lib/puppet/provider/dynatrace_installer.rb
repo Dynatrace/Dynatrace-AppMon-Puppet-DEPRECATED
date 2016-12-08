@@ -38,7 +38,9 @@ class Puppet::Provider::DynatraceInstaller < Puppet::Provider
     end
 
     install_path = "#{resource[:installer_prefix_dir]}/"
-    install_path << execute("#{resource[:installer_cache_dir]}/#{resource[:installer_script_name]}").strip
+    script2exec = "#{resource[:installer_cache_dir]}/#{resource[:installer_script_name]}"
+    puts "script2exec=#{script2exec}"
+    install_path << execute(script2exec).strip
 
     FileUtils.chown_R(resource[:installer_owner], resource[:installer_group], install_path)
 

@@ -19,7 +19,7 @@ class dynatrace::role::server (
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
-  notify{"server": message => "executing dynatrace::role::server  do_pwh_connection=${do_pwh_connection}"; }
+#  notify{"server": message => "executing dynatrace::role::server  do_pwh_connection=${do_pwh_connection}"; }
     
   validate_bool($do_pwh_connection)
   validate_re($ensure, ['^present$', '^absent$'])
@@ -65,105 +65,98 @@ class dynatrace::role::server (
     require => Class['dynatrace::role::dynatrace_user']
   })
 
-  dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
-    ensure    => $ensure,
-    file_name => $installer_file_name,
-    file_url  => $installer_file_url,
-    path      => "${installer_cache_dir}/${installer_file_name}",
-    require   => File[$installer_cache_dir_tree],
-    notify    => [
-      File["Configure and copy the ${role_name}'s install script"],
-      Dynatrace_installation["Install the ${role_name}"]
-    ]
-  }
-
-  file { "Configure and copy the ${role_name}'s install script":
-    ensure  => $ensure,
-    path    => "${installer_cache_dir}/${installer_script_name}",
-    content => template("dynatrace/server/${installer_script_name}"),
-    mode    => '0744',
-    before  => Dynatrace_installation["Install the ${role_name}"]
-  }
-
-  dynatrace_installation { "Install the ${role_name}":
-    ensure                => $installation_ensure,
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => $installer_script_name,
-    installer_path_part   => 'server',
-    installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir
-  }
-
-  if $::kernel == 'Linux' {
-    dynatrace::resource::configure_init_script { $init_scripts:
-      ensure               => $ensure,
-      role_name            => $role_name,
-      installer_prefix_dir => $installer_prefix_dir,
-      owner                => $dynatrace_owner,
-      group                => $dynatrace_group,
-      init_scripts_params  => {
-        'installer_prefix_dir' => $installer_prefix_dir,
-        'collector_port'       => $collector_port,
-        'user'                 => $dynatrace_owner
-      },
-      notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
+  if $install_server__copy_or_download =='not there' {
+    notify {"STEP 1 : dynatrace::resource::copy_or_download_file": }
+    dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
+      ensure    => $ensure,
+      file_name => $installer_file_name,
+      file_url  => $installer_file_url,
+      path      => "${installer_cache_dir}/${installer_file_name}",
+      require   => File[$installer_cache_dir_tree],
     }
   }
-
-  service { "Start and enable the ${role_name}'s service: '${service}'":
-    ensure => $service_ensure,
-    name   => $service,
-    enable => true
-  }
-
-  wait_until_port_is_open { $collector_port:
-    ensure  => $ensure,
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  wait_until_port_is_open { '2021':
-    ensure  => $ensure,
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  if $collector_port != '6699' {
-    wait_until_port_is_open { '6699':
-      ensure  => $ensure,
-      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-    }
-  }
-
-  wait_until_port_is_open { '8021':
-    ensure  => $ensure,
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  wait_until_port_is_open { '9911':
-    ensure  => $ensure,
-    require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  if $do_pwh_connection {
-    notify{"server 2": message => "executing dynatrace::role::server  do_pwh_connection"; }
   
-    wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
+  if $install_server__configure_and_copy_install_script =='not there' {
+    notify {"STEP 2 : install script file": }
+    file { "Configure and copy the ${role_name}'s install script":
+      ensure  => $ensure,
+      path    => "${installer_cache_dir}/${installer_script_name}",
+      content => template("dynatrace/server/${installer_script_name}"),
+      mode    => '0744',
+      before  => Dynatrace_installation["Install the ${role_name}"]
+    }
+  }
+
+  if $install_server__dynatrace_installation =='not there' {
+    notify {"STEP 3 : dynatrace_installation": }
+    dynatrace_installation { "Install the ${role_name}":
+      ensure                => $installation_ensure,
+      installer_prefix_dir  => $installer_prefix_dir,
+      installer_file_name   => $installer_file_name,
+      installer_file_url    => $installer_file_url,
+      installer_script_name => $installer_script_name,
+      installer_path_part   => 'server',
+      installer_path_detailed => '',
+      installer_owner       => $dynatrace_owner,
+      installer_group       => $dynatrace_group,
+      installer_cache_dir   => $installer_cache_dir
+    }
+  }
+  
+  if $install_server__check_service =='not there' {
+  
+    service { "Start and enable the ${role_name}'s service: '${service}'":
+      ensure => $service_ensure,
+      name   => $service,
+      enable => true
+    }
+    
+    wait_until_port_is_open { $collector_port:
       ensure  => $ensure,
       require => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
-
-    configure_pwh_connection { $pwh_connection_dbms:
-      ensure   => $ensure,
-      hostname => $pwh_connection_hostname,
-      port     => $pwh_connection_port,
-      database => $pwh_connection_database,
-      username => $pwh_connection_username,
-      password => $pwh_connection_password,
-      require  => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config']
+  
+    wait_until_port_is_open { '2021':
+      ensure  => $ensure,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    }
+  
+    if $collector_port != '6699' {
+      wait_until_port_is_open { '6699':
+        ensure  => $ensure,
+        require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+      }
+    }
+  
+    wait_until_port_is_open { '8021':
+      ensure  => $ensure,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    }
+  
+    wait_until_port_is_open { '9911':
+      ensure  => $ensure,
+      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+    }
+  
+    if $do_pwh_connection {
+      notify{"server 2": message => "executing dynatrace::role::server  do_pwh_connection"; }
+    
+      wait_until_rest_endpoint_is_ready { 'https://localhost:8021/rest/management/pwhconnection/config':
+        ensure  => $ensure,
+        require => Service["Start and enable the ${role_name}'s service: '${service}'"]
+      }
+  
+      configure_pwh_connection { $pwh_connection_dbms:
+        ensure   => $ensure,
+        hostname => $pwh_connection_hostname,
+        port     => $pwh_connection_port,
+        database => $pwh_connection_database,
+        username => $pwh_connection_username,
+        password => $pwh_connection_password,
+        require  => Wait_until_rest_endpoint_is_ready['https://localhost:8021/rest/management/pwhconnection/config']
+      }
     }
   }
+  
 }
 
