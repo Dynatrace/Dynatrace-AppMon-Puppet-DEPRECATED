@@ -4,7 +4,7 @@ require 'net/http'
 Puppet::Type.type(:configure_pwh_connection).provide(:ruby) do
 
   def exists?
-    return false
+    return false    #TODO it will cause running PWH connection each time, even if this is already configured 
   end
 
   def create
