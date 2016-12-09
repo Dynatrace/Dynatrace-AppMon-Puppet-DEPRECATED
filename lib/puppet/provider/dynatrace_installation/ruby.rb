@@ -28,7 +28,7 @@ Puppet::Type.type(:dynatrace_installation).provide(:ruby) do
   end
 
   def exists?
-    return requires_installation?
+    return !requires_installation?
   end
 
   def install

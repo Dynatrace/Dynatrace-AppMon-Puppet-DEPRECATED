@@ -2,13 +2,28 @@ Puppet::Type.newtype(:dynatrace_installation) do
   desc "Puppet type that models a Dynatrace installation."
 
   ensurable do
+    newvalue(:present) do
+      provider.install
+    end
+
     newvalue(:installed) do
       provider.install
+    end
+
+    # Alias the 'present' value.
+    aliasvalue(:installed, :present)
+
+    newvalue(:absent) do
+      provider.uninstalled
     end
 
     newvalue(:uninstalled) do
       provider.uninstalled
     end
+
+    # Alias the 'present' value.
+    aliasvalue(:uninstalled, :absent)
+
   end
 
   newparam(:name, :namevar => :true) do
