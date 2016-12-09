@@ -39,13 +39,6 @@ class dynatrace::role::install_all (
   # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent, host agent
   # note that installation order is important for base modules: server, server_license, collector, agents_package
   class { 'dynatrace::role::server':
-    do_pwh_connection       => $do_pwh_connection,
-    pwh_connection_hostname => $pwh_connection_hostname,
-    pwh_connection_port     => $pwh_connection_port,
-    pwh_connection_dbms     => $pwh_connection_dbms,
-    pwh_connection_database => $pwh_connection_database,
-    pwh_connection_username => $pwh_connection_username,
-    pwh_connection_password => $pwh_connection_password,
   }  -> # and then:
   class { 'dynatrace::role::server_license':
     license_file_url => $license_file_url,
