@@ -8,22 +8,13 @@ class dynatrace::role::server (
   $license_file_name       = $dynatrace::server_license_file_name,
   $license_file_url        = $dynatrace::server_license_file_url,
   $collector_port          = $dynatrace::server_collector_port,
-  $do_pwh_connection       = $dynatrace::server_do_pwh_connection,
-  $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
-  $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
-  $pwh_connection_dbms     = $dynatrace::server_pwh_connection_dbms,
-  $pwh_connection_database = $dynatrace::server_pwh_connection_database,
-  $pwh_connection_username = $dynatrace::server_pwh_connection_username,
-  $pwh_connection_password = $dynatrace::server_pwh_connection_password,
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
 
-  validate_bool($do_pwh_connection)
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)
   validate_string($collector_port)
-  validate_string($pwh_connection_hostname, $pwh_connection_port, $pwh_connection_dbms, $pwh_connection_database, $pwh_connection_username, $pwh_connection_password)
     
   case $::kernel {
     'Linux': {

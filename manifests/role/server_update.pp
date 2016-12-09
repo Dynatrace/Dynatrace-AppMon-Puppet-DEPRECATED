@@ -14,8 +14,6 @@ class dynatrace::role::server_update (
   
 ) inherits dynatrace {
 
-  notify{"server update": message => "executing dynatrace::role::server_update"; }
-    
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'

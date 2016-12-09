@@ -3,8 +3,6 @@ class dynatrace::role::apache_wsagent (
   $role_name               = 'Dynatrace Apache WebServer Agent',
   $apache_config_file_path = $dynatrace::apache_wsagent_apache_config_file_path
 ) inherits dynatrace {
-
-  notify{"apache_wsagent": message => "executing dynatrace::role::apache_wsagent"; }
   
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($apache_config_file_path)

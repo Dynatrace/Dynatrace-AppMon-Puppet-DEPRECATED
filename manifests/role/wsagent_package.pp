@@ -11,8 +11,6 @@ class dynatrace::role::wsagent_package (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
   
-  notify{"wsagent_package": message => "executing dynatrace::role::wsagent_package"; }
-  
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name)
   validate_string($agent_name, $collector_hostname, $collector_port)

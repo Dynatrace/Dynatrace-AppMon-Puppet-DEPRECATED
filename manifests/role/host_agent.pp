@@ -19,8 +19,6 @@ class dynatrace::role::host_agent (
 
 ) inherits dynatrace {
 
-  notify{"host_agent": message => "executing dynatrace::role::host_agent"; }
-
 #  include dynatrace::role::agents_package
 
   validate_re($ensure, ['^present$', '^absent$'])

@@ -34,8 +34,6 @@ class dynatrace::role::install_all (
 
   ) inherits dynatrace {
 
-  notify{"install_all": message => "executing dynatrace::role::install_all   do_pwh_connection=${do_pwh_connection}"; }
-
   validate_re($ensure, ['^present$', '^absent$'])
 
   # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent, host agent

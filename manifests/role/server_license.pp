@@ -8,8 +8,6 @@ class dynatrace::role::server_license (
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
   
-  notify{"server_license": message => "executing dynatrace::role::server_license"; }
-    
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $license_file_name)
 

@@ -35,7 +35,7 @@ class dynatrace::role::stop_all_processes (
   
   #TODO add lambda to delay execution on agent  
   $services_to_stop_string = join($services_to_stop_array,",")
-  notify{"server - stop all processes": message => "executing dynatrace::role::stop_all_processes  services_to_stop=${services_to_stop_string}"; }
+#  notify{"server - stop all processes": message => "executing dynatrace::role::stop_all_processes  services_to_stop=${services_to_stop_string}"; }
    
   stop_processes { "Stop the ${role_name} processes: ${services_to_stop_string}":
     services_to_stop      => $services_to_stop_string,
