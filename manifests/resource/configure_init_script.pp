@@ -34,6 +34,7 @@ define dynatrace::resource::configure_init_script(
 
   file { "Configure and copy the ${role_name}'s '${name}' init script":
     ensure  => $ensure,
+    selinux_ignore_defaults => true,
     path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     owner   => $owner,
     group   => $group,
