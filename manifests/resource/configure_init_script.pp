@@ -41,9 +41,9 @@ define dynatrace::resource::configure_init_script(
     content => template("dynatrace/init.d/${name}.erb"),
     require => Dynatrace_installation["Install the ${role_name}"]
   }
-
   file { "Make the '${name}' init script available in /etc/init.d":
     ensure  => $link_ensure,
+    selinux_ignore_defaults => true,
     path    => "/etc/init.d/${name}",
     target  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     require => File["Configure and copy the ${role_name}'s '${name}' init script"]
