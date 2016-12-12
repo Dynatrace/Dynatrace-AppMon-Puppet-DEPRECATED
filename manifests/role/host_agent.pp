@@ -69,12 +69,8 @@ class dynatrace::role::host_agent (
     unless  => ["test -L /etc/init.d/${service}"],
   } ->
   service { "Enable and stop the ${role_name}'s service: '${service}'":    #hack to ensure start service (enable and stop service then start it)  
-    ensure => stopped,
+    ensure => running,
     name   => $service,
     enable => true
-  } -> 
-  exec {"Start service ${service}":
-    command => "service ${service} start",
-    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
   }  
 }
