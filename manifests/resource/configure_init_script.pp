@@ -45,6 +45,7 @@ define dynatrace::resource::configure_init_script(
   file { "Make the '${name}' init script available in /etc/init.d":
     ensure  => $link_ensure,
     selinux_ignore_defaults => true,
+    mode    => '0755',
     path    => "/etc/init.d/${name}",
     target  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
     require => File["Configure and copy the ${role_name}'s '${name}' init script"]
