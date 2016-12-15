@@ -7,6 +7,7 @@
   "source": "https://github.com/Dynatrace/Dynatrace-Puppet",
   "project_page": "https://github.com/Dynatrace/Dynatrace-Puppet",
   "issues_url": "https://github.com/Dynatrace/Dynatrace-Puppet/issues",
+  "tags": ["Dynatrace", "AppMon", "Application", "APM", "Monitoring"],
   "operatingsystem_support": [
     { "operatingsystem":"Centos" },
     { "operatingsystem":"Debian" },
