@@ -9,7 +9,6 @@ class { 'java':
 
 class { 'dynatrace::role::server':
   installer_file_url => 'http://172.18.129.150:8000/dynatrace-server-linux-x86.jar',
-  do_pwh_connection  => true,
   require            => [ Class['ruby'], Class['java'] ]
 }
 
