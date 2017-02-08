@@ -29,6 +29,10 @@
     {
       "name": "maestrodev/wget",
       "version_requirement": ">= 1.7.1"
+    },
+    {
+      "name": "AlexCline/dirtree",
+      "version_requirement": ">= 0.2.1"
     }
   ]
 }
