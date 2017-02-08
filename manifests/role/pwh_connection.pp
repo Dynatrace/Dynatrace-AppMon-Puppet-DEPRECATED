@@ -1,6 +1,6 @@
 class dynatrace::role::pwh_connection (
   $ensure                  = 'present',
-  $role_name               = 'Dynatrace Server PHW connection',
+  $role_name               = 'Dynatrace Server PWH connection',
   $collector_port          = $dynatrace::server_collector_port,
   $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
   $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
