@@ -68,6 +68,7 @@ class dynatrace::role::server (
     path    => "${installer_cache_dir}/${installer_script_name}",
     content => template("dynatrace/server/${installer_script_name}"),
     mode    => '0744',
+    before  => Dynatrace_installation["Install the ${role_name}"]
   }
 
   dynatrace_installation { "Install the ${role_name}":
@@ -80,7 +81,8 @@ class dynatrace::role::server (
     installer_path_detailed => '',
     installer_owner       => $dynatrace_owner,
     installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir
+    installer_cache_dir   => $installer_cache_dir,
+    require               => File["Configure and copy the ${role_name}'s install script"]
   }
   
   if $::kernel == 'Linux' {
