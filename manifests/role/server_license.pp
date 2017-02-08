@@ -7,7 +7,7 @@ class dynatrace::role::server_license (
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
-  
+
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $license_file_name)
 

@@ -24,11 +24,11 @@ class dynatrace::role::start_all_processes (
       $services_to_start_array = [
         $dynatrace::dynaTraceServer,
         $dynatrace::dynaTraceCollector,
-        $dynatrace::dynaTraceAnalysis,  
+        $dynatrace::dynaTraceAnalysis,
         $dynatrace::dynaTraceWebServerAgent,
         $dynatrace::dynaTraceHostagent,
 #        'dynaTraceBackendServer',
-#        'dynaTraceFrontendServer' 
+#        'dynaTraceFrontendServer'
         ]
     }
     default: {}
@@ -37,8 +37,8 @@ class dynatrace::role::start_all_processes (
   $services_to_start_array.each |$x| {
 #    if ("test -L /etc/init.d/${x}") {
 #      notify {"Service ${x} exists and will be stopped.": }
-#    }  
-#    
+#    }
+#
 #    #TODO cannot use service resource because of duplicated name in stop_all_processes
 #    service { "${role_name}: Service ${x} exists and will be started.":
 #      title  => "start_all_processes ${x}",
@@ -46,14 +46,14 @@ class dynatrace::role::start_all_processes (
 #      name   => $x,
 #      enable => true
 #    }
-    
+
 #    puts "Start the service: '${x}'"
-    
+
     exec {"Start the service: '${x}'":    #hack to ensure restart service (stop service then start it) [there is no possibility in puppet to use the same name of service in different stauses because of error 'Cannot alias Service']
       command => "service ${x} start",
       path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
       onlyif  => ["test -L /etc/init.d/${x}"],
-    }    
+    }
   }
 
   if $collector_port != '6699' {
@@ -61,10 +61,10 @@ class dynatrace::role::start_all_processes (
       ensure  => $ensure,
     }
   }
-    
+
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
-  } -> 
+  } ->
 
   wait_until_port_is_open { '2021':
     ensure  => $ensure,
@@ -77,5 +77,5 @@ class dynatrace::role::start_all_processes (
   wait_until_port_is_open { '9911':
     ensure  => $ensure,
   }
-  
+
 }

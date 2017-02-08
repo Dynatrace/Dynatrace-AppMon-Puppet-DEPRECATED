@@ -92,9 +92,9 @@ describe service('dynaTraceCollector') do
   it { should be_enabled }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
-      it { should be_enabled.with_level(3) }
-      it { should be_enabled.with_level(4) }
-      it { should be_enabled.with_level(5) }
+    it { should be_enabled.with_level(3) }
+    it { should be_enabled.with_level(4) }
+    it { should be_enabled.with_level(5) }
   end
 end
 
@@ -102,9 +102,9 @@ describe service('dynaTraceServer') do
   it { should be_enabled }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
-      it { should be_enabled.with_level(3) }
-      it { should be_enabled.with_level(4) }
-      it { should be_enabled.with_level(5) }
+    it { should be_enabled.with_level(3) }
+    it { should be_enabled.with_level(4) }
+    it { should be_enabled.with_level(5) }
   end
 end
 

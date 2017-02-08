@@ -13,7 +13,7 @@ class dynatrace::role::memory_analysis_server (
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
-  
+
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)
@@ -27,7 +27,7 @@ class dynatrace::role::memory_analysis_server (
     }
     default: {}
   }
-  
+
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     'absent'  => 'absent',
@@ -39,7 +39,7 @@ class dynatrace::role::memory_analysis_server (
     'absent'  => 'uninstalled',
     default   => 'installed',
   }
-  
+
   $service_ensure = $ensure ? {
     'present' => 'running',
     'absent'  => 'stopped',
