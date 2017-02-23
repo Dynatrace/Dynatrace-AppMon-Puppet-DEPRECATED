@@ -43,21 +43,21 @@ class dynatrace::role::uninstall_all (
   #stop all Dynatrace processes
   include dynatrace::role::stop_all_processes
 
-  #removing folders and links  
+  #removing folders and links
   exec {"remove directory using symlink=${symlink}":
     # remove directory using symlink (Puppet file resource does not work sometimes in this case)
     command => "rm -rf \"$(readlink ${symlink})\"; rm -rf ${symlink}",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
     onlyif  => ["test -L ${symlink}"],
   } ->
-  
+
   file {"remove directory by symlink=${symlink}":
     path => $symlink,
     recurse => true,
     purge => true,
     force => true,
   } ->
-  
+
   tidy { 'clean /tmp folder from dynatrace files':
     path    => '/tmp',
     recurse => 1,
@@ -83,7 +83,7 @@ class dynatrace::role::uninstall_all (
     purge => true,
     force => true,
   }
-  
+
   file {"remove tmp dynatrace directory":
     ensure => absent,
     path => '/tmp/hsperfdata_dynatrace',

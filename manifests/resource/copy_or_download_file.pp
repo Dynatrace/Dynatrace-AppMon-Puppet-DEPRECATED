@@ -13,7 +13,7 @@ define dynatrace::resource::copy_or_download_file(
       returns => 1,
       unless  => "/usr/bin/test -e ${path}"
     }
-    
+
     if $file_url {
       wget::fetch { "Download ${file_url} to ${path}":
         source      => $file_url,

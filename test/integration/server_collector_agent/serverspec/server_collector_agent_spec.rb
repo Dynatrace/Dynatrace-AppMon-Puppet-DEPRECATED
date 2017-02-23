@@ -92,9 +92,9 @@ describe service('dynaTraceCollector') do
   it { should be_enabled }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
-      it { should be_enabled.with_level(3) }
-      it { should be_enabled.with_level(4) }
-      it { should be_enabled.with_level(5) }
+    it { should be_enabled.with_level(3) }
+    it { should be_enabled.with_level(4) }
+    it { should be_enabled.with_level(5) }
   end
 end
 
@@ -102,9 +102,9 @@ describe service('dynaTraceServer') do
   it { should be_enabled }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
-      it { should be_enabled.with_level(3) }
-      it { should be_enabled.with_level(4) }
-      it { should be_enabled.with_level(5) }
+    it { should be_enabled.with_level(3) }
+    it { should be_enabled.with_level(4) }
+    it { should be_enabled.with_level(5) }
   end
 end
 
@@ -144,11 +144,6 @@ describe 'Dynatrace Server Performance Warehouse Configuration' do
 
     data = JSON.parse(response.body)
     expect(data['pwhconnectionconfiguration']['host']).to eq('localhost')
-    expect(data['pwhconnectionconfiguration']['port']).to eq('5432')
-    expect(data['pwhconnectionconfiguration']['dbms']).to eq('postgresql')
-    expect(data['pwhconnectionconfiguration']['dbname']).to eq('dynatrace-pwh')
-    expect(data['pwhconnectionconfiguration']['user']).to eq('dynatrace')
-    expect(data['pwhconnectionconfiguration']['password']).to eq('*********')
-    expect(data['pwhconnectionconfiguration']['usessl']).to eq(false)
+    expect(data['pwhconnectionconfiguration']['dbms']).to eq('embedded')
   end
 end
