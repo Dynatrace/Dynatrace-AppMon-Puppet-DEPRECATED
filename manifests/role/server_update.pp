@@ -3,40 +3,40 @@ class dynatrace::role::server_update (
   $role_name               = 'Dynatrace Server update',
 
   $collector_port          = $dynatrace::server_collector_port,
-    
+
   $update_file_url         = $dynatrace::update_file_url,
   $update_rest_url         = $dynatrace::update_rest_url,
   $update_user             = $dynatrace::update_user,
   $update_passwd           = $dynatrace::update_passwd,
-  
+
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
-  
+
 ) inherits dynatrace {
 
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
-      
+
       $service                 = $dynatrace::dynaTraceServer
       $collectorService        = $dynatrace::dynaTraceCollector
       $dynaTraceAnalysis       = $dynatrace::dynaTraceAnalysis
       $dynaTraceWebServerAgent = $dynatrace::dynaTraceWebServerAgent
       $dynaTraceHostagent      = $dynatrace::dynaTraceHostagent
-      
+
       $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
       $installer_cache_dir_tree = dirtree($installer_cache_dir)
       $update_file_path = "${installer_cache_dir}"
       $services_to_stop_array = $dynatrace::services_to_manage_array
-      
+
       $services_to_start_array = [
         $dynatrace::dynaTraceServer,
         $dynatrace::dynaTraceCollector,
-        $dynatrace::dynaTraceAnalysis,  
+        $dynatrace::dynaTraceAnalysis,
         $dynatrace::dynaTraceWebServerAgent,
         $dynatrace::dynaTraceHostagent,
 #        'dynaTraceBackendServer',
-#        'dynaTraceFrontendServer' 
+#        'dynaTraceFrontendServer'
         ]
 
     }
@@ -63,7 +63,7 @@ class dynatrace::role::server_update (
     group  => $dynatrace_group,
   }
 
-  # introducing order (archive then update and stop then start services)  
+  # introducing order (archive then update and stop then start services)
   archive { 'dynaTrace-update':
      ensure => present,
      url => $update_file_url,
@@ -84,7 +84,7 @@ class dynatrace::role::server_update (
 
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
-  } -> 
+  } ->
 
   wait_until_port_is_open { '2021':
     ensure  => $ensure,
@@ -97,7 +97,7 @@ class dynatrace::role::server_update (
   wait_until_port_is_open { '9911':
     ensure  => $ensure,
   }
-    
+
   if $collector_port != '6699' {
     wait_until_port_is_open { '6699':
       ensure  => $ensure,

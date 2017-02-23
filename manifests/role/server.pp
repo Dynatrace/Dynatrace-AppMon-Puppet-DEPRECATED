@@ -15,7 +15,7 @@ class dynatrace::role::server (
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)
   validate_string($collector_port)
-    
+
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
@@ -25,7 +25,7 @@ class dynatrace::role::server (
     }
     default: {}
   }
-  
+
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     'absent'  => 'absent',
@@ -37,7 +37,7 @@ class dynatrace::role::server (
     'absent'  => 'uninstalled',
     default   => 'installed',
   }
-  
+
   $service_ensure = $ensure ? {
     'present' => 'running',
     'absent'  => 'stopped',
@@ -62,7 +62,7 @@ class dynatrace::role::server (
     path      => "${installer_cache_dir}/${installer_file_name}",
     require   => File[$installer_cache_dir_tree],
   }
-  
+
   file { "Configure and copy the ${role_name}'s install script":
     ensure  => $ensure,
     path    => "${installer_cache_dir}/${installer_script_name}",
@@ -84,7 +84,7 @@ class dynatrace::role::server (
     installer_cache_dir   => $installer_cache_dir,
     require               => File["Configure and copy the ${role_name}'s install script"]
   }
-  
+
   if $::kernel == 'Linux' {
     dynatrace::resource::configure_init_script { $init_scripts:
       ensure               => $ensure,
@@ -106,7 +106,7 @@ class dynatrace::role::server (
     name   => $service,
     enable => true
   }
-  
+
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
     require => Service["Start and enable the ${role_name}'s service: '${service}'"]
@@ -134,4 +134,3 @@ class dynatrace::role::server (
     require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }
 }
-

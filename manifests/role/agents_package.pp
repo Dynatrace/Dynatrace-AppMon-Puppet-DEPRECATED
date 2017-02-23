@@ -19,7 +19,7 @@ class dynatrace::role::agents_package (
     }
     default: {}
   }
-  
+
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     'absent'  => 'absent',

@@ -15,7 +15,7 @@ class dynatrace::role::collector (
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
   $dynatrace_group      = $dynatrace::dynatrace_group
 ) inherits dynatrace {
-  
+
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
   validate_string($installer_prefix_dir, $installer_file_name)
@@ -29,7 +29,7 @@ class dynatrace::role::collector (
     }
     default: {}
   }
-  
+
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     'absent'  => 'absent',
@@ -41,7 +41,7 @@ class dynatrace::role::collector (
     'absent'  => 'uninstalled',
     default   => 'installed',
   }
-  
+
   $service_ensure = $ensure ? {
     'present' => 'running',
     'absent'  => 'stopped',

@@ -16,7 +16,7 @@ platforms:
         # Install common dependencies
         - yum install -y net-tools tar wget which
         # Install ruby dependencies
-        - yum install -y git gcc-c++ libffi-devel libssl-devel openssl-devel readline-devel zlib-devel 
+        - yum install -y git gcc-c++ libffi-devel libssl-devel openssl-devel readline-devel zlib-devel
         # Install ruby 2.2.0
         - git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
         - git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
