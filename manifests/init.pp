@@ -50,7 +50,6 @@ class dynatrace (
   $server_license_file_name       = $dynatrace::params::server_license_file_name,
   $server_license_file_url        = $dynatrace::params::server_license_file_url,
   $server_collector_port          = $dynatrace::params::server_collector_port,
-  $server_do_pwh_connection       = $dynatrace::params::server_do_pwh_connection,
   $server_pwh_connection_hostname = $dynatrace::params::server_pwh_connection_hostname,
   $server_pwh_connection_port     = $dynatrace::params::server_pwh_connection_port,
   $server_pwh_connection_dbms     = $dynatrace::params::server_pwh_connection_dbms,

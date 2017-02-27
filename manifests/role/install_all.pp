@@ -9,7 +9,6 @@ class dynatrace::role::install_all (
   $license_file_url        = $dynatrace::server_license_file_url,
   $collector_port          = $dynatrace::server_collector_port,
 
-  $do_pwh_connection       = $dynatrace::server_do_pwh_connection,
   $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
   $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
   $pwh_connection_dbms     = $dynatrace::server_pwh_connection_dbms,
