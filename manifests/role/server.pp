@@ -61,6 +61,7 @@ class dynatrace::role::server (
     file_url  => $installer_file_url,
     path      => "${installer_cache_dir}/${installer_file_name}",
     require   => File[$installer_cache_dir_tree],
+    before    => File["Configure and copy the ${role_name}'s install script"]
   }
 
   file { "Configure and copy the ${role_name}'s install script":
@@ -68,7 +69,6 @@ class dynatrace::role::server (
     path    => "${installer_cache_dir}/${installer_script_name}",
     content => template("dynatrace/server/${installer_script_name}"),
     mode    => '0744',
-    before  => Dynatrace_installation["Install the ${role_name}"]
   }
 
   dynatrace_installation { "Install the ${role_name}":
@@ -97,7 +97,8 @@ class dynatrace::role::server (
         'collector_port'       => $collector_port,
         'user'                 => $dynatrace_owner
       },
-      notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
+      require => Dynatrace_installation["Install the ${role_name}"],
+      notify => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }
 
