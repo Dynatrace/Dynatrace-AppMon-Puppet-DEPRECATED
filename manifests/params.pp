@@ -51,7 +51,6 @@
 #  $server_license_file_name       => The file name of the Dynatrace License in the cookbook's files directory.
 #  $server_license_file_url        => A HTTP, HTTPS or FTP URL to the Dynatrace License in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
 #  $server_collector_port          => The port where the Dynatrace Server shall listen for Collectors. Use either 6698 (non-SSL) or 6699 (SSL).
-#  $server_do_pwh_connection       => Whether a connection to an existing Performance Warehouse (database) shall be established, or not. Requires Dynatrace >= v6.2.
 #  $server_pwh_connection_hostname =>
 #  $server_pwh_connection_port     =>
 #  $server_pwh_connection_dbms     => The DBMS type of the Performance Warehouse. Possible values are 'embedded' (not suitable for production systems), 'db2', 'oracle', 'postgresql', 'sqlazure', 'sqlserver'.
@@ -131,7 +130,6 @@ class dynatrace::params {
       $server_license_file_name    = 'dynatrace-license.key'
       $server_license_file_url     = undef
       $server_collector_port       = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
-      $server_do_pwh_connection    = false
 
       $server_pwh_connection_hostname = 'localhost'
       $server_pwh_connection_port     = '5432'

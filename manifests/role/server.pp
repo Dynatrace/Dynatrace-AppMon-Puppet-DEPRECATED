@@ -105,7 +105,8 @@ class dynatrace::role::server (
   service { "Start and enable the ${role_name}'s service: '${service}'":
     ensure => $service_ensure,
     name   => $service,
-    enable => true
+    enable => true,
+    notify => [ Wait_until_port_is_open[$collector_port], Wait_until_port_is_open['2021'], Wait_until_port_is_open['8021'], Wait_until_port_is_open['9911'] ]
   }
 
   wait_until_port_is_open { $collector_port:
@@ -116,13 +117,6 @@ class dynatrace::role::server (
   wait_until_port_is_open { '2021':
     ensure  => $ensure,
     require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-  }
-
-  if $collector_port != '6699' {
-    wait_until_port_is_open { '6699':
-      ensure  => $ensure,
-      require => Service["Start and enable the ${role_name}'s service: '${service}'"]
-    }
   }
 
   wait_until_port_is_open { '8021':
