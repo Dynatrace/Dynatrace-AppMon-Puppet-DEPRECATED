@@ -65,15 +65,15 @@ class dynatrace::role::agents_package (
   }
 
   dynatrace_installation { "Install the ${role_name}":
-    ensure                => $installation_ensure,
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => $installer_script_name,
-    installer_path_part   => 'agent',
+    ensure                  => $installation_ensure,
+    installer_prefix_dir    => $installer_prefix_dir,
+    installer_file_name     => $installer_file_name,
+    installer_file_url      => $installer_file_url,
+    installer_script_name   => $installer_script_name,
+    installer_path_part     => 'agent',
     installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir
+    installer_owner         => $dynatrace_owner,
+    installer_group         => $dynatrace_group,
+    installer_cache_dir     => $installer_cache_dir
   }
 }

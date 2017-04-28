@@ -63,17 +63,17 @@ class dynatrace::role::start_all_processes (
 
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '2021':
+  -> wait_until_port_is_open { '2021':
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '8021':
+  -> wait_until_port_is_open { '8021':
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '9911':
+  -> wait_until_port_is_open { '9911':
     ensure  => $ensure,
   }
 

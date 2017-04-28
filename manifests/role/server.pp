@@ -44,7 +44,7 @@ class dynatrace::role::server (
     default   => 'running',
   }
 
-  $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
+  $installer_cache_dir = "${dynatrace::installer_cache_dir}/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
@@ -72,17 +72,17 @@ class dynatrace::role::server (
   }
 
   dynatrace_installation { "Install the ${role_name}":
-    ensure                => $installation_ensure,
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => $installer_script_name,
-    installer_path_part   => 'server',
+    ensure                  => $installation_ensure,
+    installer_prefix_dir    => $installer_prefix_dir,
+    installer_file_name     => $installer_file_name,
+    installer_file_url      => $installer_file_url,
+    installer_script_name   => $installer_script_name,
+    installer_path_part     => 'server',
     installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir,
-    require               => File["Configure and copy the ${role_name}'s install script"]
+    installer_owner         => $dynatrace_owner,
+    installer_group         => $dynatrace_group,
+    installer_cache_dir     => $installer_cache_dir,
+    require                 => File["Configure and copy the ${role_name}'s install script"]
   }
 
   if $::kernel == 'Linux' {
@@ -97,8 +97,8 @@ class dynatrace::role::server (
         'collector_port'       => $collector_port,
         'user'                 => $dynatrace_owner
       },
-      require => Dynatrace_installation["Install the ${role_name}"],
-      notify => Service["Start and enable the ${role_name}'s service: '${service}'"]
+      require              => Dynatrace_installation["Install the ${role_name}"],
+      notify               => Service["Start and enable the ${role_name}'s service: '${service}'"]
     }
   }
 

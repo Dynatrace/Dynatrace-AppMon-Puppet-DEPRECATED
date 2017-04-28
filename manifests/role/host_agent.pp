@@ -52,14 +52,14 @@ class dynatrace::role::host_agent (
     ensure => $ensure,
     path   => $ini_file,
     line   => "Name ${host_agent_name}",
-    match  => "^Name .*$"
+    match  => '^Name .*$'
   }
 
   file_line { "Inject the collector name '${host_collector_name}' into '${ini_file}'":
     ensure => $ensure,
     path   => $ini_file,
     line   => "Server ${host_collector_name}",
-    match  => "^Server .*$"
+    match  => '^Server .*$'
   }
 
   # ln -s /opt/dynatrace/init.d/dynaTraceHostagent /etc/init.d/dynaTraceHostagent
@@ -67,8 +67,8 @@ class dynatrace::role::host_agent (
     command => "ln -s ${host_installer_prefix_dir}/dynatrace/init.d/dynaTraceHostagent /etc/init.d/${service}",
     path    => ['/usr/bin', '/usr/sbin', '/bin'],
     unless  => ["test -L /etc/init.d/${service}"],
-  } ->
-  service { "Enable and stop the ${role_name}'s service: '${service}'":    #hack to ensure start service (enable and stop service then start it)
+  }
+  -> service { "Enable and stop the ${role_name}'s service: '${service}'":    #hack to ensure start service (enable and stop service then start it)
     ensure => running,
     name   => $service,
     enable => true

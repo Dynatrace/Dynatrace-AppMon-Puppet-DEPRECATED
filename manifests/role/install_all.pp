@@ -38,30 +38,30 @@ class dynatrace::role::install_all (
   # classes will be exeuted in following order: server, server_license, collector, agents_package, wsagent_package, apache_wsagent, java_agent, host agent
   # note that installation order is important for base modules: server, server_license, collector, agents_package
   class { 'dynatrace::role::server':
-  }  -> # and then:
-  class { 'dynatrace::role::server_license':
+  }# and then:
+  -> class { 'dynatrace::role::server_license':
     license_file_url => $license_file_url,
-  }  -> # and then:
-  class { 'dynatrace::role::collector':
-  }  -> # and then:
-  class { 'dynatrace::role::agents_package':
-  }  -> # and then:
-  class { 'dynatrace::role::wsagent_package':
-  }  -> # and then:
-  class { 'dynatrace::role::apache_wsagent':
-  }  -> # and then:
-  class { 'dynatrace::role::java_agent':
+  }# and then:
+  -> class { 'dynatrace::role::collector':
+  }# and then:
+  -> class { 'dynatrace::role::agents_package':
+  }# and then:
+  -> class { 'dynatrace::role::wsagent_package':
+  }# and then:
+  -> class { 'dynatrace::role::apache_wsagent':
+  }# and then:
+  -> class { 'dynatrace::role::java_agent':
     env_var_name      => $env_var_name,
     env_var_file_name => $env_var_file_name,
     agent_name        => $agent_name,
-  } ->
-  class { 'dynatrace::role::host_agent':
+  }
+  -> class { 'dynatrace::role::host_agent':
     host_agent_name           => $hostagent_name,
     host_installer_prefix_dir => $host_agent_installer_prefix_dir,
     host_installer_file_name  => $host_agent_installer_file_name,
     host_installer_file_url   => $host_agent_installer_file_url,
     host_collector_name       => $host_collector_name,
-  } ->
-  class { 'dynatrace::role::memory_analysis_server':
+  }
+  -> class { 'dynatrace::role::memory_analysis_server':
   }
 }

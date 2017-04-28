@@ -48,64 +48,64 @@ class dynatrace::role::uninstall_all (
     command => "rm -rf \"$(readlink ${symlink})\"; rm -rf ${symlink}",
     path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
     onlyif  => ["test -L ${symlink}"],
-  } ->
+  }
 
-  file {"remove directory by symlink=${symlink}":
-    path => $symlink,
+  -> file {"remove directory by symlink=${symlink}":
+    path    => $symlink,
     recurse => true,
-    purge => true,
-    force => true,
-  } ->
+    purge   => true,
+    force   => true,
+  }
 
-  tidy { 'clean /tmp folder from dynatrace files':
+  -> tidy { 'clean /tmp folder from dynatrace files':
     path    => '/tmp',
     recurse => 1,
     matches => [ 'dt*', 'java_*', 'dynaTrace*.zip' ],
-  } ->
+  }
 
-  tidy { 'clean dynatrace temp folder':
+  -> tidy { 'clean dynatrace temp folder':
     path    => '/tmp/hsperfdata_dynatrace',
     recurse => 1,
     matches => [ '[0-9]*' ],
-  } ->
+  }
 
-  tidy { 'clean temp folder':
+  -> tidy { 'clean temp folder':
     path    => '/tmp/hsperfdata_root',
     recurse => 1,
     matches => [ '[0-9]*' ],
   }
 
-  file { "${installer_cache_dir}":
-    ensure => absent,
-    path => $installer_cache_dir,
+  file { $installer_cache_dir:
+    ensure  => absent,
+    path    => $installer_cache_dir,
     recurse => true,
-    purge => true,
-    force => true,
+    purge   => true,
+    force   => true,
   }
 
-  file {"remove tmp dynatrace directory":
-    ensure => absent,
-    path => '/tmp/hsperfdata_dynatrace',
+  file {'remove tmp dynatrace directory':
+    ensure  => absent,
+    path    => '/tmp/hsperfdata_dynatrace',
     recurse => true,
-    purge => true,
-    force => true,
-  } ->
+    purge   => true,
+    force   => true,
+  }
 
-  file {"remove tmp directory":
-    ensure => absent,
-    path => '/tmp/hsperfdata_root',
+  -> file {'remove tmp directory':
+    ensure  => absent,
+    path    => '/tmp/hsperfdata_root',
     recurse => true,
-    purge => true,
-    force => true,
+    purge   => true,
+    force   => true,
   }
 
   $services_to_manage_array.each |$x| {
     file {"remove /etc/init.d/${x} link":
-      ensure => absent,
-      path => "/etc/init.d/${x}",
+      ensure  => absent,
+      path    => "/etc/init.d/${x}",
       recurse => true,
-      purge => true,
-      force => true,
+      purge   => true,
+      force   => true,
     }
   }
 }

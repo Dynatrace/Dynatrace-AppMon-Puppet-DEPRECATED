@@ -80,16 +80,16 @@ class dynatrace::role::collector (
   }
 
   dynatrace_installation { "Install the ${role_name}":
-    ensure                => $installation_ensure,
-    installer_prefix_dir  => $installer_prefix_dir,
-    installer_file_name   => $installer_file_name,
-    installer_file_url    => $installer_file_url,
-    installer_script_name => $installer_script_name,
-    installer_path_part   => 'collector',
+    ensure                  => $installation_ensure,
+    installer_prefix_dir    => $installer_prefix_dir,
+    installer_file_name     => $installer_file_name,
+    installer_file_url      => $installer_file_url,
+    installer_script_name   => $installer_script_name,
+    installer_path_part     => 'collector',
     installer_path_detailed => '',
-    installer_owner       => $dynatrace_owner,
-    installer_group       => $dynatrace_group,
-    installer_cache_dir   => $installer_cache_dir
+    installer_owner         => $dynatrace_owner,
+    installer_group         => $dynatrace_group,
+    installer_cache_dir     => $installer_cache_dir
   }
 
   if $::kernel == 'Linux' {

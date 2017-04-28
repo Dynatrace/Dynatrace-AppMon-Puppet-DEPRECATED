@@ -82,7 +82,7 @@ class dynatrace::params {
     'Linux': {
       $dynatrace_owner = 'dynatrace'
       $dynatrace_group = 'dynatrace'
-      $installer_cache_dir = "${settings::vardir}"
+      $installer_cache_dir = $settings::vardir
 
       $agents_package_installer_bitsize    = '64'
       $agents_package_installer_prefix_dir = '/opt'
@@ -144,7 +144,7 @@ class dynatrace::params {
       $wsagent_package_installer_prefix_dir = '/opt'
       $wsagent_package_installer_file_name  = 'dynatrace-wsagent.tar'
       $wsagent_package_installer_file_url   = 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-wsagent-6.5.0.1289-linux-x86-64.tar'
-      
+
       $host_agent_installer_prefix_dir = '/opt'
       $host_agent_installer_file_name  = 'dynatrace-hostagent.tar'
       $host_agent_installer_file_url   = 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-hostagent-6.5.0.1289-linux-x86-64.tar'
@@ -163,16 +163,16 @@ class dynatrace::params {
       $dynaTraceWebServerAgent = 'dynaTraceWebServerAgent'
       $dynaTraceFrontendServer = 'dynaTraceFrontendServer'
       $dynaTraceBackendServer  = 'dynaTraceBackendServer'
-      
+
       $services_to_manage_array = [
         $dynaTraceServer,
         $dynaTraceCollector,
-        $dynaTraceAnalysis,  
+        $dynaTraceAnalysis,
         $dynaTraceWebServerAgent,
         $dynaTraceHostagent,
-        
+
         $dynaTraceBackendServer,
-        $dynaTraceFrontendServer 
+        $dynaTraceFrontendServer
         ]
 
     }

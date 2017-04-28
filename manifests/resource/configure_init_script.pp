@@ -33,21 +33,21 @@ define dynatrace::resource::configure_init_script(
   }
 
   file { "Configure and copy the ${role_name}'s '${name}' init script":
-    ensure  => $ensure,
+    ensure                  => $ensure,
     selinux_ignore_defaults => true,
-    path    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
-    owner   => $owner,
-    group   => $group,
-    mode    => '0755',
-    content => template("dynatrace/init.d/${name}.erb"),
-    require => Dynatrace_installation["Install the ${role_name}"]
+    path                    => "${installer_prefix_dir}/dynatrace/init.d/${name}",
+    owner                   => $owner,
+    group                   => $group,
+    mode                    => '0755',
+    content                 => template("dynatrace/init.d/${name}.erb"),
+    require                 => Dynatrace_installation["Install the ${role_name}"]
   }
   file { "Make the '${name}' init script available in /etc/init.d":
-    ensure  => $link_ensure,
+    ensure                  => $link_ensure,
     selinux_ignore_defaults => true,
-    mode    => '0755',
-    path    => "/etc/init.d/${name}",
-    target  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
-    require => File["Configure and copy the ${role_name}'s '${name}' init script"]
+    mode                    => '0755',
+    path                    => "/etc/init.d/${name}",
+    target                  => "${installer_prefix_dir}/dynatrace/init.d/${name}",
+    require                 => File["Configure and copy the ${role_name}'s '${name}' init script"]
   }
 }

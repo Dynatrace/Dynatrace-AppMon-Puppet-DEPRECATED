@@ -24,9 +24,9 @@ class dynatrace::role::server_update (
       $dynaTraceWebServerAgent = $dynatrace::dynaTraceWebServerAgent
       $dynaTraceHostagent      = $dynatrace::dynaTraceHostagent
 
-      $installer_cache_dir = "$dynatrace::installer_cache_dir/dynatrace"
+      $installer_cache_dir = "${dynatrace::installer_cache_dir}/dynatrace"
       $installer_cache_dir_tree = dirtree($installer_cache_dir)
-      $update_file_path = "${installer_cache_dir}"
+      $update_file_path = $installer_cache_dir
       $services_to_stop_array = $dynatrace::services_to_manage_array
 
       $services_to_start_array = [
@@ -65,36 +65,36 @@ class dynatrace::role::server_update (
 
   # introducing order (archive then update and stop then start services)
   archive { 'dynaTrace-update':
-     ensure => present,
-     url => $update_file_url,
-     target => "${installer_cache_dir}/server_update",
+     ensure           => present,
+     url              => $update_file_url,
+     target           => "${installer_cache_dir}/server_update",
      follow_redirects => true,
-     extension => 'zip',
-     checksum => false,
-     src_target => "/tmp",
-  } ->
-  make_server_update { "${update_file_path}":
-    ensure => present,
+     extension        => 'zip',
+     checksum         => false,
+     src_target       => '/tmp',
+  }
+  -> make_server_update { $update_file_path:
+    ensure           => present,
     update_file_path => $update_file_path,
-    rest_update_url => $update_rest_url,
-    user => $update_user,
-    passwd => $update_passwd,
-    notify => Wait_until_port_is_open[  $collector_port ]
+    rest_update_url  => $update_rest_url,
+    user             => $update_user,
+    passwd           => $update_passwd,
+    notify           => Wait_until_port_is_open[  $collector_port ]
   }
 
   wait_until_port_is_open { $collector_port:
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '2021':
+  -> wait_until_port_is_open { '2021':
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '8021':
+  -> wait_until_port_is_open { '8021':
     ensure  => $ensure,
-  } ->
+  }
 
-  wait_until_port_is_open { '9911':
+  -> wait_until_port_is_open { '9911':
     ensure  => $ensure,
   }
 
