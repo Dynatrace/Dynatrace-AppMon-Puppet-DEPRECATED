@@ -1,3 +1,4 @@
+#server
 class dynatrace::role::server (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server',

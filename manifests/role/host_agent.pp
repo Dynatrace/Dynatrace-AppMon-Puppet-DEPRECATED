@@ -1,3 +1,4 @@
+#host_agent
 class dynatrace::role::host_agent (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Host Agent',

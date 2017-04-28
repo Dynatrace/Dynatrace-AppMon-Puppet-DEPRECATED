@@ -1,3 +1,4 @@
+#dynatrace
 class dynatrace (
   $installer_cache_dir = $dynatrace::params::installer_cache_dir,
 

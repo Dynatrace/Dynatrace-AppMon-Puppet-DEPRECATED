@@ -1,3 +1,4 @@
+#configure_init_script
 define dynatrace::resource::configure_init_script(
   $ensure               = 'present',
   $role_name            = undef,
@@ -18,6 +19,9 @@ define dynatrace::resource::configure_init_script(
           $linux_service_stop_runlevels = '0 1 2 6'
         }
       }
+    }
+  default: {
+      fail("Not supported operating system: ${::operatingsystem}")
     }
   }
 

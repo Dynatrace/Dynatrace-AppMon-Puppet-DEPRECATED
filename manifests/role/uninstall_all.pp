@@ -1,3 +1,4 @@
+#uninstall_all
 class dynatrace::role::uninstall_all (
   $ensure                  = 'uninstalled',
   $role_name               = 'Dynatrace Server uninstall',

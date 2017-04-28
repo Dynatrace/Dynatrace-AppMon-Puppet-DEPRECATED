@@ -1,3 +1,4 @@
+#pwh_connection
 class dynatrace::role::pwh_connection (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server PWH connection',

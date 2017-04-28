@@ -1,3 +1,4 @@
+#start_all_processes
 class dynatrace::role::start_all_processes (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server start all services',

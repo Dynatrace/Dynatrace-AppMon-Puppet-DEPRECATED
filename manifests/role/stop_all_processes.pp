@@ -1,3 +1,4 @@
+#stop_all_processes
 class dynatrace::role::stop_all_processes (
   $ensure                  = 'stopped',
   $role_name               = 'Dynatrace Server stop all processes',

@@ -1,3 +1,4 @@
+#collector
 class dynatrace::role::collector (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Collector',

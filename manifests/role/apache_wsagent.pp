@@ -1,3 +1,4 @@
+#apache_wsagent
 class dynatrace::role::apache_wsagent (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Apache WebServer Agent',

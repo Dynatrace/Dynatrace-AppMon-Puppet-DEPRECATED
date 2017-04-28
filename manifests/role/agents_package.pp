@@ -1,3 +1,4 @@
+#agents_package
 class dynatrace::role::agents_package (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Agents',

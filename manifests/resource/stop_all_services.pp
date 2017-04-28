@@ -1,3 +1,4 @@
+#stop_all_services
 define dynatrace::resource::stop_all_services(
   $ensure    = 'stopped'
 ) {

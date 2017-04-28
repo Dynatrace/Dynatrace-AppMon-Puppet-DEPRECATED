@@ -1,3 +1,4 @@
+#java_agent
 class dynatrace::role::java_agent (
 
   $ensure             = 'present',

@@ -1,3 +1,4 @@
+#copy_or_download_file
 define dynatrace::resource::copy_or_download_file(
   $ensure    = 'present',
   $file_name = undef,

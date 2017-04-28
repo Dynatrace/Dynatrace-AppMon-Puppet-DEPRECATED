@@ -1,3 +1,4 @@
+#install_all
 class dynatrace::role::install_all (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server componnets installer',
@@ -57,9 +58,9 @@ class dynatrace::role::install_all (
   }
   -> class { 'dynatrace::role::host_agent':
     host_agent_name           => $hostagent_name,
-    host_installer_prefix_dir => $host_agent_installer_prefix_dir,
-    host_installer_file_name  => $host_agent_installer_file_name,
-    host_installer_file_url   => $host_agent_installer_file_url,
+    host_installer_prefix_dir => $host_installer_prefix_dir,
+    host_installer_file_name  => $host_installer_file_name,
+    host_installer_file_url   => $host_installer_file_url,
     host_collector_name       => $host_collector_name,
   }
   -> class { 'dynatrace::role::memory_analysis_server':

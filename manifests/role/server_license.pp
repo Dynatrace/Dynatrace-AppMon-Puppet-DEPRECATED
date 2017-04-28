@@ -1,3 +1,4 @@
+#server_license
 class dynatrace::role::server_license (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Server License',

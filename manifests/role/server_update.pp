@@ -1,3 +1,4 @@
+#server_update
 class dynatrace::role::server_update (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server update',
@@ -65,13 +66,13 @@ class dynatrace::role::server_update (
 
   # introducing order (archive then update and stop then start services)
   archive { 'dynaTrace-update':
-     ensure           => present,
-     url              => $update_file_url,
-     target           => "${installer_cache_dir}/server_update",
-     follow_redirects => true,
-     extension        => 'zip',
-     checksum         => false,
-     src_target       => '/tmp',
+    ensure           => present,
+    url              => $update_file_url,
+    target           => "${installer_cache_dir}/server_update",
+    follow_redirects => true,
+    extension        => 'zip',
+    checksum         => false,
+    src_target       => '/tmp',
   }
   -> make_server_update { $update_file_path:
     ensure           => present,

@@ -1,3 +1,4 @@
+#memory_analysis_server
 class dynatrace::role::memory_analysis_server (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Memory Analysis Server',

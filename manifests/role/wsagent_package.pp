@@ -1,3 +1,4 @@
+#wsagent_package
 class dynatrace::role::wsagent_package (
   $ensure               = 'present',
   $role_name            = 'Dynatrace WebServer Agent',

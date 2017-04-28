@@ -1,3 +1,4 @@
+#dynatrace_user
 class dynatrace::role::dynatrace_user(
   $dynatrace_owner = $dynatrace::dynatrace_owner,
   $dynatrace_group = $dynatrace::dynatrace_group
