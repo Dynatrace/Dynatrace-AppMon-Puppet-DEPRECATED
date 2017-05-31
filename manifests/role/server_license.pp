@@ -18,6 +18,6 @@ class dynatrace::role::server_license (
     ensure    => $ensure,
     file_name => $license_file_name,
     file_url  => $license_file_url,
-    path      => "${installer_prefix_dir}/dynatrace/server/conf/dtlicense.key"
+    path      => "${installer_prefix_dir}/dynatrace/server/conf/dtlicense.lic"
   }
 }

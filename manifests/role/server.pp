@@ -8,7 +8,7 @@ class dynatrace::role::server (
   $installer_file_url      = $dynatrace::server_installer_file_url,
   $license_file_name       = $dynatrace::server_license_file_name,
   $license_file_url        = $dynatrace::server_license_file_url,
-  $collector_port          = $dynatrace::server_collector_port,
+  $collector_port          = $dynatrace::server_embedded_collector_port,
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
   $dynatrace_group         = $dynatrace::dynatrace_group
 ) inherits dynatrace {
@@ -107,10 +107,10 @@ class dynatrace::role::server (
     ensure => $service_ensure,
     name   => $service,
     enable => true,
-    notify => [ Wait_until_port_is_open[$collector_port], Wait_until_port_is_open['2021'], Wait_until_port_is_open['8021'], Wait_until_port_is_open['9911'] ]
+    notify => [ Wait_until_port_is_open['6699'], Wait_until_port_is_open['2021'], Wait_until_port_is_open['8021'], Wait_until_port_is_open['9911'] ]
   }
 
-  wait_until_port_is_open { $collector_port:
+  wait_until_port_is_open { '6699':
     ensure  => $ensure,
     require => Service["Start and enable the ${role_name}'s service: '${service}'"]
   }

@@ -1,4 +1,5 @@
 Facter.add(:install_server__check_service) do
+  confine :kernel => 'Linux'
   setcode do
     
     pids = []

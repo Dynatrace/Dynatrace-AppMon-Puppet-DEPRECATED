@@ -47,11 +47,15 @@ describe process('java') do
   its(:args) { should match /-XX:MaxPermSize=384m/ }
 end
 
+describe process('dtanalysisserver') do
+  it { should be_running }
+end
+
 describe service('dynaTraceAnalysis') do
   it { should be_enabled }
-  it { should be_running }
 
   if os[:family] == 'debian' || os[:family] == 'ubuntu'
+      it { should be_enabled.with_level(2) }
       it { should be_enabled.with_level(3) }
       it { should be_enabled.with_level(4) }
       it { should be_enabled.with_level(5) }
