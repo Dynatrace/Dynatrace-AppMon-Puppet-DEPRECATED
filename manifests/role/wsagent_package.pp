@@ -9,7 +9,7 @@ class dynatrace::role::wsagent_package (
   $collector_hostname   = $dynatrace::wsagent_package_collector_hostname,
   $collector_port       = $dynatrace::wsagent_package_collector_port,
   $dynatrace_owner      = $dynatrace::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::dynatrace_group
+  $dynatrace_group      = $dynatrace::dynatrace_group,
 ) inherits dynatrace {
 
   validate_re($ensure, ['^present$', '^absent$'])
@@ -81,7 +81,7 @@ class dynatrace::role::wsagent_package (
     installer_file_url      => $installer_file_url,
     installer_script_name   => $installer_script_name,
     installer_path_part     => 'agent',
-    installer_path_detailed => "${installer_prefix_dir}/dynatrace/agent/conf/agentversion.dtwsagent",
+    installer_path_detailed => "${installer_prefix_dir}/dynatrace/agent/conf/agentversion.${agent_name}",
     installer_owner         => $dynatrace_owner,
     installer_group         => $dynatrace_group,
     installer_cache_dir     => $installer_cache_dir
