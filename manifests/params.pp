@@ -78,7 +78,7 @@
 #  $update_passwd                   => user password
 #  
 class dynatrace::params {
-  $dynatrace_version = '7.0.0.2449'
+  $dynatrace_version = '7.0.0.2469'
   $dynatrace_version_link = "7.0/${dynatrace_version}"
   case $::kernel {
     'Linux': {
