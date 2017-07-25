@@ -1,11 +1,11 @@
 
 
-#Local Puppet environment with Vagrant setup
-##Puppet Server provisioning
+# Local Puppet environment with Vagrant setup
+## Puppet Server provisioning
 This guideline will help you with installing Puppet Server on Ubuntu 16.04 VM
 
 
-###Configuration
+### Configuration
 
 Default values for given parameters: 
 
@@ -43,7 +43,7 @@ Default values for given parameters:
     }
   ```
 
-###Installation
+### Installation
 
 From the `./environment/Server` location execute following commands in that order:
 
@@ -80,10 +80,10 @@ You should modify above properties if necessary.
     ```
 **Result**: It should start puppetserver service successfully.
 
-##Puppet Agent provisioning
+## Puppet Agent provisioning
 This guideline will help you with installing Puppet Agent on Ubuntu 16.04 VM
 
-###Configuration
+### Configuration
 
 Default values for given parameters: 
 
@@ -114,7 +114,7 @@ Default values for given parameters:
 | PHPAGENT_NAME_PARAM    | phpagent.agentname = phpOneAgent  |
 | PHPAGENT_TENANT_PARAM    | phpagent.tenant = 1  |
 
-###Installation
+### Installation
 
 From the `./environment/agent_vm/` location execute following commands in that order:
 
@@ -160,7 +160,7 @@ sudo puppet cert sign <CERT_NAME_WITHOUT_QUOTES>
 sudo puppet agent --test --debug --environment production
 ```
 
-##In case of issues...
+## In case of issues...
 * Check correctness of Vagrant provisioning including port forwarding
 * Restart puppetserver
     ```
@@ -172,18 +172,18 @@ sudo puppet agent --test --debug --environment production
     sudo puppet resource service puppet ensure=running enable=true
     ```
 * Remove certifications (**remember of stopping puppet services!**):
-    1. On Agent Host
+    1. On Agent Host:
     ```
     sudo puppet resource service puppet ensure=stopped enable=false
     sudo find /etc/puppetlabs/puppet/ssl -name '*.pem' -delete
     ```
-    2. On Server Host
+    2. On Server Host:
     ```    
     sudo systemctl stop puppetserver
     sudo find /etc/puppetlabs/puppet/ssl -name <AGENT\_HOSTNAME>.pem -delete
     sudo systemctl start puppetserver
     ```
-    3. One Agent Host
+    3. and then again on Agent Host:
     ```
     sudo puppet resource service puppet ensure=running enable=true
     sudo puppet agent -t --waitforcert=60
@@ -204,5 +204,5 @@ sudo puppet agent --test --debug --environment production
     sudo rm -rf /opt/puppetlabs/puppet/cache
     ```
     
-####References:
+#### References:
 * In case of catalog issues: https://docs.puppet.com/puppet/latest/environment_isolation.html
