@@ -115,6 +115,18 @@ class dynatrace::params {
       $java_agent_collector_port     = '9998'
       $java_agent_linux_agent_path   = '/opt/dynatrace/agent/lib64/libdtagent.so'
 
+      $php_one_agent_installer_bitsize    = '64'
+      $php_one_agent_installer_prefix_dir = '/opt'
+      $php_one_agent_php_config_file_name = 'php.ini'
+      $php_one_agent_php_config_file_path = '/etc/php/7.0/apache2'
+      $php_one_agent_name                 = 'phpOneAgent'
+      $php_one_agent_version              = '7.0'
+      $php_one_agent_server_hostname      = 'localhost'
+      $php_one_agent_port                 = '8043'
+      $php_one_agent_installer_file_name  = 'dynatrace-one-agent-php.tar'
+      $php_one_agent_installer_file_url   = "https://files.dynatrace.com/downloads/OnPrem/dynaTrace/${dynatrace_version_link}/dynatrace-one-agent-php-${dynatrace_version}-linux-x86.tgz"
+      $php_one_agent_apache_service_name  = 'apache2'
+
       $memory_analysis_server_installer_bitsize    = '64'
       $memory_analysis_server_installer_prefix_dir = '/opt'
       $memory_analysis_server_installer_file_name  = 'dynatrace-analysisserver.jar'
@@ -129,8 +141,8 @@ class dynatrace::params {
       $server_installer_prefix_dir    = '/opt'
       $server_installer_file_name     = 'dynatrace.jar'
       $server_installer_file_url      = "http://files.dynatrace.com/downloads/OnPrem/dynaTrace/${dynatrace_version_link}/dynatrace-server-${dynatrace_version}-linux-x86.jar"
-      $server_license_file_name       = 'dynatrace-license.key'
-      $server_license_file_url        = undef
+      $server_license_file_name       = 'dtlicense.lic'
+      $server_license_file_url        = '/tmp/dtlicense.lic'
       $server_collector_port          = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
       $server_embedded_collector_port = '9998'
 
@@ -184,4 +196,3 @@ class dynatrace::params {
     }
   }
 }
-
