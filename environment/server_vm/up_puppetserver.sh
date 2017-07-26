@@ -7,13 +7,14 @@
 #and make sure that hostname is changed in /etc/hosts for 127.0.1.1
 
 DIR=${DIR:-"dynatrace"}
+BRANCH=${BRANCH:-"master"}
 CONF_FILE=${CONF_FILE:-"/etc/puppetlabs/puppet/puppet.conf"}
 BASEMODULE_PARAM=${BASEMODULE_PARAM:-"basemodulepath = /etc/puppetlabs/code/environments/production/modules"}
 SERVICE=${SERVICE:-puppetserver}
 
 cd /etc/puppetlabs/code/environments/production/modules/
 sudo mkdir -p $DIR
-sudo git clone https://github.com/Dynatrace/Dynatrace-Puppet.git $DIR
+sudo git clone -b $BRANCH https://github.com/Dynatrace/Dynatrace-Puppet.git $DIR
 sudo puppet module install puppetlabs-stdlib
 sudo puppet module install maestrodev-wget --version 1.7.3
 sudo puppet module install AlexCline-dirtree --version 0.2.1
