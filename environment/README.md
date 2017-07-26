@@ -1,11 +1,11 @@
 
 
-#Local Puppet environment with Vagrant setup
-##Puppet Server provisioning
+# Local Puppet environment with Vagrant setup
+## Puppet Server provisioning
 This guideline will help you with installing Puppet Server on Ubuntu 16.04 VM
 
 
-###Configuration
+### Configuration
 
 Default values for given parameters: 
 
@@ -44,7 +44,7 @@ Default values for given parameters:
     }
   ```
 
-###Installation
+### Installation
 
 From the `./environment/server_vm` location execute following commands in that order:
 
@@ -87,10 +87,10 @@ You should modify above properties if necessary.
     
 **Result**: It should start puppetserver service successfully.
 
-##Puppet Agent provisioning
+## Puppet Agent provisioning
 This guideline will help you with installing Puppet Agent on Ubuntu 16.04 VM
 
-###Configuration
+### Configuration
 
 Default values for given parameters: 
 
@@ -123,7 +123,7 @@ Default values for given parameters:
 
 **Note: to make PHP OneAgent running successfully, you need to configure Agent pattern recognition in Dynatrace Appmon as ${PHPAGENT_NAME_PARAM}. Please also refer main README file for PHP OneAgent information. 
 
-###Installation
+### Installation
 
 From the `./environment/agent_vm/` location execute following commands in that order:
 
@@ -178,7 +178,7 @@ sudo puppet cert sign <CERT_NAME_WITHOUT_QUOTES>
 sudo puppet agent --test --debug --environment production
 ```
 
-##In case of issues...
+## In case of issues...
 * Check correctness of Vagrant provisioning including port forwarding
 * Restart puppetserver
     ```
@@ -222,5 +222,5 @@ sudo puppet agent --test --debug --environment production
     sudo rm -rf /opt/puppetlabs/puppet/cache
     ```
     
-####References:
+#### References:
 * In case of catalog issues: https://docs.puppet.com/puppet/latest/environment_isolation.html
