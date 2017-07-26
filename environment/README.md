@@ -68,11 +68,6 @@ You should modify above properties if necessary.
     which apparmor_status
     ```
     * Hostnames are correctly added to /etc/hosts (you can remove ubuntu-xenial registry if present)
-    
-    * Module is point to `/etc/puppetlabs/code/environments/production/modules/`
-    ```
-    sudo puppet config print modulepath --section master --environment production
-    ```
 
 4. Execute:
     ```
@@ -83,6 +78,11 @@ You should modify above properties if necessary.
     * ServerPuppet is listening on port 8140:
     ```
     sudo netstat -nap | grep 8140
+    ```    
+    
+    * Module is point to `/etc/puppetlabs/code/environments/production/modules/`
+    ```
+    sudo puppet config print modulepath --section master --environment production
     ```
     
 **Result**: It should start puppetserver service successfully.
