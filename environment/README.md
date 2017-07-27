@@ -221,6 +221,10 @@ sudo puppet agent --test --debug --environment production
     ```
     sudo rm -rf /opt/puppetlabs/puppet/cache
     ```
+* Remove Agent's lock:
+    ```
+    sudo rm -rf /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock
+    ```
     
 #### References:
 * In case of catalog issues: https://docs.puppet.com/puppet/latest/environment_isolation.html

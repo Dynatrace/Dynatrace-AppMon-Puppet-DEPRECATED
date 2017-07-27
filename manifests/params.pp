@@ -141,8 +141,8 @@ class dynatrace::params {
       $server_installer_prefix_dir    = '/opt'
       $server_installer_file_name     = 'dynatrace.jar'
       $server_installer_file_url      = "http://files.dynatrace.com/downloads/OnPrem/dynaTrace/${dynatrace_version_link}/dynatrace-server-${dynatrace_version}-linux-x86.jar"
-      $server_license_file_name       = 'dtlicense.lic'
-      $server_license_file_url        = '/tmp/dtlicense.lic'
+      $server_license_file_name       = 'dynatrace-license.key'
+      $server_license_file_url        =  undef
       $server_collector_port          = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
       $server_embedded_collector_port = '9998'
 

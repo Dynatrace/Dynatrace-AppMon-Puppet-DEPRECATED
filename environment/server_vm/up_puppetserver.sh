@@ -27,9 +27,16 @@ fi
 
 sudo tee <<EOF /etc/puppetlabs/code/environments/production/manifests/site.pp >/dev/null
 node default {
-        include dynatrace::role::server
-        include dynatrace::role::collector
-        include dynatrace::role::php_one_agent
+    include dynatrace::role::server
+    include dynatrace::role::server_license
+    include dynatrace::role::collector
+    include dynatrace::role::agents_package
+    include dynatrace::role::wsagent_package
+    include dynatrace::role::apache_wsagent
+    include dynatrace::role::java_agent
+    include dynatrace::role::host_agent
+    include dynatrace::role::memory_analysis_server
+    include dynatrace::role::php_one_agent
 }
 EOF
 
