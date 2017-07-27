@@ -7,3 +7,5 @@ Puppetfile.lock
 .kitchen.local.yml
 .librarian
 .tmp
+.idea
+dynatrace.iml

@@ -18,12 +18,12 @@ class dynatrace::role::install_all (
   $pwh_connection_password = $dynatrace::server_pwh_connection_password,
 
   # java Agent parameters
-  $env_var_name            = $dynatrace::env_var_name,
-  $env_var_file_name       = $dynatrace::env_var_file_name,
-  $agent_name              = $dynatrace::agent_name,
+  $env_var_name            = $dynatrace::java_agent_env_var_name,
+  $env_var_file_name       = $dynatrace::java_agent_env_var_file_name,
+  $agent_name              = $dynatrace::java_agent_name,
 
   # Host Agent parameters
-  $hostagent_name           = $dynatrace::host_agent_name,
+  $hostagent_name             = $dynatrace::host_agent_name,
   $host_installer_prefix_dir = $dynatrace::host_agent_installer_prefix_dir,
   $host_installer_file_name  = $dynatrace::host_agent_installer_file_name,
   $host_installer_file_url   = $dynatrace::host_agent_installer_file_url,

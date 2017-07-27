@@ -13,6 +13,7 @@ platforms:
   - name: centos-7
     driver_config:
       privileged: true
+      use_cache: false
       run_command: /usr/sbin/init
       provision_command:
         - yum update -y
@@ -37,6 +38,7 @@ platforms:
 
   - name: debian-8.8
     driver_config:
+      use_cache: false
       provision_command:
         - apt-get update
         # Install common dependencies
@@ -61,6 +63,7 @@ platforms:
 
   - name: ubuntu-16.04
     driver_config:
+      use_cache: false
       provision_command:
         - apt-get update
         # Install common dependencies
@@ -81,7 +84,7 @@ platforms:
         - ln `~/.rbenv/bin/rbenv which puppet` /usr/bin/puppet
 
 suites:
-  - name: apache_wsagent_debian
+ - name: apache_wsagent_debian
     provisioner:
       manifest: apache_wsagent_debian/init.pp
     includes:
@@ -121,3 +124,33 @@ suites:
   - name: wsagent_package
     provisioner:
       manifest: wsagent_package/init.pp
+
+  - name: php_one_agent_ubuntu
+    provisioner:
+      manifest: php_one_agent_debian/init.pp
+    driver_config:
+      use_cache: false
+      provision_command:
+        - apt-get install -y apache2
+        - apt-get install -y php7.0
+        - apt-get install -y libapache2-mod-php7.0
+    includes:
+      - ubuntu-16.04
+
+  - name: php_one_agent_debian
+    provisioner:
+      manifest: php_one_agent_debian/init.pp
+    driver_config:
+      use_cache: false
+      provision_command:
+        - echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+        - echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+        - apt-get install -y wget
+        - wget https://www.dotdeb.org/dotdeb.gpg
+        - apt-key add dotdeb.gpg
+        - apt-get update
+        - apt-get install -y apache2
+        - apt-get install -y php7.0
+        - apt-get install -y libapache2-mod-php7.0
+    includes:
+      - debian-8.8

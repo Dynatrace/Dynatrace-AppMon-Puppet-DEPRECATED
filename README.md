@@ -16,7 +16,7 @@ This class downloads and installs the most recent version of the Dynatrace Agent
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-agent-7.0.0.2469-unix.jar'
 }
 ```
 
@@ -30,7 +30,7 @@ Please refer to `manifests/role/apache_wsagent.pp` and `manifests/role/wsagent_p
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-wsagent-6.5.0.1289-linux-x86-64.tar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-wsagent-7.0.0.2469-linux-x86-64.tar'
 }
 
 class { 'dynatrace::role::apache_wsagent':
@@ -49,11 +49,11 @@ This class downloads and installs the most recent version of the Dynatrace Colle
 
 ```
 class { 'dynatrace::role::collector':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-collector-6.5.0.1289-linux-x86.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-collector-7.0.0.2469-linux-x86.jar'
 }
 ```
 
-**Note:** make sure that attributes related to the Collector's memory configuration are set in accordance to the [Memory Configuration](https://community.dynatrace.com/community/display/DOCDT60/Collector+Configuration#CollectorConfiguration-MemoryConfiguration) section of the [Collector Configuration](https://community.dynatrace.com/community/display/DOCDT60/Collector+Configuration) documentation.
+**Note:** make sure that attributes related to the Collector's memory configuration are set in accordance to the [Memory Configuration](https://www.dynatrace.com/support/doc/appmon/installation/set-up-system-components/set-up-collectors/) documentation.
 
 ### dynatrace::role::java_agent
 
@@ -63,7 +63,7 @@ Please refer to `manifests/role/java_agent.pp` and `manifests/role/agents_packag
 
 ```
 class { 'dynatrace::role::agents_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-agent-7.0.0.2469-unix.jar'
 }
 
 class { 'dynatrace::role::java_agent':
@@ -84,11 +84,25 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatrace::role::memory_analysis_server':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-analysisserver-6.5.0.1289-linux-x86.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-analysisserver-7.0.0.2469-linux-x86.jar'
 }
 ```
 
-**Note:** make sure that attributes related to the Analysis Server's memory configuration are set in accordance to the documentation [Set up a Memory Analysis Server](https://community.dynatrace.com/community/display/DOCDT65/Set+up+a+Memory+Analysis+Server).
+**Note:** make sure that attributes related to the Analysis Server's memory configuration are set in accordance to the documentation [Set up a Memory Analysis Server](https://www.dynatrace.com/support/doc/appmon/installation/set-up-system-components/set-up-a-memory-analysis-server/).
+
+### dynatrace::role::php_one_agent
+
+*Installs the PHP OneAgent.*
+
+This class downloads and installs the most recent version of the PHP OneAgent for the Linux platform from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). The default behavior can be overridden via the class' `$installer_file_url` parameter. Alternatively, you can place the installer artifact as `dynatrace-one-agent-php.tar` in the module's `files` directory from where it will be picked up during the installation. Please refer to `manifests/role/php_one_agent.pp` for a list of supported parameters, whose default values can be overridden in `manifests/params.pp`. In order to install, you may execute the class as follows:
+
+```
+class { 'dynatrace::role::php_one_agent':
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-one-agent-php-7.0.0.2469-linux-x86.tgz'
+}
+```
+
+**Note:** make sure that attributes related to the One Agent configuration are set in accordance to the documentation [PHP Agent configuration](https://www.dynatrace.com/support/doc/appmon/installation/set-up-system-components/set-up-agents/php-agent-configuration/) and [OneAgent configuration](https://www.dynatrace.com/support/doc/appmon/installation/set-up-system-components/set-up-agents/oneagent-configuration//).
 
 ### dynatrace::role::server
 
@@ -98,7 +112,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatrace::role::server':
-  installer_file_url => 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-server-6.5.0.1289-linux-x86.jar'
+  installer_file_url => 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-server-7.0.0.2469-linux-x86.jar'
 }
 ```
 
@@ -122,7 +136,7 @@ This class downloads and installs the most recent version of the Dynatrace WebSe
 
 ```
 class { 'dynatrace::role::wsagent_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-wsagent-6.5.0.1289-linux-x86-64.tar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-wsagent-7.0.0.2469-linux-x86-64.tar'
 }
 ```
 
