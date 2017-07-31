@@ -86,6 +86,10 @@ class dynatrace (
 
   $services_to_manage_array = $dynatrace::params::services_to_manage_array,
 
+  $php_one_agent_php_config_file_path = $dynatrace::params::php_one_agent_php_config_file_path,
+  $php_one_agent_php_config_file_name = $dynatrace::params::php_one_agent_php_config_file_name
+
+
 ) inherits dynatrace::params {
 
 }

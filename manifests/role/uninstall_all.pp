@@ -16,7 +16,9 @@ class dynatrace::role::uninstall_all (
   $pwh_connection_username = $dynatrace::server_pwh_connection_username,
   $pwh_connection_password = $dynatrace::server_pwh_connection_password,
   $dynatrace_owner         = $dynatrace::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::dynatrace_group
+  $dynatrace_group         = $dynatrace::dynatrace_group,
+  $php_config_file_path    = $dynatrace::php_one_agent_php_config_file_path,
+  $php_config_file_name    = $dynatrace::php_one_agent_php_config_file_name
 ) inherits dynatrace {
 
   case $::kernel {
@@ -37,8 +39,10 @@ class dynatrace::role::uninstall_all (
   }
 
   $installer_cache_dir = "${settings::vardir}/dynatrace"
-  $install_link = "${installer_prefix_dir}/dynatrace"
-  $symlink      = "${installer_prefix_dir}/dynatrace"
+  $install_link   = "${installer_prefix_dir}/dynatrace"
+  $symlink        = "${installer_prefix_dir}/dynatrace"
+  $php_ini_file   = "${php_config_file_path}/${php_config_file_name}"
+  $one_agent_dir  = "${installer_prefix_dir}/dynatrace-oneagent-*"
 
   #stop all Dynatrace processes
   include dynatrace::role::stop_all_processes
@@ -109,4 +113,34 @@ class dynatrace::role::uninstall_all (
       force   => true,
     }
   }
+
+  #removing phpOneAgent
+  exec {"remove phpOneAgent directory ${one_agent_dir}":
+    # remove directory using symlink (Puppet file resource does not work sometimes in this case)
+    command => "rm -rf ${one_agent_dir}",
+    path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+    onlyif  => ["test -d ${one_agent_dir}"],
+  }
+
+  file { $php_ini_file :
+    ensure => file,
+  }
+  -> exec {'remove phpagent.tenant from phpOneAgent configuration':
+  command => "/bin/sed -i '/^phpagent.tenant/d' ${$php_ini_file}",
+  onlyif  => "/bin/grep '^phpagent.tenant' ${$php_ini_file}",
+  }
+  -> exec {'remove phpagent.server from phpOneAgent configuration':
+  command => "/bin/sed -i '/^phpagent.server*/d' ${$php_ini_file}",
+  onlyif  => "/bin/grep '^phpagent.server' ${$php_ini_file}",
+  }
+  -> exec {'remove phpagent.agentname from phpOneAgent configuration':
+  command => "/bin/sed -i '/^phpagent.agentname*/d' ${$php_ini_file}",
+  onlyif  => "/bin/grep '^phpagent.agentname' ${$php_ini_file}",
+  }
+  -> exec {'remove extension from phpOneAgent configuration':
+  command => "/bin/sed -i '/^extension\s\?=\s\?.*liboneagentloader.so$/d' ${$php_ini_file}",
+  onlyif  => "/bin/grep '^extension\s\?=\s\?.*liboneagentloader.so$' ${$php_ini_file}",
+  }
+
+
 }

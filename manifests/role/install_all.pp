@@ -65,4 +65,6 @@ class dynatrace::role::install_all (
   }
   -> class { 'dynatrace::role::memory_analysis_server':
   }
+  -> class { 'dynatrace::role::php_one_agent':
+  }
 }
