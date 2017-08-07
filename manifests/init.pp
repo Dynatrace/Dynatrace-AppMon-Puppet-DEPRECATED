@@ -2,6 +2,8 @@
 class dynatrace (
   $installer_cache_dir = $dynatrace::params::installer_cache_dir,
 
+  $pid_file_directory = $dynatrace::params::pid_file_directory,
+
   $agents_package_installer_bitsize    = $dynatrace::params::agents_package_installer_bitsize,
   $agents_package_installer_prefix_dir = $dynatrace::params::agents_package_installer_prefix_dir,
   $agents_package_installer_file_name  = $dynatrace::params::agents_package_installer_file_name,
@@ -91,5 +93,11 @@ class dynatrace (
 
 
 ) inherits dynatrace::params {
+
+  if $pid_file_directory != '/tmp' {
+    file { $pid_file_directory :
+      ensure => 'directory',
+    }
+  }
 
 }

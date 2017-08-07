@@ -33,7 +33,7 @@ DT_RUNASUSER=<%= @params["user"] %>
 # How long to wait for shutdown
 DT_SHUTDOWN_WAIT=60
 
-DT_PIDFILE_DIR=/tmp
+DT_PIDFILE_DIR=<%= @dynatrace::pid_file_directory %>
 
 DT_PIDFILE=${DT_PIDFILE_DIR}/${DT_BINARY}63.pid
 
@@ -59,11 +59,11 @@ case "$1" in
       echo "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
       "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
       echo $! >${DT_PIDFILE}
-    else  
+    else
       echo "${DT_HOME}"/${DT_BINARY} -bg ${DT_OPTARGS}
       su -c "${DT_HOME}/${DT_BINARY} -bg ${DT_OPTARGS}" "${DT_RUNASUSER}"
       echo $! >${DT_PIDFILE}
-    fi    
+    fi
   else
     echo "Dynatrace ${DT_PRODUCT} daemon is already running!"
   fi
@@ -86,7 +86,7 @@ case "$1" in
       kill -9 ${PROCESSPID}
     fi
 
-    if [ -f "${DT_PIDFILE}" ]; then   
+    if [ -f "${DT_PIDFILE}" ]; then
       rm -f ${DT_PIDFILE}
     fi
   fi
