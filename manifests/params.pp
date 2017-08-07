@@ -14,7 +14,7 @@
 #
 #  $apache_wsagent_apache_config_file_path     => The path to the Apache HTTP Server's config file.
 #  $apache_wsagent_linux_agent_path            => The path to the Dynatrace Agent library.
-#  
+#
 #  $collector_installer_bitsize    => '32' or '64'.
 #  $collector_installer_prefix_dir => The Dynatrace Collector will be installed into the directory $collector_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $collector_installer_prefix_dir/dynatrace.
 #  $collector_installer_file_name  => The file name of the Dynatrace Collector installer in the module's files directory.
@@ -26,14 +26,14 @@
 #  $collector_jvm_xmx              => The Dynatrace Collector's JVM setting: -Xmx.
 #  $collector_jvm_perm_size        => The Dynatrace Collector's JVM setting: -XX:PermSize.
 #  $collector_jvm_max_perm_size    => The Dynatrace Collector's JVM setting: -XX:MaxPermSize.
-#  
+#
 #  $java_agent_env_var_name       => The name of the environment variable to be used for Dynatrace Agent injection.
 #  $java_agent_env_var_file_name  => The name of the file to be modified.
 #  $java_agent_name               => The name of the Dynatrace Agent as it appears in the Dynatrace Server.
 #  $java_agent_collector_hostname => The location of the collector the Dynatrace Agent shall connect to.
 #  $java_agent_collector_port     => The port on the collector the Dynatrace Agent shall connect to.
 #  $java_agent_linux_agent_path   => The path to the Dynatrace Agent libary.
-#  
+#
 #  $memory_analysis_server_installer_bitsize    => '32' or '64'.
 #  $memory_analysis_server_installer_prefix_dir => The Dynatrace Memory Analysis Server will be installed into the directory $memory_analysis_server_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $memory_analysis_server_installer_prefix_dir/dynatrace.
 #  $memory_analysis_server_installer_file_name  => The file name of the Dynatrace Memory Analysis Server installer in the module's files directory.
@@ -43,7 +43,7 @@
 #  $memory_analysis_server_jvm_xmx              => The Dynatrace Memory Analysis Server's JVM setting: -Xmx.
 #  $memory_analysis_server_jvm_perm_size        => The Dynatrace Memory Analysis Server's JVM setting: -XX:PermSize.
 #  $memory_analysis_server_jvm_max_perm_size    => The Dynatrace Memory Analysis Server's JVM setting: -XX:MaxPermSize.
-#  
+#
 #  $server_installer_bitsize       => '32' or '64'.
 #  $server_installer_prefix_dir    => The Dynatrace Server will be installed into the directory $server_installer_prefix_dir/dynatrace-$major-$minor-$rev, where $major, $minor and $rev are given by the installer. A symbolic link to the actual installation directory will be created in $server_installer_prefix_dir/dynatrace.
 #  $server_installer_file_name     => The file name of the Dynatrace installer in the cookbook's files directory.
@@ -58,7 +58,7 @@
 #  $server_pwh_connection_database =>
 #  $server_pwh_connection_username =>
 #  $server_pwh_connection_password =>
-#  
+#
 #  $wsagent_package_agent_name           => The name the Dynatrace WebServer Agent as it appears in the Dynatrace Server.
 #  $wsagent_package_collector_hostname   => The location of the Dynatrace Collector the Web Server Agent shall connect to.
 #  $wsagent_package_collector_port       => The port on the Dynatrace Collector the Web Server Agent shall connect to.
@@ -71,12 +71,12 @@
 #  $host_agent_installer_file_url   => A HTTP, HTTPS or FTP URL to the Dynatrace Web Host Agent installer in the form (http|https|ftp)://[user[:pass]]@host.domain[:port]/path.
 #  $host_agent_name                 => Dynatrace Host Agent name
 #  $host_agent_collector            => Dynatrace Host Agent Collector identifier (collector IP address or host name)
-#  
+#
 #  $update_file_url                 => URL to the update zip file with tds inside e.g. 'https://files.dynatrace.com/downloads/fixpacks/dynaTrace-6.5.1.1003.zip'
-#  $update_rest_url                 => the REST URL to perform update 
-#  $update_user                     => user name 
+#  $update_rest_url                 => the REST URL to perform update
+#  $update_user                     => user name
 #  $update_passwd                   => user password
-#  
+#
 class dynatrace::params {
   $dynatrace_version = '7.0.0.2469'
   $dynatrace_version_link = "7.0/${dynatrace_version}"
@@ -85,6 +85,7 @@ class dynatrace::params {
       $dynatrace_owner = 'dynatrace'
       $dynatrace_group = 'dynatrace'
       $installer_cache_dir = $settings::vardir
+      $pid_file_directory  = '/tmp'
 
       $agents_package_installer_bitsize    = '64'
       $agents_package_installer_prefix_dir = '/opt'

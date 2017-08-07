@@ -31,7 +31,7 @@ DT_RUNASUSER=<%= @params["user"] %>
 
 DT_SHUTDOWN_WAIT=60
 
-DT_PIDFILE_DIR=/tmp
+DT_PIDFILE_DIR=<%= @dynatrace::pid_file_directory %>
 
 DT_PIDFILE=${DT_PIDFILE_DIR}/${DT_BINARY}63.pid
 
@@ -75,7 +75,7 @@ case "$1" in
       su -c "nohup ${DT_BINARY_WITH_PATH} ${DT_OPTARGS} >/dev/null 2>&1 &" "${DT_RUNASUSER}"
     fi
     echo $! >${DT_PIDFILE}
-  fi    
+  fi
   ;;
 'stop')
   if [ -n "${PROCESSPID}" ]; then
@@ -95,7 +95,7 @@ case "$1" in
       kill -9 ${PROCESSPID}
     fi
 
-    if [ -f "${DT_PIDFILE}" ]; then 
+    if [ -f "${DT_PIDFILE}" ]; then
       rm -f ${DT_PIDFILE}
     fi
   fi

@@ -33,7 +33,7 @@ DT_BINARY=dtfrontendserver
 # How long to wait for shutdown
 DT_SHUTDOWN_WAIT=60
 
-DT_PIDFILE_DIR=/tmp
+DT_PIDFILE_DIR=<%= @dynatrace::pid_file_directory %>
 
 DT_PIDFILE=${DT_PIDFILE_DIR}/${DT_BINARY}63.pid
 
@@ -73,7 +73,7 @@ case "$1" in
   if [ -n "${PROCESSPID}" ]; then
     echo "Terminating Dynatrace $DT_PRODUCT process ${PROCESSPID}"
     kill -15 ${PROCESSPID}
- 
+
     COUNT=0;
     while [ `ps -A -o pid | grep -c ${PROCESSPID}` -gt 0 ] && [ "${COUNT}" -lt "${DT_SHUTDOWN_WAIT}" ] # `ps --pid ${PROCESSPID} | grep -c ${PROCESSPID}` -ne 0]
     do
