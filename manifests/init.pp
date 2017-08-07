@@ -94,4 +94,10 @@ class dynatrace (
 
 ) inherits dynatrace::params {
 
+  if $pid_file_directory != '/tmp' {
+    file { $pid_file_directory :
+      ensure => 'directory',
+    }
+  }
+
 }
