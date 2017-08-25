@@ -31,16 +31,16 @@ Default values for given parameters:
   
   ```
   node default {
-            include dynatrace::role::server
-            include dynatrace::role::server_license
-            include dynatrace::role::collector
-            include dynatrace::role::agents_package
-            include dynatrace::role::wsagent_package
-            include dynatrace::role::apache_wsagent
-            include dynatrace::role::java_agent
-            include dynatrace::role::host_agent
-            include dynatrace::role::memory_analysis_server
-            include dynatrace::role::php_one_agent
+            include dynatraceappmon::role::server
+            include dynatraceappmon::role::server_license
+            include dynatraceappmon::role::collector
+            include dynatraceappmon::role::agents_package
+            include dynatraceappmon::role::wsagent_package
+            include dynatraceappmon::role::apache_wsagent
+            include dynatraceappmon::role::java_agent
+            include dynatraceappmon::role::host_agent
+            include dynatraceappmon::role::memory_analysis_server
+            include dynatraceappmon::role::php_one_agent
     }
   ```
 

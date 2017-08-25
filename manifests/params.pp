@@ -1,4 +1,4 @@
-# Class: dynatrace::params
+# Class: dynatraceappmon::params
 #
 # This class configures parameters for the dynatrace-dynatrace module.
 #
@@ -77,7 +77,7 @@
 #  $update_user                     => user name 
 #  $update_passwd                   => user password
 #  
-class dynatrace::params {
+class dynatraceappmon::params {
   $dynatrace_version = '7.0.0.2469'
   $dynatrace_version_link = "7.0/${dynatrace_version}"
   case $::kernel {

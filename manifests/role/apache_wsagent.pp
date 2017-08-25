@@ -1,16 +1,16 @@
 #apache_wsagent
-class dynatrace::role::apache_wsagent (
+class dynatraceappmon::role::apache_wsagent (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Apache WebServer Agent',
-  $apache_config_file_path = $dynatrace::apache_wsagent_apache_config_file_path
-) inherits dynatrace {
+  $apache_config_file_path = $dynatraceappmon::apache_wsagent_apache_config_file_path
+) inherits dynatraceappmon {
 
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($apache_config_file_path)
 
   case $::kernel {
     'Linux': {
-      $agent_path = $dynatrace::apache_wsagent_linux_agent_path
+      $agent_path = $dynatraceappmon::apache_wsagent_linux_agent_path
     }
     default: {}
   }

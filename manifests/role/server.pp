@@ -1,17 +1,17 @@
 #server
-class dynatrace::role::server (
+class dynatraceappmon::role::server (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server',
-  $installer_bitsize       = $dynatrace::server_installer_bitsize,
-  $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
-  $installer_file_name     = $dynatrace::server_installer_file_name,
-  $installer_file_url      = $dynatrace::server_installer_file_url,
-  $license_file_name       = $dynatrace::server_license_file_name,
-  $license_file_url        = $dynatrace::server_license_file_url,
-  $collector_port          = $dynatrace::server_embedded_collector_port,
-  $dynatrace_owner         = $dynatrace::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::dynatrace_group
-) inherits dynatrace {
+  $installer_bitsize       = $dynatraceappmon::server_installer_bitsize,
+  $installer_prefix_dir    = $dynatraceappmon::server_installer_prefix_dir,
+  $installer_file_name     = $dynatraceappmon::server_installer_file_name,
+  $installer_file_url      = $dynatraceappmon::server_installer_file_url,
+  $license_file_name       = $dynatraceappmon::server_license_file_name,
+  $license_file_url        = $dynatraceappmon::server_license_file_url,
+  $collector_port          = $dynatraceappmon::server_embedded_collector_port,
+  $dynatrace_owner         = $dynatraceappmon::dynatrace_owner,
+  $dynatrace_group         = $dynatraceappmon::dynatrace_group
+) inherits dynatraceappmon {
 
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($installer_prefix_dir, $installer_file_name, $license_file_name)
@@ -20,8 +20,8 @@ class dynatrace::role::server (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
-      $service = $dynatrace::dynaTraceServer
-      $init_scripts = [$service, $dynatrace::dynaTraceFrontendServer, $dynatrace::dynaTraceBackendServer]
+      $service = $dynatraceappmon::dynaTraceServer
+      $init_scripts = [$service, $dynatraceappmon::dynaTraceFrontendServer, $dynatraceappmon::dynaTraceBackendServer]
       $dynatrace_server_installation_info_file = '/tmp/dynatrace_server_installation.info'
     }
     default: {}
@@ -45,18 +45,18 @@ class dynatrace::role::server (
     default   => 'running',
   }
 
-  $installer_cache_dir = "${dynatrace::installer_cache_dir}/dynatrace"
+  $installer_cache_dir = "${dynatraceappmon::installer_cache_dir}/dynatrace"
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
-  include dynatrace::role::dynatrace_user
+  include dynatraceappmon::role::dynatrace_user
 
   ensure_resource(file, $installer_cache_dir_tree, {
     ensure  => $directory_ensure,
-    require => Class['dynatrace::role::dynatrace_user']
+    require => Class['dynatraceappmon::role::dynatrace_user']
   })
 
-  dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
+  dynatraceappmon::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
     ensure    => $ensure,
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
@@ -68,7 +68,7 @@ class dynatrace::role::server (
   file { "Configure and copy the ${role_name}'s install script":
     ensure  => $ensure,
     path    => "${installer_cache_dir}/${installer_script_name}",
-    content => template("dynatrace/server/${installer_script_name}"),
+    content => template("dynatraceappmon/server/${installer_script_name}"),
     mode    => '0744',
   }
 
@@ -87,7 +87,7 @@ class dynatrace::role::server (
   }
 
   if $::kernel == 'Linux' {
-    dynatrace::resource::configure_init_script { $init_scripts:
+    dynatraceappmon::resource::configure_init_script { $init_scripts:
       ensure               => $ensure,
       role_name            => $role_name,
       installer_prefix_dir => $installer_prefix_dir,

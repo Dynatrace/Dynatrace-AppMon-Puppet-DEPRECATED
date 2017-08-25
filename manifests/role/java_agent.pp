@@ -1,15 +1,15 @@
 #java_agent
-class dynatrace::role::java_agent (
+class dynatraceappmon::role::java_agent (
 
   $ensure             = 'present',
   $role_name          = 'Dynatrace Java Agent',
-  $env_var_name       = $dynatrace::java_agent_env_var_name,
-  $env_var_file_name  = $dynatrace::java_agent_env_var_file_name,
-  $agent_name         = $dynatrace::java_agent_name,
-  $collector_hostname = $dynatrace::java_agent_collector_hostname,
-  $collector_port     = $dynatrace::java_agent_collector_port,
-  $java_agent_linux_agent_path = $dynatrace::java_agent_linux_agent_path
-) inherits dynatrace {
+  $env_var_name       = $dynatraceappmon::java_agent_env_var_name,
+  $env_var_file_name  = $dynatraceappmon::java_agent_env_var_file_name,
+  $agent_name         = $dynatraceappmon::java_agent_name,
+  $collector_hostname = $dynatraceappmon::java_agent_collector_hostname,
+  $collector_port     = $dynatraceappmon::java_agent_collector_port,
+  $java_agent_linux_agent_path = $dynatraceappmon::java_agent_linux_agent_path
+) inherits dynatraceappmon {
 
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($env_var_name, $env_var_file_name)
@@ -17,7 +17,7 @@ class dynatrace::role::java_agent (
 
   case $::kernel {
     'Linux': {
-      $agent_path = $dynatrace::java_agent_linux_agent_path
+      $agent_path = $dynatraceappmon::java_agent_linux_agent_path
     }
     default: {}
   }

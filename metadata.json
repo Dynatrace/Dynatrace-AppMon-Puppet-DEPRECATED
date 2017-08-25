@@ -1,12 +1,12 @@
 {
-  "name": "dynatrace-dynatrace",
-  "version": "1.0.5",
+  "name": "dynatrace-dynatraceappmon",
+  "version": "1.0.7",
   "author": "Martin Etmajer",
   "summary": "Installs the Dynatrace Application Monitoring solution.",
   "license": "MIT",
-  "source": "https://github.com/Dynatrace/Dynatrace-Puppet",
-  "project_page": "https://github.com/Dynatrace/Dynatrace-Puppet",
-  "issues_url": "https://github.com/Dynatrace/Dynatrace-Puppet/issues",
+  "source": "https://github.com/Dynatrace/Dynatrace-AppMon-Puppet",
+  "project_page": "https://github.com/Dynatrace/Dynatrace-AppMon-Puppet",
+  "issues_url": "https://github.com/Dynatrace/Dynatrace-AppMon-Puppet/issues",
   "tags": ["Dynatrace", "AppMon", "Application", "APM", "Monitoring"],
   "operatingsystem_support": [
     { "operatingsystem":"Centos" },

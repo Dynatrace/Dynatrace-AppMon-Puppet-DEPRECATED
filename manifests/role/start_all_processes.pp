@@ -1,32 +1,32 @@
 #start_all_processes
-class dynatrace::role::start_all_processes (
+class dynatraceappmon::role::start_all_processes (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server start all services',
-  $installer_bitsize       = $dynatrace::server_installer_bitsize,
-  $installer_prefix_dir    = $dynatrace::server_installer_prefix_dir,
-  $installer_file_name     = $dynatrace::server_installer_file_name,
-  $installer_file_url      = $dynatrace::server_installer_file_url,
-  $license_file_name       = $dynatrace::server_license_file_name,
-  $license_file_url        = $dynatrace::server_license_file_url,
-  $collector_port          = $dynatrace::server_collector_port,
-  $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
-  $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
-  $pwh_connection_dbms     = $dynatrace::server_pwh_connection_dbms,
-  $pwh_connection_database = $dynatrace::server_pwh_connection_database,
-  $pwh_connection_username = $dynatrace::server_pwh_connection_username,
-  $pwh_connection_password = $dynatrace::server_pwh_connection_password,
-  $dynatrace_owner         = $dynatrace::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::dynatrace_group
-) inherits dynatrace {
+  $installer_bitsize       = $dynatraceappmon::server_installer_bitsize,
+  $installer_prefix_dir    = $dynatraceappmon::server_installer_prefix_dir,
+  $installer_file_name     = $dynatraceappmon::server_installer_file_name,
+  $installer_file_url      = $dynatraceappmon::server_installer_file_url,
+  $license_file_name       = $dynatraceappmon::server_license_file_name,
+  $license_file_url        = $dynatraceappmon::server_license_file_url,
+  $collector_port          = $dynatraceappmon::server_collector_port,
+  $pwh_connection_hostname = $dynatraceappmon::server_pwh_connection_hostname,
+  $pwh_connection_port     = $dynatraceappmon::server_pwh_connection_port,
+  $pwh_connection_dbms     = $dynatraceappmon::server_pwh_connection_dbms,
+  $pwh_connection_database = $dynatraceappmon::server_pwh_connection_database,
+  $pwh_connection_username = $dynatraceappmon::server_pwh_connection_username,
+  $pwh_connection_password = $dynatraceappmon::server_pwh_connection_password,
+  $dynatrace_owner         = $dynatraceappmon::dynatrace_owner,
+  $dynatrace_group         = $dynatraceappmon::dynatrace_group
+) inherits dynatraceappmon {
 
   case $::kernel {
     'Linux': {
       $services_to_start_array = [
-        $dynatrace::dynaTraceServer,
-        $dynatrace::dynaTraceCollector,
-        $dynatrace::dynaTraceAnalysis,
-        $dynatrace::dynaTraceWebServerAgent,
-        $dynatrace::dynaTraceHostagent,
+        $dynatraceappmon::dynaTraceServer,
+        $dynatraceappmon::dynaTraceCollector,
+        $dynatraceappmon::dynaTraceAnalysis,
+        $dynatraceappmon::dynaTraceWebServerAgent,
+        $dynatraceappmon::dynaTraceHostagent,
 #        'dynaTraceBackendServer',
 #        'dynaTraceFrontendServer'
         ]

@@ -1,5 +1,5 @@
 #configure_init_script
-define dynatrace::resource::configure_init_script(
+define dynatraceappmon::resource::configure_init_script(
   $ensure               = 'present',
   $role_name            = undef,
   $installer_prefix_dir = undef,
@@ -43,7 +43,7 @@ define dynatrace::resource::configure_init_script(
     owner                   => $owner,
     group                   => $group,
     mode                    => '0755',
-    content                 => template("dynatrace/init.d/${name}.erb"),
+    content                 => template("dynatraceappmon/init.d/${name}.erb"),
     require                 => Dynatrace_installation["Install the ${role_name}"]
   }
   file { "Make the '${name}' init script available in /etc/init.d":

@@ -1,15 +1,15 @@
 #pwh_connection
-class dynatrace::role::pwh_connection (
+class dynatraceappmon::role::pwh_connection (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server PWH connection',
-  $collector_port          = $dynatrace::server_collector_port,
-  $pwh_connection_hostname = $dynatrace::server_pwh_connection_hostname,
-  $pwh_connection_port     = $dynatrace::server_pwh_connection_port,
-  $pwh_connection_dbms     = $dynatrace::server_pwh_connection_dbms,
-  $pwh_connection_database = $dynatrace::server_pwh_connection_database,
-  $pwh_connection_username = $dynatrace::server_pwh_connection_username,
-  $pwh_connection_password = $dynatrace::server_pwh_connection_password,
-) inherits dynatrace {
+  $collector_port          = $dynatraceappmon::server_collector_port,
+  $pwh_connection_hostname = $dynatraceappmon::server_pwh_connection_hostname,
+  $pwh_connection_port     = $dynatraceappmon::server_pwh_connection_port,
+  $pwh_connection_dbms     = $dynatraceappmon::server_pwh_connection_dbms,
+  $pwh_connection_database = $dynatraceappmon::server_pwh_connection_database,
+  $pwh_connection_username = $dynatraceappmon::server_pwh_connection_username,
+  $pwh_connection_password = $dynatraceappmon::server_pwh_connection_password,
+) inherits dynatraceappmon {
 
   validate_re($ensure, ['^present$', '^absent$'])
   validate_string($collector_port)
@@ -17,7 +17,7 @@ class dynatrace::role::pwh_connection (
 
   case $::kernel {
     'Linux': {
-      $service = $dynatrace::dynaTraceServer
+      $service = $dynatraceappmon::dynaTraceServer
     }
     default: {}
   }

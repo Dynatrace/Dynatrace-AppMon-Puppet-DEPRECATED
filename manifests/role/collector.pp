@@ -1,21 +1,21 @@
 #collector
-class dynatrace::role::collector (
+class dynatraceappmon::role::collector (
   $ensure               = 'present',
   $role_name            = 'Dynatrace Collector',
-  $installer_bitsize    = $dynatrace::collector_installer_bitsize,
-  $installer_prefix_dir = $dynatrace::collector_installer_prefix_dir,
-  $installer_file_name  = $dynatrace::collector_installer_file_name,
-  $installer_file_url   = $dynatrace::collector_installer_file_url,
-  $agent_port           = $dynatrace::collector_agent_port,
-  $server_hostname      = $dynatrace::collector_server_hostname,
-  $server_port          = $dynatrace::collector_server_port,
-  $jvm_xms              = $dynatrace::collector_jvm_xms,
-  $jvm_xmx              = $dynatrace::collector_jvm_xmx,
-  $jvm_perm_size        = $dynatrace::collector_jvm_perm_size,
-  $jvm_max_perm_size    = $dynatrace::collector_jvm_max_perm_size,
-  $dynatrace_owner      = $dynatrace::dynatrace_owner,
-  $dynatrace_group      = $dynatrace::dynatrace_group
-) inherits dynatrace {
+  $installer_bitsize    = $dynatraceappmon::collector_installer_bitsize,
+  $installer_prefix_dir = $dynatraceappmon::collector_installer_prefix_dir,
+  $installer_file_name  = $dynatraceappmon::collector_installer_file_name,
+  $installer_file_url   = $dynatraceappmon::collector_installer_file_url,
+  $agent_port           = $dynatraceappmon::collector_agent_port,
+  $server_hostname      = $dynatraceappmon::collector_server_hostname,
+  $server_port          = $dynatraceappmon::collector_server_port,
+  $jvm_xms              = $dynatraceappmon::collector_jvm_xms,
+  $jvm_xmx              = $dynatraceappmon::collector_jvm_xmx,
+  $jvm_perm_size        = $dynatraceappmon::collector_jvm_perm_size,
+  $jvm_max_perm_size    = $dynatraceappmon::collector_jvm_max_perm_size,
+  $dynatrace_owner      = $dynatraceappmon::dynatrace_owner,
+  $dynatrace_group      = $dynatraceappmon::dynatrace_group
+) inherits dynatraceappmon {
 
   validate_re($ensure, ['^present$', '^absent$'])
   validate_re($installer_bitsize, ['^32', '64'])
@@ -25,7 +25,7 @@ class dynatrace::role::collector (
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-collector.sh'
-      $service = $dynatrace::dynaTraceCollector
+      $service = $dynatraceappmon::dynaTraceCollector
       $init_scripts = [$service]
     }
     default: {}
@@ -53,14 +53,14 @@ class dynatrace::role::collector (
   $installer_cache_dir_tree = dirtree($installer_cache_dir)
 
 
-  include dynatrace::role::dynatrace_user
+  include dynatraceappmon::role::dynatrace_user
 
   ensure_resource(file, $installer_cache_dir_tree, {
     ensure  => $directory_ensure,
-    require => Class['dynatrace::role::dynatrace_user']
+    require => Class['dynatraceappmon::role::dynatrace_user']
   })
 
-  dynatrace::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
+  dynatraceappmon::resource::copy_or_download_file { "Copy or download the ${role_name} installer":
     ensure    => $ensure,
     file_name => $installer_file_name,
     file_url  => $installer_file_url,
@@ -75,7 +75,7 @@ class dynatrace::role::collector (
   file { "Configure and copy the ${role_name}'s install script":
     ensure  => $ensure,
     path    => "${installer_cache_dir}/${installer_script_name}",
-    content => template("dynatrace/collector/${installer_script_name}"),
+    content => template("dynatraceappmon/collector/${installer_script_name}"),
     mode    => '0744',
     before  => Dynatrace_installation["Install the ${role_name}"]
   }
@@ -94,7 +94,7 @@ class dynatrace::role::collector (
   }
 
   if $::kernel == 'Linux' {
-    dynatrace::resource::configure_init_script { $init_scripts:
+    dynatraceappmon::resource::configure_init_script { $init_scripts:
       ensure               => $ensure,
       role_name            => $role_name,
       installer_prefix_dir => $installer_prefix_dir,

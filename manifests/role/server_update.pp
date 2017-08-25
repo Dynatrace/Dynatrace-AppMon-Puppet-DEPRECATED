@@ -1,41 +1,41 @@
 #server_update
-class dynatrace::role::server_update (
+class dynatraceappmon::role::server_update (
   $ensure                  = 'present',
   $role_name               = 'Dynatrace Server update',
 
-  $collector_port          = $dynatrace::server_collector_port,
+  $collector_port          = $dynatraceappmon::server_collector_port,
 
-  $update_file_url         = $dynatrace::update_file_url,
-  $update_rest_url         = $dynatrace::update_rest_url,
-  $update_user             = $dynatrace::update_user,
-  $update_passwd           = $dynatrace::update_passwd,
+  $update_file_url         = $dynatraceappmon::update_file_url,
+  $update_rest_url         = $dynatraceappmon::update_rest_url,
+  $update_user             = $dynatraceappmon::update_user,
+  $update_passwd           = $dynatraceappmon::update_passwd,
 
-  $dynatrace_owner         = $dynatrace::dynatrace_owner,
-  $dynatrace_group         = $dynatrace::dynatrace_group
+  $dynatrace_owner         = $dynatraceappmon::dynatrace_owner,
+  $dynatrace_group         = $dynatraceappmon::dynatrace_group
 
-) inherits dynatrace {
+) inherits dynatraceappmon {
 
   case $::kernel {
     'Linux': {
       $installer_script_name = 'install-server.sh'
 
-      $service                 = $dynatrace::dynaTraceServer
-      $collectorService        = $dynatrace::dynaTraceCollector
-      $dynaTraceAnalysis       = $dynatrace::dynaTraceAnalysis
-      $dynaTraceWebServerAgent = $dynatrace::dynaTraceWebServerAgent
-      $dynaTraceHostagent      = $dynatrace::dynaTraceHostagent
+      $service                 = $dynatraceappmon::dynaTraceServer
+      $collectorService        = $dynatraceappmon::dynaTraceCollector
+      $dynaTraceAnalysis       = $dynatraceappmon::dynaTraceAnalysis
+      $dynaTraceWebServerAgent = $dynatraceappmon::dynaTraceWebServerAgent
+      $dynaTraceHostagent      = $dynatraceappmon::dynaTraceHostagent
 
-      $installer_cache_dir = "${dynatrace::installer_cache_dir}/dynatrace"
+      $installer_cache_dir = "${dynatraceappmon::installer_cache_dir}/dynatrace"
       $installer_cache_dir_tree = dirtree($installer_cache_dir)
       $update_file_path = $installer_cache_dir
-      $services_to_stop_array = $dynatrace::services_to_manage_array
+      $services_to_stop_array = $dynatraceappmon::services_to_manage_array
 
       $services_to_start_array = [
-        $dynatrace::dynaTraceServer,
-        $dynatrace::dynaTraceCollector,
-        $dynatrace::dynaTraceAnalysis,
-        $dynatrace::dynaTraceWebServerAgent,
-        $dynatrace::dynaTraceHostagent,
+        $dynatraceappmon::dynaTraceServer,
+        $dynatraceappmon::dynaTraceCollector,
+        $dynatraceappmon::dynaTraceAnalysis,
+        $dynatraceappmon::dynaTraceWebServerAgent,
+        $dynatraceappmon::dynaTraceHostagent,
 #        'dynaTraceBackendServer',
 #        'dynaTraceFrontendServer'
         ]
@@ -50,11 +50,11 @@ class dynatrace::role::server_update (
     default   => 'directory',
   }
 
-  include dynatrace::role::dynatrace_user
+  include dynatraceappmon::role::dynatrace_user
 
   ensure_resource(file, $installer_cache_dir_tree, {
     ensure  => $directory_ensure,
-    require => Class['dynatrace::role::dynatrace_user']
+    require => Class['dynatraceappmon::role::dynatrace_user']
   })
 
   file { "${installer_cache_dir}/server_update":

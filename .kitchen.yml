@@ -84,7 +84,7 @@ platforms:
         - ln `~/.rbenv/bin/rbenv which puppet` /usr/bin/puppet
 
 suites:
- - name: apache_wsagent_debian
+  - name: apache_wsagent_debian
     provisioner:
       manifest: apache_wsagent_debian/init.pp
     includes:

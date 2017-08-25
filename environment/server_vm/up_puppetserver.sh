@@ -11,10 +11,11 @@ BRANCH=${BRANCH:-"master"}
 CONF_FILE=${CONF_FILE:-"/etc/puppetlabs/puppet/puppet.conf"}
 BASEMODULE_PARAM=${BASEMODULE_PARAM:-"basemodulepath = /etc/puppetlabs/code/environments/production/modules"}
 SERVICE=${SERVICE:-puppetserver}
+GIT_REPO_PATH="https://github.com/Dynatrace/Dynatrace-AppMon-Puppet.git"
 
 cd /etc/puppetlabs/code/environments/production/modules/
 sudo mkdir -p $DIR
-sudo git clone -b $BRANCH https://github.com/Dynatrace/Dynatrace-Puppet.git $DIR
+sudo git clone -b $BRANCH $GIT_REPO_PATH $DIR
 sudo puppet module install puppetlabs-stdlib
 sudo puppet module install maestrodev-wget --version 1.7.3
 sudo puppet module install AlexCline-dirtree --version 0.2.1
@@ -27,16 +28,16 @@ fi
 
 sudo tee <<EOF /etc/puppetlabs/code/environments/production/manifests/site.pp >/dev/null
 node default {
-    include dynatrace::role::server
-    include dynatrace::role::server_license
-    include dynatrace::role::collector
-    include dynatrace::role::agents_package
-    include dynatrace::role::wsagent_package
-    include dynatrace::role::apache_wsagent
-    include dynatrace::role::java_agent
-    include dynatrace::role::host_agent
-    include dynatrace::role::memory_analysis_server
-    include dynatrace::role::php_one_agent
+    include dynatraceappmon::role::server
+    include dynatraceappmon::role::server_license
+    include dynatraceappmon::role::collector
+    include dynatraceappmon::role::agents_package
+    include dynatraceappmon::role::wsagent_package
+    include dynatraceappmon::role::apache_wsagent
+    include dynatraceappmon::role::java_agent
+    include dynatraceappmon::role::host_agent
+    include dynatraceappmon::role::memory_analysis_server
+    include dynatraceappmon::role::php_one_agent
 }
 EOF
 

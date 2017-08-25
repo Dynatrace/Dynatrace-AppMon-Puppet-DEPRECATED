@@ -1,8 +1,8 @@
 #dynatrace_user
-class dynatrace::role::dynatrace_user(
-  $dynatrace_owner = $dynatrace::dynatrace_owner,
-  $dynatrace_group = $dynatrace::dynatrace_group
-) inherits dynatrace {
+class dynatraceappmon::role::dynatrace_user(
+  $dynatrace_owner = $dynatraceappmon::dynatrace_owner,
+  $dynatrace_group = $dynatraceappmon::dynatrace_group
+) inherits dynatraceappmon {
 
   validate_string($dynatrace_owner, $dynatrace_group)
 
