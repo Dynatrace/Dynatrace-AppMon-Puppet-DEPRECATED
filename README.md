@@ -112,7 +112,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatraceappmon::role::server':
-  installer_file_url => 'http://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-server-7.0.0.2469-linux-x86.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2469/dynatrace-full-7.0.0.2469-linux-x86-64.jar'
 }
 ```
 
