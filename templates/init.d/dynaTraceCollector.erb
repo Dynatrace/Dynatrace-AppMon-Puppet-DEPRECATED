@@ -26,7 +26,7 @@
 # - DT_RUNASUSER  the user to run the Dynatrace process
 
 DT_HOME=<%= @params["installer_prefix_dir"] %>/dynatrace
-DT_OPTARGS="-listen <%= @params["agent_port"] %> -server <%= @params["server_hostname"] %>:<%= @params["server_port"] %><% if @params["jvm_xms"] %> -Xms<%= @params["jvm_xms"] %><% end %><% if @params["jvm_xmx"] %> -Xmx<%= @params["jvm_xmx"] %><% end %><% if @params["jvm_perm_size"] %> -XX:PermSize=<%= @params["jvm_perm_size"] %><% end %><% if @params["jvm_max_perm_size"] %> -XX:MaxPermSize=<%= @params["jvm_max_perm_size"] %><% end %>"
+DT_OPTARGS="-listenOneAgent <%=@params["appmon_agent_port"] %> -listen <%= @params["agent_port"] %> -server <%= @params["server_hostname"] %>:<%= @params["server_port"] %><% if @params["jvm_xms"] %> -Xms<%= @params["jvm_xms"] %><% end %><% if @params["jvm_xmx"] %> -Xmx<%= @params["jvm_xmx"] %><% end %><% if @params["jvm_perm_size"] %> -XX:PermSize=<%= @params["jvm_perm_size"] %><% end %><% if @params["jvm_max_perm_size"] %> -XX:MaxPermSize=<%= @params["jvm_max_perm_size"] %><% end %>"
 
 DT_INSTANCE=
 

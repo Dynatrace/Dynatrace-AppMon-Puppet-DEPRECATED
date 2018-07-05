@@ -59,3 +59,7 @@ end
 describe port(9998) do
   it { should be_listening }
 end
+
+describe port(8043) do
+  it { should be_listening }
+end

@@ -7,6 +7,7 @@ class dynatraceappmon::role::collector (
   $installer_file_name  = $dynatraceappmon::collector_installer_file_name,
   $installer_file_url   = $dynatraceappmon::collector_installer_file_url,
   $agent_port           = $dynatraceappmon::collector_agent_port,
+  $appmon_agent_port    = $dynatraceappmon::collector_appmon_agent_port,
   $server_hostname      = $dynatraceappmon::collector_server_hostname,
   $server_port          = $dynatraceappmon::collector_server_port,
   $jvm_xms              = $dynatraceappmon::collector_jvm_xms,
@@ -103,6 +104,7 @@ class dynatraceappmon::role::collector (
       init_scripts_params  => {
         'installer_prefix_dir' => $installer_prefix_dir,
         'agent_port'           => $agent_port,
+        'appmon_agent_port'    => $appmon_agent_port,
         'server_hostname'      => $server_hostname,
         'server_port'          => $server_port,
         'jvm_xms'              => $jvm_xms,
