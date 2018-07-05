@@ -78,8 +78,8 @@
 #  $update_passwd                   => user password
 #  
 class dynatraceappmon::params {
-  $dynatrace_version = '7.0.0.2469'
-  $dynatrace_version_link = "7.0/${dynatrace_version}"
+  $dynatrace_version = '7.1.0.1803'
+  $dynatrace_version_link = "7.1/${dynatrace_version}"
   case $::kernel {
     'Linux': {
       $dynatrace_owner = 'dynatrace'
@@ -101,7 +101,7 @@ class dynatraceappmon::params {
       $collector_installer_file_name  = 'dynatrace-collector.jar'
       $collector_installer_file_url   = "https://files.dynatrace.com/downloads/OnPrem/dynaTrace/${dynatrace_version_link}/dynatrace-collector-${dynatrace_version}-linux-x86.jar"
       $collector_agent_port           = '9998'
-      $collector_appmon_agent_port       = '8043'
+      $collector_appmon_agent_port    = '8043'
       $collector_server_hostname      = 'localhost'
       $collector_server_port          = '6699'     #6698 port is for version 6.3 and below; 6699 is for version 6.5 and upper
       $collector_jvm_xms              = undef
