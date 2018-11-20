@@ -16,7 +16,7 @@ This class downloads and installs the most recent version of the Dynatrace Agent
 
 ```
 class { 'dynatraceappmon::role::agents_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-agent-7.1.0.1803-unix.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-agent-7.2.0.1697-unix.jar'
 }
 ```
 
@@ -30,7 +30,7 @@ Please refer to `manifests/role/apache_wsagent.pp` and `manifests/role/wsagent_p
 
 ```
 class { 'dynatraceappmon::role::wsagent_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-wsagent-7.1.0.1803-linux-x86-64.tar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-wsagent-7.2.0.1697-linux-x86-64.tar'
 }
 
 class { 'dynatraceappmon::role::apache_wsagent':
@@ -49,7 +49,7 @@ This class downloads and installs the most recent version of the Dynatrace Colle
 
 ```
 class { 'dynatraceappmon::role::collector':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-collector-7.1.0.1803-linux-x86.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-collector-7.2.0.1697-linux-x86.jar'
 }
 ```
 
@@ -63,7 +63,7 @@ Please refer to `manifests/role/java_agent.pp` and `manifests/role/agents_packag
 
 ```
 class { 'dynatraceappmon::role::agents_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-agent-7.1.0.1803-unix.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-agent-7.2.0.1697-unix.jar'
 }
 
 class { 'dynatraceappmon::role::java_agent':
@@ -84,7 +84,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatraceappmon::role::memory_analysis_server':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-analysisserver-7.1.0.1803-linux-x86.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-analysisserver-7.2.0.1697-linux-x86.jar'
 }
 ```
 
@@ -98,7 +98,7 @@ This class downloads and installs the most recent version of the PHP OneAgent fo
 
 ```
 class { 'dynatraceappmon::role::php_one_agent':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-one-agent-php-7.1.0.1803-linux-x86.tgz'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-one-agent-php-7.2.0.1697-linux-x86.tgz'
 }
 ```
 
@@ -112,7 +112,7 @@ This class downloads and installs the most recent version of the Dynatrace Memor
 
 ```
 class { 'dynatraceappmon::role::server':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-full-7.1.0.1803-linux-x86-64.jar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-full-7.2.0.1697-linux-x86-64.jar'
 }
 ```
 
@@ -136,7 +136,7 @@ This class downloads and installs the most recent version of the Dynatrace WebSe
 
 ```
 class { 'dynatraceappmon::role::wsagent_package':
-  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.1/7.1.0.1803/dynatrace-wsagent-7.1.0.1803-linux-x86-64.tar'
+  installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-wsagent-7.2.0.1697-linux-x86-64.tar'
 }
 ```
 

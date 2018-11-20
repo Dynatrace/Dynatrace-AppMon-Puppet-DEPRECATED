@@ -72,14 +72,14 @@
 #  $host_agent_name                 => Dynatrace Host Agent name
 #  $host_agent_collector            => Dynatrace Host Agent Collector identifier (collector IP address or host name)
 #  
-#  $update_file_url                 => URL to the update zip file with tds inside e.g. 'https://files.dynatrace.com/downloads/fixpacks/dynaTrace-6.5.1.1003.zip'
+#  $update_file_url                 => URL to the update zip file with tds inside e.g. 'https://files.dynatrace.com/downloads/fixpacks/dynaTrace-7.2.1.1003.zip'
 #  $update_rest_url                 => the REST URL to perform update 
 #  $update_user                     => user name 
 #  $update_passwd                   => user password
 #  
 class dynatraceappmon::params {
-  $dynatrace_version = '7.1.0.1803'
-  $dynatrace_version_link = "7.1/${dynatrace_version}"
+  $dynatrace_version = '7.2.0.1697'
+  $dynatrace_version_link = "7.2/${dynatrace_version}"
   case $::kernel {
     'Linux': {
       $dynatrace_owner = 'dynatrace'
@@ -119,9 +119,9 @@ class dynatraceappmon::params {
       $php_one_agent_installer_bitsize    = '64'
       $php_one_agent_installer_prefix_dir = '/opt'
       $php_one_agent_php_config_file_name = 'php.ini'
-      $php_one_agent_php_config_file_path = '/etc/php/7.0/apache2'
+      $php_one_agent_php_config_file_path = '/etc/php/7.2/apache2'
       $php_one_agent_name                 = 'phpOneAgent'
-      $php_one_agent_version              = '7.0'
+      $php_one_agent_version              = '7.2'
       $php_one_agent_server_hostname      = 'localhost'
       $php_one_agent_port                 = '8043'
       $php_one_agent_installer_file_name  = 'dynatrace-one-agent-php.tar'
