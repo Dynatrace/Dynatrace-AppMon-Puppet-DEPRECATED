@@ -1,7 +1,7 @@
 class { 'apache': }
 
 class { 'dynatraceappmon::role::wsagent_package':
-  # installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-wsagent-6.5.0.1289-linux-x86-64.tar',
+  # installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-wsagent-7.2.0.1697-linux-x86-64.tar',
   require            => Class['apache']
 }
 

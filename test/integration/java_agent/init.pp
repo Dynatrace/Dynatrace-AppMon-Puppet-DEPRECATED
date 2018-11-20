@@ -1,5 +1,5 @@
 class { 'dynatraceappmon::role::agents_package':
-  # installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/6.5/6.5.0.1289/dynatrace-agent-6.5.0.1289-unix.jar',
+  # installer_file_url => 'https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.2/7.2.0.1697/dynatrace-agent-7.2.0.1697-unix.jar',
 }
 
 class { 'dynatraceappmon::role::java_agent':
