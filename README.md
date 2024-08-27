@@ -1,3 +1,8 @@
+> ⚠️ **Warning**: Deprecation Warning.
+>
+> Puppet has been deprecated. Official support for this project has been discontinued. The repository will not receive any new updates, features, or bug fixes. Continued use of this project is at your own risk.  If you wish to continue using this project, consider forking the repository and maintaining it independently. We appreciate your understanding and thank you for your support and contributions over the years.
+>
+
 # dynatrace Module
 
 This Puppet module installs and configures the Dynatrace Application Monitoring solution.
