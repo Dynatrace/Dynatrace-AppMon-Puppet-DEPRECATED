@@ -1,6 +1,12 @@
-> ⚠️ **Warning**: Deprecation Warning.
+> [!IMPORTANT]
+> **This repository is archived and no longer maintained or supported.**
 >
-> Puppet has been deprecated. Official support for this project has been discontinued. The repository will not receive any new updates, features, or bug fixes. Continued use of this project is at your own risk.  If you wish to continue using this project, consider forking the repository and maintaining it independently. We appreciate your understanding and thank you for your support and contributions over the years.
+> - **Archived:** YYYY-MM-DD
+> - **Reason:** <AppMon product EOL / replaced / merged elsewhere — include a useful explanation>
+> - **Replacement:** <supported successor and migration guidance, or "None">
+>
+> Preserved for historical and migration reference only. No updates, including security updates, will be provided.
+> See the [Dynatrace Archive organization README](https://github.com/Dynatrace-Archive) for usage and security guidance.
 >
 
 # dynatrace Module
